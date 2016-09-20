@@ -1,0 +1,37 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "start:watch": "nodemon --watch dist --watch resources/views --watch node_modules -e js,html,json dist/server.js",
+    "test": "node artisan.js test",
+    "postinstall": "typings install",
+    "build-server": "chen-tsc -p src/server/tsconfig.json",
+    "build-server:watch": "chen-tsc --watch -p src/server/tsconfig.json",
+    "build-client": "webpack --config src/client/webpack.config.js",
+    "build-client:watch": "webpack --watch --config src/client/webpack.config.js",
+    "build-assets": "gulp",
+    "build-assets:watch": "gulp watch",
+    "typings": "typings"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chen": "git://github.com/chen-framework/chen.git#compiled",
+    "connect-redis": "^3.0.2",
+    "mysql": "^2.10.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.3.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-sym": "0.0.14",
+    "nodemon": "^1.10.0",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "typings": "^1.3.2",
+    "webpack": "^1.13.2"
+  }
+}
