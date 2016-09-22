@@ -1,7 +1,7 @@
 import { SQLModel } from 'chen/sql';
 import { User ,AuctionItem } from 'app/models';
 
-export class Favorites extends SQLModel {
+export class Favorite extends SQLModel {
 
   protected table: string = 'favorites';
   protected fillable:string[] = ['user_id_fk', 'item_id_fk'];

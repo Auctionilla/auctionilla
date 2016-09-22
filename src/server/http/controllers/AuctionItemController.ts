@@ -1,12 +1,11 @@
 import { Controller, Request, Response } from 'chen/web';
 import { injectable } from 'chen/core';
-import { AuctionItemService } from 'app/services';
-import { User } from 'app/models';
+import { AuctionItemService, MandrillService } from 'app/services';
 
 @injectable
 export class AuctionItemController extends Controller {
 
-  constructor(private auctionItemService: AuctionItemService) {
+  constructor(private auctionItemService: AuctionItemService, private mandrillService: MandrillService) {
     super();
   }
 
@@ -14,8 +13,9 @@ export class AuctionItemController extends Controller {
     let a = await this.auctionItemService.getAll();
     console.log(a);
     console.log("this is the result");
-    let categorize = true;
-    console.log(categorize);
+    let sendEmail = this.mandrillService.send('subject', 'msg', [{ email: 'cedrickbuan@gmail.com' }], '');
+    console.log(sendEmail);
+
     return response.render('auctionpage');
   }
 }
