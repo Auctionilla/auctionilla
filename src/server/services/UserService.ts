@@ -1,12 +1,12 @@
 import { injectable, ValidationRules } from 'chen/core';
 import { SQLService } from 'chen/sql';
-import { Users } from 'app/models';
+import { User } from 'app/models';
 
 
 @injectable
-export class UserService extends SQLService<Users> {
+export class UserService extends SQLService<User> {
 
-  protected modelClass = Users;
+  protected modelClass = User;
 
   protected validationRules: ValidationRules = {};
 

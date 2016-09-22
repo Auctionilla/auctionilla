@@ -4,3 +4,4 @@ export * from './AuctionSiteService';
 export * from './SearchAlertsService';
 export * from './UserService';
 export * from './FavoriteService'
+export * from './MandrillService'
