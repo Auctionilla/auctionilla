@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>auction list</title>
+</head>
+<body>
+<h1>auction list</h1>
+
+ <table border="1">
+	
+	    {% for auc_items in data %}
+		<tr>
+			<td> {{ auc_items.item_title }} </td>  		
+			<td>{{ auc_items.item_description }}</td>
+		</tr>
+		{% endfor %}
+
+	</table>
+
+
+</body>
+</html>

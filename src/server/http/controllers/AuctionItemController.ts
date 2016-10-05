@@ -15,7 +15,7 @@ export class AuctionItemController extends Controller {
 
   public async index(request: Request, response: Response) {
 
-    return response.render('objects');
+    return response.render('index');
   }
 
 
