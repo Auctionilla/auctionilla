@@ -3,8 +3,8 @@ import { Config } from 'chen/core';
 
 export default function (router: Router, config: Config) {
 
-  //router.route('GET', '/', 'IndexController@index');
-  router.route('GET', '/', 'AuctionItemController@index');
+  router.route('GET', '/', 'IndexController@index');
+  // router.route('GET', '/', 'AuctionItemController@index');
   router.route('POST', '/register', 'UserController@register');
   router.route('GET', '/registration', 'UserController@registration');
   router.route('GET', '/verify-account/:verification_code/:id', 'UserController@verifyAccount');

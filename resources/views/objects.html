@@ -106,8 +106,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Browse objects</a></li>
-            <li><a href="#about">See realized prices</a></li>
+            <li class="{{'active' if browsing == '' }}{{'active' if browsing == 'auction'}}"><a href="/search?searchItem=&browsing-auction=auction&category=&countries=&auction-house=&offset=&page=&radiobuttonsearch=&relevance=">Browse objects</a></li>
+            <li class="{{'active' if browsing == 'realized'}}"><a href="/search?searchItem=&browsing-auction=realized&category=&countries=&auction-house=&offset=&page=&radiobuttonsearch=&relevance=">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
@@ -146,6 +146,7 @@
       <form class="navbar-form" role="search">
         <div class="col-md-6 col-sm-6 search-section">
           <input name="searchItem" type="text" class="input form-control " value="{{ search }}" placeholder="Search word, phrase or name of lot" />
+          <input type="hidden" value = "{{ browsing }}" name="browsing-auction">
 
           <div class="col-md-6 col-sm-6 search-section">
             <select id="country" name="countries" data-placeholder="Select country" class="form-control sub-select select2me input">
@@ -180,7 +181,7 @@
           <button class="submit-search"><i class="fa fa-search"></i></button>
           <div class="radio-buttons">
             <div class="radio">
-              <input type="radio" value="objects"{{ "" if itemFilter else "checked" }} {{ "checked" if itemFilter == 'objects' }} name="radiobuttonsearch">
+              <input type="radio" value="objects"{{ "active" if itemFilter == '' }} {{ "checked" if itemFilter == 'objects' }} name="radiobuttonsearch">
               <label for="radio1">
                 Objects
               </label>
@@ -286,11 +287,11 @@
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                  <li {% if relevance == 'relevance' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=relevance">relevance</a></li>
-                  <li{% if relevance == "latest" %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=latest">latest</a></li>
-                  <li {% if relevance == 'lowest-price' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=lowest-price">lowest price</a></li>
-                  <li{% if relevance == 'highest-price' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=highest-price">highest price</a></li>
-                  <li {% if relevance == 'shortest-remaining' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=shortest-remaining">shortest remaining</a></li>
+                  <li {% if relevance == 'relevance' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=relevance">relevance</a></li>
+                  <li{% if relevance == "latest" %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=latest">latest</a></li>
+                  <li {% if relevance == 'lowest-price' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=lowest-price">lowest price</a></li>
+                  <li{% if relevance == 'highest-price' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=highest-price">highest price</a></li>
+                  <li {% if relevance == 'shortest-remaining' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=shortest-remaining">shortest remaining</a></li>
 
                 </ul>
               </div>
@@ -311,11 +312,11 @@
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                  <li{% if page == 10 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{10}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">10</a></li>
-                  <li {% if page == 20 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{20}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">20</a></li>
-                  <li{% if page == 30 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{30}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">30</a></li>
-                  <li {% if page == 40 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{40}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">40</a></li>
-                  <li {% if page == 50 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{50}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">50</a></li>
+                  <li{% if page == 10 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{10}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">10</a></li>
+                  <li {% if page == 20 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{20}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">20</a></li>
+                  <li{% if page == 30 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{30}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">30</a></li>
+                  <li {% if page == 40 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{40}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">40</a></li>
+                  <li {% if page == 50 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{50}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">50</a></li>
                 </ul>
               </div>
               {% endif %}
@@ -331,7 +332,94 @@
         <div class="col-md-9 col-sm-12 main-object-list">
         {% if data.length %}
           {% for item in data %}
-            {% if item.price_status != 'Realized' %}
+            {% if (item.price_status != 'Realized') and (item.price_status != 'Hammer price') %}
+              <div class="object-item">
+              <div class="thumb-image image">
+                <img src="{{ item.item_image }}" />
+                  <div class="image-hover">
+                    <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
+                  </div>
+              </div>
+                <div class="descriptions">
+                  <div class="clearfix tag-timestamp">
+                    <ul>
+                      <li>
+                        <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
+                      </li>
+                      <li>
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                        {% if item.converted_date > 0 %}
+                        {{ (item.converted_date / 24) | round(0, 'floor') }}d {{ item.converted_date % 24 }}h
+                        {% else %}
+                          0d 0h
+                        {% endif %}
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="content">
+                    <h4>
+                      {{ item.item_title}}
+                    </h4>
+                    <p>
+                      {{ item.item_description }}
+                    </p>
+                    <p class="estimate">
+
+                      {{ item.price_status }}
+
+                      : {{ item.price}} {{item.currency}}
+
+                      {% if item.price_status == "Fix price" %}
+                      -
+                      {% elif item.price_status == "Hammer price" %}
+                        <a href="{{ item.auction_url }}">Show Bid</a>
+                      {% elif item.price_status == "Low estimate" %}
+                        <a href="{{ item.auction_url }}">Show Bid</a>
+
+                      {% endif %}
+
+                    </p>
+                  </div>
+                  <div class="actions clearfix">
+                    <ul>
+                      <li class="auction-emblem">
+                        <a href="{{ item.site_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                      </li>
+                      <li>
+                        {% if item.price_status != "Realized" %}
+                          {% if item.price_status != "Hammer price" %}
+                            {% if user %}
+                            <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                            <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
+                            </button>
+                            {% else %}
+                              <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                            <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
+                            </button>
+                            {% endif %}
+                          {% endif %}
+                        {% endif %}
+                      </li>
+                      <li>
+                        <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+                        <span>
+                        {% if item.price_status == "Fix price" %}
+                          Buy it now
+                        {% elif item.price_status == "Hammer price" %}
+                          To the auction house
+                        {% elif item.price_status == "Low estimate" %}
+                          Show Bid
+                        {% elif item.price_status == "Realized" %}
+                          To the auction house
+                        {% endif %}
+                        </span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+            </div>
+            {% else %}
               <div class="object-item">
                 <div class="thumb-image image">
                   <img src="{{ item.item_image }}" />
@@ -346,7 +434,12 @@
                           <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
                         </li>
                         <li>
-                          <i class="fa fa-clock-o" aria-hidden="true"></i> {{ (item.converted_date / 24) | round(0, 'floor') }}d {{ item.converted_date % 24 }}h
+                          <i class="fa fa-clock-o" aria-hidden="true"></i>
+                          {% if item.converted_date > 0 %}
+                          {{ (item.converted_date / 24) | round(0, 'floor') }}d {{ item.converted_date % 24 }}h
+                          {% else %}
+                            0d 0h
+                          {% endif %}
                         </li>
                       </ul>
                     </div>
@@ -358,13 +451,18 @@
                         {{ item.item_description }}
                       </p>
                       <p class="estimate">
-                        {{ item.price_status }}: {{ item.price}} {{item.currency}}
-                        {% if item.price_status == "Fix price" %}
 
+                        {{ item.price_status }}
+
+                        : {{ item.price}} {{item.currency}}
+
+                        {% if item.price_status == "Fix price" %}
+                        -
                         {% elif item.price_status == "Hammer price" %}
                           <a href="{{ item.auction_url }}">Show Bid</a>
                         {% elif item.price_status == "Low estimate" %}
                           <a href="{{ item.auction_url }}">Show Bid</a>
+
                         {% endif %}
 
                       </p>
@@ -375,14 +473,18 @@
                           <a href="{{ item.site_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
                         </li>
                         <li>
-                          {% if user %}
-                          <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
-                          <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
-                          </button>
-                          {% else %}
-                            <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
-                          <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
-                          </button>
+                          {% if item.price_status != "Realized" %}
+                            {% if item.price_status != "Hammer price" %}
+                              {% if user %}
+                              <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                              <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
+                              </button>
+                              {% else %}
+                                <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                              <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
+                              </button>
+                              {% endif %}
+                            {% endif %}
                           {% endif %}
                         </li>
                         <li>
@@ -391,10 +493,11 @@
                           {% if item.price_status == "Fix price" %}
                             Buy it now
                           {% elif item.price_status == "Hammer price" %}
-                            Show Bid
+                            To the auction house
                           {% elif item.price_status == "Low estimate" %}
                             Show Bid
-
+                          {% elif item.price_status == "Realized" %}
+                            To the auction house
                           {% endif %}
                           </span>
                           </button>
@@ -487,15 +590,43 @@
           <a href="#"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a>
         </li>
         <li>
-          <a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset - 1 if offset > 1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-left" aria-hidden="true"></i> </a>
+          <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset - 1 if offset > 1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-left" aria-hidden="true"></i> </a>
         </li>
-        {% for i in range(1, total + 1) %}
-        <li {% if offset == i %}class="active" {% endif %}>
-          <a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">{{ i }}</a>
-        </li>
-        {% endfor %}
+        {% if offset < 15 %}
+          {% if ( total / page ) < 15 %}
+            {% for i in range(1, (total / page) + 1)  %}
+              <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}">{{i}}</a>
+              </li>
+            {% endfor %}
+            {% if (total % page) > page and ((total / page) > 1) %}
+              <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ ((total / page) + 1) | round }}&page={{page}}&relevance={{ relevance }}">{{ ((total / page) + 1) | round }}</a>
+              </li>
+            {% endif %}
+          {% else %}
+            {% for i in range(1, 16)  %}
+              <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}">{{i}}</a>
+              </li>
+            {% endfor %}
+          {% endif %}
+        {% elif offset >= 15 and offset < (total / page) - 15 %}
+          {% for i in range(offset - 7, offset + 7)  %}
+            <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}">{{i  | round }}</a>
+            </li>
+          {% endfor %}
+        {% elif (offset > (total / page) - 15) and (offset <= (total / page)) %}
+          {% for i in range((total / page) - 15, (total / page) + 1 )   %}
+            <li class="page-item {% if offset == i  | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}">{{i  | round }}</a>
+            </li>
+          {% endfor %}
+          {% if (total % page) > page and ((total / page)  > 1)  %}
+            <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ (total / page) | round + 1 }}&page={{page}}&relevance={{ relevance }}">{{ ((total / page) + 1) | round }}</a>
+            </li>
+          {% endif %}
+        {% elif (offset > (total / page)) %}
+          <li>last item</li>
+        {% endif %}
         <li>
-          <a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset + 1 if (offset < total) else offset}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
+          <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset + 1 if (offset < (total / page)) else offset}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
         </li>
         <li>
           <a href="#"> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
@@ -562,8 +693,9 @@
         <a href="#"><img src="/assets/images/logo.png" /></a>
       </div>
       <div class="item col-sm-6 col-md-6">
+
         <span>
-          © Antique.com 2016  | ALL RIGHTS RESERVED
+          © Antique.com 2016  | ALL RIGHTS RESERVED {{ (total / page) }}
         </span>
       </div>
       <div class="item col-sm-3 col-md-3">

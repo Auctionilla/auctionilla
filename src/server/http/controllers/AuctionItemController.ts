@@ -15,7 +15,13 @@ export class AuctionItemController extends Controller {
   }
 
   public async index(request: Request, response: Response) {
-
+    let cditems = await this.auctionItemService.getCountdownItems();
+    var date = new Date();
+    console.log(date.getDay())
+    cditems.forEach(item => {
+      let jsonItem = item.toJSON();
+      console.log(jsonItem);
+    });
     return response.render('index');
   }
 
@@ -71,7 +77,7 @@ export class AuctionItemController extends Controller {
     console.log(itemFilter);
 
 
-    let items = await this.auctionItemService.searchAuction(search, category, auction_house, relevance, itemFilter, (offset - 1) * 10, page);
+    let items = await this.auctionItemService.searchAuction(search, category, auction_house, relevance, itemFilter, (offset - 1) * page, page);
     let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, itemFilter);
     let data = [];
 
@@ -147,6 +153,24 @@ export class AuctionItemController extends Controller {
     let auction_house = '';
     let country = '';
     let relevance = '';
+    let browsing = 'auction';
+    let itemFilter = 'objects';
+    let getBrowsing = request.input.get('browsing-auction')
+    if (getBrowsing == 'realized') {
+      console.log('dont use radio button filter')
+      browsing = getBrowsing;
+      itemFilter = getBrowsing;
+    } else if(getBrowsing == 'auction') {
+      let getitemFilter = request.input.get('radiobuttonsearch');
+      if (getitemFilter) {
+        browsing = 'objects';
+        itemFilter = getitemFilter;
+
+      }
+    }
+    console.log('the item filter');
+    console.log(itemFilter)
+
     let getsearch = request.input.get('searchItem');
     if (getsearch) {
       search = getsearch;
@@ -176,12 +200,10 @@ export class AuctionItemController extends Controller {
     if (getRelevance) {
       relevance = getRelevance;
     }
-    let itemFilter = request.input.get('radiobuttonsearch');
-    console.log('the item Filter');
-    console.log(itemFilter);
 
 
-    let items = await this.auctionItemService.searchAuction(search, category, auction_house, relevance, itemFilter, (offset - 1) * 10, page);
+
+    let items = await this.auctionItemService.searchAuction(search, category, auction_house, relevance, itemFilter, (offset - 1) * page, page);
     let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, itemFilter);
     let data = [];
 
@@ -218,7 +240,7 @@ export class AuctionItemController extends Controller {
     console.log('this is the relevance');
     console.log(relevance)
 
-    let total = parseInt(itemcount.get('total')) / page;
+    let total = parseInt(itemcount.get('total'));
     console.log('total items');
     console.log(total);
 
@@ -237,7 +259,14 @@ export class AuctionItemController extends Controller {
       sites.push(jsonItem);
     });
     console.log(data)
-    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: getCountry, relevance, itemFilter, user });
+    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: getCountry, relevance, itemFilter, user, browsing });
+  }
+
+
+  public async locationHits(request: Request, response: Response) {
+    let hits = true;
+    console.log(hits);
+    return true;
   }
 
 

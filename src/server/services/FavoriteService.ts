@@ -31,4 +31,16 @@ export class FavoriteService extends SQLService<Favorite> {
     }).getOne();
   }
 
+  getFavorite() {
+     return this.query(query => {
+       query.select('item_id_fk as item')
+       query.count('user_id_fk as users')
+       query.groupByRaw('item_id_fk')
+       query.orderBy('users', 'desc')
+     }).getOne();
+  }
+  // SELECT item_id_fk as item ,COUNT(user_id_fk) As 'users' FROM favorites group by item_id_fk order by users desc;
+
+
+
 }

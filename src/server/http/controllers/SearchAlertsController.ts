@@ -15,8 +15,10 @@ export class SearchAlertsController extends Controller {
 
 
   public async createSearchAlert(request: Request, response: Response) {
+
+
     let data = {
-      searchItem: request.input.get('search_item'),
+      searchItem: String(request.input.get('search_item')).toLowerCase(),
       category: request.input.get('category'),
       auctionHouse: request.input.get('auction_house'),
       location: request.input.get('location'),

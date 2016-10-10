@@ -53,9 +53,11 @@ export class AuctionItemService extends SQLService<AuctionItem> {
 
       if (item_filter) {
         if (item_filter == 'auctions') {
-          query.whereIn('price_status', ['Hammer price', 'Low estimate']);
+          query.where('price_status', 'Low estimate');
         } else if (item_filter == 'fix-price') {
           query.where('price_status', 'Fix price')
+        } else if (item_filter == 'realized') {
+          query.whereIn('price_status', ['Hammer price', 'realized'] )
         }
       }
 
@@ -68,7 +70,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     }).get();
   }
 
-  getSearchItemCount(searchItem = '', category, auction_house, item_filter){
+  getSearchItemCount(searchItem = '', category, auction_house, item_filter) {
 
     return this.query(query => {
       query.count('auction_items.item_title as total')
@@ -87,20 +89,44 @@ export class AuctionItemService extends SQLService<AuctionItem> {
 
       if (item_filter) {
         if (item_filter == 'auctions') {
-          query.whereIn('price_status', ['Hammer price', 'Low estimate']);
+          query.where('price_status', 'Low estimate');
         } else if (item_filter == 'fix-price') {
           query.where('price_status', 'Fix price')
+        } else if (item_filter == 'realized') {
+          query.whereIn('price_status', ['Hammer price', 'Realized'] )
+        } else if (item_filter == 'objects') {
+          query.whereIn('price_status', ['Fix price', 'Low estimate'])
         }
       }
+
       query.where('item_title', 'like',  `%${searchItem}%`);
-      // if (offset) {
-      //  query.offset(offset)
-      // }
-      // if (itemPerPage) {
-      //   query.limit(itemPerPage)
-      // }
+
+
     }).getOne();
   }
+
+
+  getCountryHits(item) {
+    return this.query(query => {
+      query.count('location')
+      query.where('item_title', 'like' , `%${item}%`)
+    });
+  }
+
+  decreaseDate(id , date) {
+    return this.update(id, {
+      converted_date: date - 24
+
+    });
+  }
+
+  getCountdownItems() {
+    return this.query(query => {
+
+      query.where('converted_date','>', 0);
+    }).get();
+  }
+
 
 
   addAuctionItem(data){
