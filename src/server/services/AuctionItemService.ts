@@ -14,7 +14,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     super();
   }
 
-  searchAuction(searchItem = '', category, auction_house, relevance, item_filter, offset?: number, itemPerPage?: number) {
+  searchAuction(searchItem = '', category, auction_house, country, relevance, item_filter, offset?: number, itemPerPage?: number) {
     return this.query(query => {
 
       query.select('auction_items.*')
@@ -32,6 +32,9 @@ export class AuctionItemService extends SQLService<AuctionItem> {
 
       if (auction_house) {
         query.where('site_name', auction_house);
+      }
+      if (country != 'All Countries') {
+        query.where('location', country)
       }
       if (category) {
        query.where('category_name', category)
@@ -52,7 +55,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       }
 
       if (item_filter) {
-        if (item_filter == 'auctions') {
+        if (item_filter == 'objects') {
           query.where('price_status', 'Low estimate');
         } else if (item_filter == 'fix-price') {
           query.where('price_status', 'Fix price')
@@ -70,7 +73,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     }).get();
   }
 
-  getSearchItemCount(searchItem = '', category, auction_house, item_filter) {
+  getSearchItemCount(searchItem = '', category, auction_house, country, item_filter) {
 
     return this.query(query => {
       query.count('auction_items.item_title as total')
@@ -82,6 +85,9 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       });
       if (auction_house) {
         query.where('site_name', auction_house);
+      }
+      if (country != 'All Countries') {
+        query.where('location', country)
       }
       if (category) {
        query.where('category_name', category);
@@ -102,6 +108,23 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       query.where('item_title', 'like',  `%${searchItem}%`);
 
 
+    }).getOne();
+  }
+
+  getPickOfTheDayItem(id) {
+    return this.query(query => {
+      query.select('auction_items.*')
+      query.select('c.category_name')
+      query.select('h.site_name')
+      query.select('h.site_emblem')
+      query.select('h.site_url')
+      query.join('categories as c', function () {
+          this.on('c.id', '=', 'auction_items.category_id_fk');
+      });
+      query.join('auction_site as h', function () {
+          this.on('h.id', '=', 'auction_items.auction_site_fk');
+      });
+      query.where('auction_items.id', id);
     }).getOne();
   }
 

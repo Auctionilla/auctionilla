@@ -14,7 +14,7 @@ export class PickOfTheDayService extends SQLService<PickOfTheDay> {
   }
 
 
-  setPickOfTheDay(id, ndate) {
+  setPickOfTheDay(id) {
     return this.update(1, {
       item_id_fk: id,
     })

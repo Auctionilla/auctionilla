@@ -11,8 +11,8 @@ export class IndexController extends Controller {
 
   public async index(request: Request, response: Response) {
     let today = new Date().toDateString();
-    let pickDay = new Date()
-    let current = pickDay.getFullYear() + '-' + pickDay.getMonth() + '-' + pickDay.getDate();
+    // let pickDay = new Date()
+    // let current = pickDay.getFullYear() + '-' + pickDay.getMonth() + '-' + pickDay.getDate();
 
 
     let fav = await this.favoriteService.getFavorite();
@@ -20,11 +20,15 @@ export class IndexController extends Controller {
     console.log('pic date');
     console.log(String(pic.get('updated_at')))
     let thepicdate = String(pic.get('updated_at'))
-    console.log(current);
+    console.log('current fav date')
+    console.log(thepicdate);
     console.log('the faveorite')
     console.log(fav.get('item'))
     console.log(fav.get('users'))
+    console.log('today');
+    console.log(today)
     if (thepicdate.indexOf(today) == -1) {
+      console.log('not match date')
       let setPic = await this.pickOfTheDayService.setPickOfTheDay(fav.get('item'))
       if (setPic) {
         console.log('pick set!')

@@ -106,8 +106,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="{{'active' if browsing == '' }}{{'active' if browsing == 'auction'}}"><a href="/search?searchItem=&browsing-auction=auction&category=&countries=&auction-house=&offset=&page=&radiobuttonsearch=&relevance=">Browse objects</a></li>
-            <li class="{{'active' if browsing == 'realized'}}"><a href="/search?searchItem=&browsing-auction=realized&category=&countries=&auction-house=&offset=&page=&radiobuttonsearch=&relevance=">See realized prices</a></li>
+            <li class="{{'active' if browsing == 'auction'}}"><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance={{relevance}}">Browse objects</a></li>
+            <li class="{{'active' if browsing == 'realized'}}"><a href="/search?searchItem={{search}}&browsing-auction=realized&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=realized&relevance={{relevance}}">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
@@ -127,7 +127,7 @@
                 <form action="/search" method="get">
                 <div class="search">
                   <div class="form-group ">
-                    <input type="text" name='searchItem' class="form-control" id="inputValidation" placeholder="Quick Search">
+                    <input type="text" name='searchItem' class="form-control" id="inputValidation" placeholder="Quick Search {{browsing}}">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                   </div>
                 </div>
@@ -145,13 +145,16 @@
     <div class="col-md-9 col-sm-12 col-xs-12 search-bar">
       <form class="navbar-form" role="search">
         <div class="col-md-6 col-sm-6 search-section">
-          <input name="searchItem" type="text" class="input form-control " value="{{ search }}" placeholder="Search word, phrase or name of lot" />
-          <input type="hidden" value = "{{ browsing }}" name="browsing-auction">
+          <input name="searchItem" type="text" class="input form-control " value="{{ search }}" placeholder="Search word, phrase or name of lot {{ country }}" />
+          <input type="hidden" name="browsing-auction" value="{{ browsing }}">
 
           <div class="col-md-6 col-sm-6 search-section">
             <select id="country" name="countries" data-placeholder="Select country" class="form-control sub-select select2me input">
-              <option></option>
-              <option value="">all countries</option>
+              {% if country %}
+                <option selected value="{{ country }}">{{country}}</option>
+              {% else %}
+                <option>All Countries</option>
+              {% endif %}
 
               {% for i in range(0, countries.length) %}
                 <option value="{{ countries[i] }}">{{ countries[i] }}</option>
@@ -162,43 +165,49 @@
 
           <div class="col-md-6 col-sm-6 search-section">
             <select id="auction-house" name="auction-house"  data-placeholder="Select auction house" class="form-control sub-select  select2me input">
-              <option></option>
-              <option value=""> all auction houses</option>
+              {% if auction_house %}
+              <option selected value = "{{ auction_house }}"> {{ auction_house }} </option>
+              {% endif %}
+              <option value=" "> all auction houses </option>
+
               {% for site in sites %}
-                <option>{{ site.site_name }}</option>
+              <option value = "{{ site.site_name }}">{{ site.site_name }}</option>
               {% endfor %}
             </select>
           </div>
         </div>
         <div class="col-md-6 col-sm-6 search-section">
           <select id="categories" name="category" data-placeholder="All categories" class="form-control  main-select select2me input">
-            <option></option>
-            <option value="">all categories</option>
+            {% if category %}
+              <option selected value="{{category}}"> {{category}}</option>
+            {% endif %}
+            <option value=" ">all categories </option>
             {% for category in categories %}
-              <option>{{ category.category_name }}</option>
+              <option value="{{ category.category_name }}">{{ category.category_name }}</option>
             {% endfor %}
           </select>
           <button class="submit-search"><i class="fa fa-search"></i></button>
-          <div class="radio-buttons">
-            <div class="radio">
-              <input type="radio" value="objects"{{ "active" if itemFilter == '' }} {{ "checked" if itemFilter == 'objects' }} name="radiobuttonsearch">
-              <label for="radio1">
-                Objects
-              </label>
+
+            <div class="radio-buttons">
+              <div class="radio">
+                <input type="radio" value="objects"{{ "checked" if itemFilter == 'objects' }} name="radiobuttonsearch">
+                <label for="radio1">
+                  Objects
+                </label>
+              </div>
+              <div class="radio">
+                <input type="radio" value="auctions" {{ "checked" if itemFilter == 'auctions' }} name="radiobuttonsearch">
+                <label for="radio2">
+                  Auctions
+                </label>
+              </div>
+              <div class="radio">
+                <input type="radio" value="fix-price" {{ "checked" if itemFilter == 'fix-price' }} name="radiobuttonsearch">
+                <label for="radio2">
+                  Fixed price objects
+                </label>
+              </div>
             </div>
-            <div class="radio">
-              <input type="radio" value="auctions" {{ "checked" if itemFilter == 'auctions' }} name="radiobuttonsearch">
-              <label for="radio2">
-                Auctions
-              </label>
-            </div>
-            <div class="radio">
-              <input type="radio" value="fix-price" {{ "checked" if itemFilter == 'fix-price' }} name="radiobuttonsearch">
-              <label for="radio2">
-                Fixed price objects
-              </label>
-            </div>
-          </div>
         </div>
       </form>
     </div>
@@ -216,14 +225,14 @@
         <label style="text-decoration: underline;" onclick="saveSearchAlert()">
         Create search alert
         {% if search %}
-          for {{ search }}
+          for <b>' {{ search }} '</b>
         {% endif %}
         </label>. We'll email you when we got what you're looking for.
         {% else %}
         <label style="text-decoration: underline;" onclick="gotologin()">
         Create search alert
         {% if search %}
-          for '{{ search }}''
+          for <b> '{{ search }}' </b>
         {% endif %}
         </label>. We'll email you when we got what you're looking for.
         {% endif %}
@@ -260,14 +269,15 @@
           <div class="col-md-5 col-sm-12">
 
             <h4>
-            Your search {{ search }} returned {{ total * 10 if total > 0 else 0}} results
+            Your search
+            <b>{{ search }}</b> returned {{ total if total > 0 else 0}} results
             </h4>
             <ul class="hits">
               <li>
-                <i class="fa fa-globe"></i> <span>{{ total * page }} hits in all countries</span>
+                <i class="fa fa-globe"></i> <span>{{ total }} hits in all countries</span>
               </li>
               <li>
-                <i class="fa fa-copy"></i> <span>{{ total * page }} hits in all categories</span>
+                <i class="fa fa-copy"></i> <span>{{ total }} hits in all categories</span>
               </li>
             </ul>
           </div>
@@ -332,93 +342,93 @@
         <div class="col-md-9 col-sm-12 main-object-list">
         {% if data.length %}
           {% for item in data %}
-            {% if (item.price_status != 'Realized') and (item.price_status != 'Hammer price') %}
+            {% if (item.price_status == "Realized") or (item.price_status == "Hammer price") %}
               <div class="object-item">
-              <div class="thumb-image image">
-                <img src="{{ item.item_image }}" />
-                  <div class="image-hover">
-                    <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
-                  </div>
-              </div>
-                <div class="descriptions">
-                  <div class="clearfix tag-timestamp">
-                    <ul>
-                      <li>
-                        <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
-                      </li>
-                      <li>
-                        <i class="fa fa-clock-o" aria-hidden="true"></i>
-                        {% if item.converted_date > 0 %}
-                        {{ (item.converted_date / 24) | round(0, 'floor') }}d {{ item.converted_date % 24 }}h
-                        {% else %}
-                          0d 0h
+                <div class="thumb-image image">
+                  <img src="{{ item.item_image }}" />
+                    <div class="image-hover">
+                      <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
+                    </div>
+                </div>
+                  <div class="descriptions">
+                    <div class="clearfix tag-timestamp">
+                      <ul>
+                        <li>
+                          <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
+                        </li>
+                        <li>
+                          <i class="fa fa-clock-o" aria-hidden="true"></i>
+                          {% if item.converted_date > 0 %}
+                          {{ (item.converted_date / 24) | round(0, 'floor') }}d {{ item.converted_date % 24 }}h
+                          {% else %}
+                            0d 0h
+                          {% endif %}
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="content">
+                      <h4>
+                        {{ item.item_title}}
+                      </h4>
+                      <p>
+                        {{ item.item_description }}
+                      </p>
+                      <p class="estimate">
+
+                        {{ item.price_status }}
+
+                        : {{ item.price}} {{item.currency}}
+
+                        {% if item.price_status == "Fix price" %}
+                        -
+                        {% elif item.price_status == "Hammer price" %}
+                          <a href="{{ item.auction_url }}">Show Bid</a>
+                        {% elif item.price_status == "Low estimate" %}
+                          <a href="{{ item.auction_url }}">Show Bid</a>
+
                         {% endif %}
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="content">
-                    <h4>
-                      {{ item.item_title}}
-                    </h4>
-                    <p>
-                      {{ item.item_description }}
-                    </p>
-                    <p class="estimate">
 
-                      {{ item.price_status }}
-
-                      : {{ item.price}} {{item.currency}}
-
-                      {% if item.price_status == "Fix price" %}
-                      -
-                      {% elif item.price_status == "Hammer price" %}
-                        <a href="{{ item.auction_url }}">Show Bid</a>
-                      {% elif item.price_status == "Low estimate" %}
-                        <a href="{{ item.auction_url }}">Show Bid</a>
-
-                      {% endif %}
-
-                    </p>
-                  </div>
-                  <div class="actions clearfix">
-                    <ul>
-                      <li class="auction-emblem">
-                        <a href="{{ item.site_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
-                      </li>
-                      <li>
-                        {% if item.price_status != "Realized" %}
-                          {% if item.price_status != "Hammer price" %}
-                            {% if user %}
-                            <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
-                            <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
-                            </button>
-                            {% else %}
-                              <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
-                            <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
-                            </button>
+                      </p>
+                    </div>
+                    <div class="actions clearfix">
+                      <ul>
+                        <li class="auction-emblem">
+                          <a href="{{ item.site_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                        </li>
+                        <li>
+                          {% if item.price_status != "Realized" %}
+                            {% if item.price_status != "Hammer price" %}
+                              {% if user %}
+                              <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                              <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
+                              </button>
+                              {% else %}
+                                <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                              <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
+                              </button>
+                              {% endif %}
                             {% endif %}
                           {% endif %}
-                        {% endif %}
-                      </li>
-                      <li>
-                        <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
-                        <span>
-                        {% if item.price_status == "Fix price" %}
-                          Buy it now
-                        {% elif item.price_status == "Hammer price" %}
-                          To the auction house
-                        {% elif item.price_status == "Low estimate" %}
-                          Show Bid
-                        {% elif item.price_status == "Realized" %}
-                          To the auction house
-                        {% endif %}
-                        </span>
-                        </button>
-                      </li>
-                    </ul>
+                        </li>
+                        <li>
+                          <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+                          <span>
+                          {% if item.price_status == "Fix price" %}
+                            Buy it now
+                          {% elif item.price_status == "Hammer price" %}
+                            To the auction house
+                          {% elif item.price_status == "Low estimate" %}
+                            Show Bid
+                          {% elif item.price_status == "Realized" %}
+                            To the auction house
+                          {% endif %}
+                          </span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-            </div>
+              </div>
             {% else %}
               <div class="object-item">
                 <div class="thumb-image image">
@@ -516,14 +526,15 @@
               <h4>Pick of the day</h4>
             </div>
             <div class="image">
-              <img src="/assets/images/objects/pick-1.png" alt="pick photo" />
+              <img src="{{ thePick.item_image }}" alt="pick photo" />
             </div>
             <div class="content">
-              <a href="#">
-                  Peter Doig, Cloud Illusions/Recall
+              <a href="{{ thePick.auction_url }}">
+
+                  {{thePick.item_title}}
                 </a>
               <p>
-                Fixed price: —
+                {{ thePick.price_status }} : {{ thePick.price }} {{thePick.currency}}
               </p>
             </div>
           </div>
@@ -562,24 +573,42 @@
       <input type="hidden" value="{{ category }}" id="save-category" name="save-category">
       <input type="hidden" value="{{ auction_house }}" id="save-auctionhouse" name="save-auctionhouse">
       <input type="hidden" value="{{ country }}" id="save-location" name="save-location">
+      <div id = "saveSearchContainer2">
       <span>
         <i class="fa fa-bell"></i>
         {% if user %}
         <label style="text-decoration: underline;" onclick="saveSearchAlert()">
         Create search alert
         {% if search %}
-          for {{ search }}
+          for <b>' {{ search }} '</b>
         {% endif %}
         </label>. We'll email you when we got what you're looking for.
         {% else %}
         <label style="text-decoration: underline;" onclick="gotologin()">
         Create search alert
         {% if search %}
-          for {{ search }}
+          for <b> '{{ search }}' </b>
         {% endif %}
         </label>. We'll email you when we got what you're looking for.
         {% endif %}
       </span>
+      </div>
+      <div id = "saveSearchContainerDone2" style="display:none">
+      <span class="glyphicon glyphicon-ok"></span> You've now saved the search word '{{ search }}''
+      <h5><small style="color:white">
+      {% if category %}
+        <strong>category: </strong> {{category}}
+      {% endif %}
+
+      {% if auction_house %}
+        <strong>auction house: </strong> {{ auction_house }}
+      {% endif %}
+
+      {% if country %}
+        <strong>country: </strong> {{ country }}
+      {% endif %}
+      </small></h5>
+      </div>
     </div>
   </div>
 
@@ -592,6 +621,9 @@
         <li>
           <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset - 1 if offset > 1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-left" aria-hidden="true"></i> </a>
         </li>
+        {% if total == 0%}
+          <li>0</li>
+        {% endif %}
         {% if offset < 15 %}
           {% if ( total / page ) < 15 %}
             {% for i in range(1, (total / page) + 1)  %}
@@ -624,6 +656,7 @@
           {% endif %}
         {% elif (offset > (total / page)) %}
           <li>last item</li>
+
         {% endif %}
         <li>
           <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset + 1 if (offset < (total / page)) else offset}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
