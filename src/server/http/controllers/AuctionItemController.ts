@@ -2,7 +2,6 @@ import { Controller, Request, Response } from 'chen/web';
 import { injectable } from 'chen/core';
 import { AuctionItemService, CategoryService, AuctionSiteService, CountryListService, FavoriteService, PickOfTheDayService, PopularSearchService } from 'app/services';
 
-const moment = require('moment');
 
 @injectable
 export class AuctionItemController extends Controller {

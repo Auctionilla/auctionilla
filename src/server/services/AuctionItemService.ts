@@ -144,7 +144,6 @@ export class AuctionItemService extends SQLService<AuctionItem> {
 
   getCountdownItems() {
     return this.query(query => {
-
       query.where('converted_date','>', 0);
     }).get();
   }
@@ -177,18 +176,77 @@ export class AuctionItemService extends SQLService<AuctionItem> {
   }
 
   addHours(hours) {
-
      return this.query(query => {
        query.select(this.db.connection().raw('date_add(curdate(), interval ? hour) as newdate',[hours]))
      }).getOne();
   }
 
   addDate(val) {
-
     return this.update(1, {
       auction_date: val
-
     })
+  }
+
+  getCategoryByPopularity(realized?: string) {
+    return this.query(query => {
+      query.select('category_id_fk as category')
+      query.sum('auction_items.favorites_count as favorites')
+      query.groupByRaw('category_id_fk')
+      if (realized == 'realized') {
+        query.whereIn('price_status', ['Hammer price', 'Realized'])
+      }
+      query.orderBy('favorites' , 'desc')
+      query.limit(6)
+    }).get();
+  }
+
+  getCategoryByPopularityRealized() {
+    return this.query(query => {
+      query.select('category_id_fk as category')
+
+      query.count('auction_items.id as sold')
+      query.whereIn('price_status', ['Hammer price', 'Realized'])
+      query.groupByRaw('category')
+
+
+      query.orderBy('sold' , 'desc')
+      query.limit(6)
+    }).get();
+  }//SELECT category_id_fk as 'category', COUNT(id) As 'sold' FROM auction_items where price_status in ('Realized', 'Hammer price') group by category_id_fk order by sold desc;
+
+  getMostPopularByCategory(categoryid, realized?: string) {
+    return this.query(query => {
+      query.where('category_id_fk', categoryid);
+      if (realized == 'realized') {
+        query.whereIn('price_status', ['Hammer price', 'Realized'])
+      }
+      query.orderBy('favorites_count', 'desc')
+
+    }).getOne();
+  }
+
+  getItemCountByCategory(categoryid, realized?: string) {
+    return this.query(query => {
+      query.count('item_title as total')
+      query.where('category_id_fk', categoryid);
+      if (realized == 'realized') {
+        query.whereIn('price_status', ['Hammer price', 'Realized'])
+      }
+    }).getOne();
+  }
+
+  getMostExpensive(categoryid, realized?: string) {
+    return this.query(query => {
+      query.select('price');
+      query.select('currency')
+      query.where('category_id_fk', categoryid);
+      if (realized == 'realized') {
+        query.whereIn('price_status', ['Hammer price', 'Realized'])
+      }
+      query.orderBy('price', 'desc')
+      query.limit(1)
+    }).getOne();
+
   }
 
 
