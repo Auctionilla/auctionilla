@@ -104,8 +104,8 @@ export class UserController extends Controller {
             </td>
           </tr>
         </table>`;
-        //this.mandrillService.send('Verify Email', msg, [{ email: email }], '');
-        this.mandrillService.test(msg);
+        this.mandrillService.send('Verify Email', msg, [{ email: email }], '');
+        //this.mandrillService.test(msg);
         alert= "email sent";
       }
     }
