@@ -27,21 +27,35 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html"><img src="/assets/images/logo.png" alt="logo" /></a>
+          <a class="navbar-brand" href="/"><img src="/assets/images/logo.png" alt="logo" /></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Browse objects</a></li>
-            <li><a href="#about">See realized prices</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance={{relevance}}">Browse objects</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=realized&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=realized&relevance={{relevance}}">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li>
+            <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
+             <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ 'red' if user else 'white' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
+            <ul class="dropdown-menu" style="background-color: white; ">
+              {% if user %}
+                <li><a style="color:black;" href="/viewprofile">My Profile </a></li>
+                <li><a style="color:black;" href="/logout">Log Out</a></li>
+              {% else %}
+                <li><a style="color:black;" href="/registration">Register</a></li>
+                <li><a style="color:black;" href="/login">Login</a></li>
+              {% endif %}
+            </ul>
+          </li>
             <li>
                 <div class="search">
-                  <div class="form-group ">
-                    <input type="text" class="form-control" id="inputValidation" placeholder="Quick Search">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                  </div>
+                  <form method="get" action="/search">
+                    <div class="form-group ">
+                      <input type="text" class="form-control" id="inputValidation" name = "searchItem" placeholder="Quick Search">
+                      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                  </form>
                 </div>
             </li>
           </ul>
@@ -54,21 +68,21 @@
 <section class="home">
   <div class="home-banner-search">
     <div class="col-md-6 col-xs-11 search-bar">
-      <form class="navbar-form" role="search">
+      <form class="navbar-form" role="search" method="get" action="/search">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+          <input type="text" class="form-control" placeholder="Search" name = "searchItem" id="srch-term">
           <div class="input-group-btn">
             <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
           </div>
         </div>
         <div class="radio">
-          <input type="radio" name="objects">
+          <input checked type="radio" value="auction" name="browsing-auction">
           <label for="radio1">
             Objects
           </label>
         </div>
         <div class="radio">
-          <input type="radio" name="realizeprices">
+          <input type="radio" value="realized" name="browsing-auction">
           <label for="radio2">
             Realize Prices
           </label>
@@ -86,266 +100,69 @@
         <div class="object-list-item clearfix">
           <div class="row">
 
-         
-            <div class="col-md-4 col-sm-6 item" style="border:1px solid red">
+            {% for items in popularCateg %}
+            <div class="col-md-4 col-sm-6 item">
               <div class="image">
-                <img class="img-responsive" src="/assets/images/objects/object-2.png" alt="object item" />
+                <img class="img-responsive" style="height:250px;width: 350px" src="{{ items.mostPopularItemImage }}" alt="object item" />
                 <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
+                  <a href="/search?searchItem=&browsing-auction=auction&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn">VIEW RESULTS</a>
                 </div>
               </div>
               <div class="details">
                 <h4 class="title">
-              Art & Graphics
+              {{ items.categoryName }}
             </h4>
                 <br/>
                 <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
+                  {{ items.description }}
                 </p>
                 <br/>
                 <p>
-                  {% for order in data %} {{ order.favorites_count }} {% endfor %} objects 0 – 3 850 000 USD
+                  {{ items.itemcount}} objects 0 – {{ items.mostExpensive}} {{ items.currency }}
                 </p>
               </div>
             </div>
-           <!--  <div class="col-md-4 col-sm-6 item">
-              <div class="image">
-                <img class="img-responsive" src="../img/objects/object-1.png" alt="object item" />
-                <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
-                </div>
-              </div>
-              <div class="details">
-                <h4 class="title">
-                Watch & Clocks
-                </h4>
-                <br/>
-                <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
-                </p>
-                <br/>
-                <p>
-                 {% for order in data %} {{ order.favorites_count }} {% endfor %}  objects 0 – 3 850 000 USD
-                </p>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 item">
-              <div class="image">
-                <img class="img-responsive" src="../img/objects/object-3.png" alt="object item" />
-                <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
-                </div>
-              </div>
-              <div class="details">
-                <h4 class="title">
-            Jewelry & Gems
-            </h4>
-                <br/>
-                <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
-                </p>
-                <br/>
-                <p>
-                  47 277 objects 0 – 3 850 000 USD
-                </p>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 item">
-              <div class="image">
-                <img class="img-responsive" src="../img/objects/object-1.png" alt="object item" />
-                <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
-                </div>
-              </div>
-              <div class="details">
-                <h4 class="title">
-            Furniture, Design & Mirrors
-            </h4>
-                <br/>
-                <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
-                </p>
-                <br/>
-                <p>
-                  47 277 objects 0 – 3 850 000 USD
-                </p>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 item">
-              <div class="image">
-                <img class="img-responsive" src="../img/objects/object-1.png" alt="object item" />
-                <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
-                </div>
-              </div>
-              <div class="details">
-                <h4 class="title">
-            Photography
-            </h4>
-                <br/>
-                <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
-                </p>
-                <br/>
-                <p>
-                  47 277 objects 0 – 3 850 000 USD
-                </p>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 item">
-              <div class="image">
-                <img class="img-responsive" src="../img/objects/object-1.png" alt="object item" />
-                <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
-                </div>
-              </div>
-              <div class="details">
-                <h4 class="title">
-            Fashion & Vintage
-          </h4>
-                <br/>
-                <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
-                </p>
-                <br/>
-                <p>
-                  47 277 objects 0 – 3 850 000 USD
-                </p>
-              </div>
-            </div>
+            {% endfor %}
+
+
+
           </div>
         </div>
-      </div> -->
+      </div>
       <div class="objects">
         <h3>Realized prices</h3>
         <div class="object-list-item clearfix">
           <div class="row">
+
+
+            {% for items in popularRealized %}
             <div class="col-md-4 col-sm-6 item">
               <div class="image">
-                <img class="img-responsive" src="../img/objects/object-2.png" alt="object item" />
+                <img class="img-responsive" style="height:250px;width: 350px" src="{{ items.mostPopularItemImage }}" alt="object item" />
                 <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
+                  <a href="/search?searchItem=&browsing-auction=realized&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn">VIEW RESULTS</a>
                 </div>
               </div>
               <div class="details">
                 <h4 class="title">
-                  Art & Graphics
-              </h4>
+              {{ items.categoryName }}
+            </h4>
                 <br/>
                 <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
+                  {{ items.description }}
                 </p>
                 <br/>
                 <p>
-                  47 277 objects 0 – 3 850 000 USD
-                </p>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 item">
-              <div class="image">
-                <img class="img-responsive" src="../img/objects/object-1.png" alt="object item" />
-                <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
-                </div>
-              </div>
-              <div class="details">
-                <h4 class="title">
-                  Watch & Clocks
-              </h4>
-                <br/>
-                <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
-                </p>
-                <br/>
-                <p>
-                  47 277 objects 0 – 3 850 000 USD
+                  {{ items.sold}} objects 0 – {{ items.mostExpensive}} {{ items.currency }}
                 </p>
               </div>
             </div>
-            <div class="col-md-4 col-sm-6 item">
-              <div class="image">
-                <img class="img-responsive" src="../img/objects/object-3.png" alt="object item" />
-                <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
-                </div>
-              </div>
-              <div class="details">
-                <h4 class="title">
-                  Jewelry & Gems
-              </h4>
-                <br/>
-                <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
-                </p>
-                <br/>
-                <p>
-                  47 277 objects 0 – 3 850 000 USD
-                </p>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 item">
-              <div class="image">
-                <img class="img-responsive" src="../img/objects/object-1.png" alt="object item" />
-                <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
-                </div>
-              </div>
-              <div class="details">
-                <h4 class="title">
-                  Furniture, Design & Mirrors
-              </h4>
-                <br/>
-                <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
-                </p>
-                <br/>
-                <p>
-                  47 277 objects 0 – 3 850 000 USD
-                </p>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 item">
-              <div class="image">
-                <img class="img-responsive" src="../img/objects/object-1.png" alt="object item" />
-                <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
-                </div>
-              </div>
-              <div class="details">
-                <h4 class="title">
-                  Photography
-              </h4>
-                <br/>
-                <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
-                </p>
-                <br/>
-                <p>
-                  47 277 objects 0 – 3 850 000 USD
-                </p>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6 item">
-              <div class="image">
-                <img class="img-responsive" src="../img/objects/object-1.png" alt="object item" />
-                <div class="image-hover">
-                  <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
-                </div>
-              </div>
-              <div class="details">
-                <h4 class="title">
-                  Fashion & Vintage
-              </h4>
-                <br/>
-                <p>
-                  Modern, Post-War, Contemporary art, Old Masters and more
-                </p>
-                <br/>
-                <p>
-                  47 277 objects 0 – 3 850 000 USD
-                </p>
-              </div>
-            </div>
+            {% endfor %}
+
+
+
+
+
           </div>
         </div>
       </div>

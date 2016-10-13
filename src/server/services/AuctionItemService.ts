@@ -14,7 +14,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     super();
   }
 
-  searchAuction(searchItem = '', category, auction_house, relevance, item_filter, offset?: number, itemPerPage?: number) {
+  searchAuction(searchItem = '', category, auction_house, country, relevance, item_filter, offset?: number, itemPerPage?: number) {
     return this.query(query => {
 
       query.select('auction_items.*')
@@ -22,6 +22,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       query.select('h.site_name')
       query.select('h.site_emblem')
       query.select('h.site_url')
+      query.select(this.db.connection().raw('datediff(auction_date, curdate()) as days_remaining'))
       query.join('categories as c', function () {
           this.on('c.id', '=', 'auction_items.category_id_fk');
       });
@@ -29,11 +30,14 @@ export class AuctionItemService extends SQLService<AuctionItem> {
           this.on('h.id', '=', 'auction_items.auction_site_fk');
       });
 
- 
-      if (auction_house) {
+
+      if (auction_house && auction_house != 'all auction houses') {
         query.where('site_name', auction_house);
       }
-      if (category) {
+      if (country && country != 'All Countries') {
+        query.where('location', country)
+      }
+      if (category && category != 'all categories') {
        query.where('category_name', category)
       }
       query.where('item_title', 'like',  `%${searchItem}%`);
@@ -52,12 +56,12 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       }
 
       if (item_filter) {
-        if (item_filter == 'auctions') {
-          query.where('price_status', 'Low estimate');
+        if (item_filter == 'objects') {
+          query.whereIn('price_status', ['Low estimate', 'Fix price']);
         } else if (item_filter == 'fix-price') {
           query.where('price_status', 'Fix price')
         } else if (item_filter == 'realized') {
-          query.whereIn('price_status', ['Hammer price', 'realized'] )
+          query.whereIn('price_status', ['Hammer price', 'Realized'] )
         }
       }
 
@@ -70,7 +74,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     }).get();
   }
 
-  getSearchItemCount(searchItem = '', category, auction_house, item_filter) {
+  getSearchItemCount(searchItem = '', category, auction_house, country, item_filter) {
 
     return this.query(query => {
       query.count('auction_items.item_title as total')
@@ -80,28 +84,46 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       query.join('auction_site as h', function () {
           this.on('h.id', '=', 'auction_items.auction_site_fk');
       });
-      if (auction_house) {
+      if (auction_house && auction_house != 'all auction houses') {
         query.where('site_name', auction_house);
       }
-      if (category) {
-       query.where('category_name', category);
+      if (country && country != 'All Countries') {
+        query.where('location', country)
+      }
+      if (category && category != 'all categories') {
+       query.where('category_name', category)
       }
 
       if (item_filter) {
-        if (item_filter == 'auctions') {
-          query.where('price_status', 'Low estimate');
+        if (item_filter == 'objects') {
+          query.whereIn('price_status', ['Low estimate', 'Fix price']);
         } else if (item_filter == 'fix-price') {
           query.where('price_status', 'Fix price')
         } else if (item_filter == 'realized') {
           query.whereIn('price_status', ['Hammer price', 'Realized'] )
-        } else if (item_filter == 'objects') {
-          query.whereIn('price_status', ['Fix price', 'Low estimate'])
         }
       }
 
       query.where('item_title', 'like',  `%${searchItem}%`);
 
 
+    }).getOne();
+  }
+
+  getPickOfTheDayItem(id) {
+    return this.query(query => {
+      query.select('auction_items.*')
+      query.select('c.category_name')
+      query.select('h.site_name')
+      query.select('h.site_emblem')
+      query.select('h.site_url')
+      query.join('categories as c', function () {
+          this.on('c.id', '=', 'auction_items.category_id_fk');
+      });
+      query.join('auction_site as h', function () {
+          this.on('h.id', '=', 'auction_items.auction_site_fk');
+      });
+      query.where('auction_items.id', id);
     }).getOne();
   }
 
@@ -122,7 +144,6 @@ export class AuctionItemService extends SQLService<AuctionItem> {
 
   getCountdownItems() {
     return this.query(query => {
-
       query.where('converted_date','>', 0);
     }).get();
   }
@@ -146,19 +167,85 @@ export class AuctionItemService extends SQLService<AuctionItem> {
   }
 
 
-  getFavoritesCountbyItems(offset?: number, limit?: number){
-    return this.query (query => {
-      query.select('auction_items.*')
-      query.orderBy('auction_items.favorites_count', 'desc')
-      if (offset){
-        query.offset(offset)
-      }
-      query.limit(limit)
+  incrementFavorite(item_id) {
+    return this.increment(item_id, 'favorites_count', 1)
+  }
 
-      
+  decrementFavorite(item_id) {
+    return this.decrement(item_id, 'favorites_count', 1)
+  }
+
+  addHours(hours) {
+     return this.query(query => {
+       query.select(this.db.connection().raw('date_add(curdate(), interval ? hour) as newdate',[hours]))
+     }).getOne();
+  }
+
+  addDate(val) {
+    return this.update(1, {
+      auction_date: val
+    })
+  }
+
+  getCategoryByPopularity(realized?: string) {
+    return this.query(query => {
+      query.select('category_id_fk as category')
+      query.sum('auction_items.favorites_count as favorites')
+      query.groupByRaw('category_id_fk')
+      if (realized == 'realized') {
+        query.whereIn('price_status', ['Hammer price', 'Realized'])
+      }
+      query.orderBy('favorites' , 'desc')
+      query.limit(6)
     }).get();
   }
- 
 
-  
+  getCategoryByPopularityRealized() {
+    return this.query(query => {
+      query.select('category_id_fk as category')
+
+      query.count('auction_items.id as sold')
+      query.whereIn('price_status', ['Hammer price', 'Realized'])
+      query.groupByRaw('category')
+
+
+      query.orderBy('sold' , 'desc')
+      query.limit(6)
+    }).get();
+  }//SELECT category_id_fk as 'category', COUNT(id) As 'sold' FROM auction_items where price_status in ('Realized', 'Hammer price') group by category_id_fk order by sold desc;
+
+  getMostPopularByCategory(categoryid, realized?: string) {
+    return this.query(query => {
+      query.where('category_id_fk', categoryid);
+      if (realized == 'realized') {
+        query.whereIn('price_status', ['Hammer price', 'Realized'])
+      }
+      query.orderBy('favorites_count', 'desc')
+
+    }).getOne();
+  }
+
+  getItemCountByCategory(categoryid, realized?: string) {
+    return this.query(query => {
+      query.count('item_title as total')
+      query.where('category_id_fk', categoryid);
+      if (realized == 'realized') {
+        query.whereIn('price_status', ['Hammer price', 'Realized'])
+      }
+    }).getOne();
+  }
+
+  getMostExpensive(categoryid, realized?: string) {
+    return this.query(query => {
+      query.select('price');
+      query.select('currency')
+      query.where('category_id_fk', categoryid);
+      if (realized == 'realized') {
+        query.whereIn('price_status', ['Hammer price', 'Realized'])
+      }
+      query.orderBy('price', 'desc')
+      query.limit(1)
+    }).getOne();
+
+  }  
 }

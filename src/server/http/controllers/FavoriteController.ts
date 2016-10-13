@@ -1,11 +1,11 @@
 import { Controller, Request, Response } from 'chen/web';
 import { injectable } from 'chen/core';
-import { FavoriteService } from 'app/services';
+import { FavoriteService, AuctionItemService } from 'app/services';
 
 @injectable
 export class FavoriteController extends Controller {
 
-  constructor(private favoriteService: FavoriteService) {
+  constructor(private favoriteService: FavoriteService, private auctionItemService: AuctionItemService) {
     super();
   }
 
@@ -15,6 +15,13 @@ export class FavoriteController extends Controller {
 
 
   public async addFavorite(request: Request, response: Response ) {
+    if (request.session.get('loggedUser')) {
+      let user = request.session.get('loggedUser').id;
+      if (!user) {
+        return response.redirect('/login')
+      }
+    }
+
     let user = 0;
     if (request.session.get('loggedUser')) {
       let loggedUserId = request.session.get('loggedUser').id;
@@ -23,6 +30,10 @@ export class FavoriteController extends Controller {
       user = loggedUserId;
     }
     let id = request.input.get('item_id');
+    let decreaseFavoriteCount = await this.auctionItemService.incrementFavorite(id)
+    if (decreaseFavoriteCount) {
+      console.log('decrease item count')
+    }
     console.log('this is the item id');
     console.log(id);
     let data = {
@@ -37,11 +48,24 @@ export class FavoriteController extends Controller {
   }
 
   public async removeFavorite(request: Request, response: Response) {
+    if (request.session.get('loggedUser')) {
+      let user = request.session.get('loggedUser').id;
+      if (!user) {
+        return response.redirect('/login')
+      }
+    }
+
     let id = request.input.get('favid');
+    let fetchFavorite = await this.favoriteService.getOneBy('id', id)
+    let item_id = fetchFavorite.get('item_id_fk')
+    let decreaseFavCount = await this.auctionItemService.decrementFavorite(item_id)
+    if (decreaseFavCount) {
+      console.log('decreate item favorite count')
+    }
     console.log('this is the fav id to delete');
     console.log(id);
     await this.favoriteService.remvoveFavorite(id);
-    return response.json({data: 'remove favorite'});
+    return response.json({ data: 'remove favorite' });
   }
 
   public async checkFavorite(request: Request, response: Response) {

@@ -7,6 +7,7 @@ import { knex } from 'chen/sql';
 export async function up(db: knex) {
   return db.schema.createTable('categories', table => {
     table.increments('id');
+    table.integer('item_count').nullable();
     table.string('category_name').notNullable();
     table.text('description').nullable();
     table.timestamps();

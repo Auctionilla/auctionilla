@@ -15,9 +15,10 @@ export class UserAuth extends HttpMiddleware {
       } else {
         console.log('user logged in');
         console.log(user);
+        next();
       }
     }
 
-    next();
+
   }
 }
