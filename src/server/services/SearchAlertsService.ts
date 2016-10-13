@@ -22,7 +22,7 @@ export class SearchAlertsService extends SQLService<SearchAlerts> {
       location: data.location,
       user_id_fk: data.user_id_fk
     });
-  }
+  } 
 
   viewSearchAlerts(id, offset?: number, limit?: number){
    return this.query (query => {

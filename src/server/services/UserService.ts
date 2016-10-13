@@ -54,7 +54,7 @@ export class UserService extends SQLService<User> {
   }
 
   getUserUpdate(id) {
-    return this.query(query => {
+    return this.query(query => { 
       query.select ('*')
       query.where('id', id)
     }).get();

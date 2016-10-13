@@ -29,7 +29,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
           this.on('h.id', '=', 'auction_items.auction_site_fk');
       });
 
-
+ 
       if (auction_house) {
         query.where('site_name', auction_house);
       }
