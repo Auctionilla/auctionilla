@@ -290,8 +290,5 @@ export class AuctionItemController extends Controller {
     }
   }
 
-
-
-
-
+ 
 }

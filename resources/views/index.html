@@ -85,7 +85,9 @@
         <h3>Objects</h3>
         <div class="object-list-item clearfix">
           <div class="row">
-            <div class="col-md-4 col-sm-6 item">
+
+         
+            <div class="col-md-4 col-sm-6 item" style="border:1px solid red">
               <div class="image">
                 <img class="img-responsive" src="/assets/images/objects/object-2.png" alt="object item" />
                 <div class="image-hover">
@@ -102,11 +104,11 @@
                 </p>
                 <br/>
                 <p>
-                  47 277 objects 0 – 3 850 000 USD
+                  {% for order in data %} {{ order.favorites_count }} {% endfor %} objects 0 – 3 850 000 USD
                 </p>
               </div>
             </div>
-            <div class="col-md-4 col-sm-6 item">
+           <!--  <div class="col-md-4 col-sm-6 item">
               <div class="image">
                 <img class="img-responsive" src="../img/objects/object-1.png" alt="object item" />
                 <div class="image-hover">
@@ -123,7 +125,7 @@
                 </p>
                 <br/>
                 <p>
-                  47 277 objects 0 – 3 850 000 USD
+                 {% for order in data %} {{ order.favorites_count }} {% endfor %}  objects 0 – 3 850 000 USD
                 </p>
               </div>
             </div>
@@ -213,7 +215,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="objects">
         <h3>Realized prices</h3>
         <div class="object-list-item clearfix">

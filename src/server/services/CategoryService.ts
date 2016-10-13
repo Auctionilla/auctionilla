@@ -28,4 +28,13 @@ export class CategoryService extends SQLService<Category> {
     }).get();
   }
 
+  // getPopularItemsByCategories(){
+  //   return this.query(query => {
+  //     query.select('categories.*')
+  //     query.select('a.auction_items')
+  //     query.join('auction_items as a', function (){
+  //       this.on ('a.category_id_fk', '=', 'categories.id')
+  //     });
+  //   }).get();
+  // }
 }

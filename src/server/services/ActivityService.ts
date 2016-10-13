@@ -4,7 +4,7 @@ import { Activity } from 'app/models';
 
 
 @injectable
-export class ActivityService extends SQLService<PickOfTheDay> {
+export class ActivityService extends SQLService<Activity> {
 
   protected modelClass = Activity;
   protected validationRules: ValidationRules = {};

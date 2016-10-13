@@ -146,7 +146,19 @@ export class AuctionItemService extends SQLService<AuctionItem> {
   }
 
 
+  getFavoritesCountbyItems(offset?: number, limit?: number){
+    return this.query (query => {
+      query.select('auction_items.*')
+      query.orderBy('auction_items.favorites_count', 'desc')
+      if (offset){
+        query.offset(offset)
+      }
+      query.limit(limit)
 
+      
+    }).get();
+  }
+ 
 
-
+  
 }

@@ -8,7 +8,8 @@ export default function (router: Router, config: Config) {
   router.route('POST', '/register', 'UserController@register');
   router.route('GET', '/registration', 'UserController@registration');
   router.route('GET', '/verify-account/:verification_code/:id', 'UserController@verifyAccount');
-
+  router.route('GET', '/viewprofile', 'UserController@viewSearchAlertAndFavorites');
+  router.route('POST', '/viewprofile', 'UserController@updateUserPost');
 
   router.route('GET', '/search', 'AuctionItemController@searchItem');
   router.route('GET', '/getcategories', 'CategoryController@getCategories');
@@ -24,6 +25,7 @@ export default function (router: Router, config: Config) {
     router.route('GET', '/logout', 'UserController@logout');
     router.route('POST', '/addfavorite', 'FavoriteController@addFavorite');
     router.route('POST', '/removefavorite', 'FavoriteController@removeFavorite');
+    router.route('POST', '/removefav', 'FavoriteController@removeFavoriteFromProfile')
   });
 
 

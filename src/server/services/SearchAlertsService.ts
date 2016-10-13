@@ -24,6 +24,27 @@ export class SearchAlertsService extends SQLService<SearchAlerts> {
     });
   }
 
+  viewSearchAlerts(id, offset?: number, limit?: number){
+   return this.query (query => {
+      query.select('search_alerts.*')
+      query.select('u.*')
+
+      query.join('users as u', function () {
+        this.on('u.id', '=', 'search_alerts.user_id_fk');
+      });
+      query.where('search_alerts.user_id_fk', id)
+      query.offset(offset);
+      query.limit(limit);
+    }).get();
+  }
+
+  countSavedSearch(id) {
+    return this.query(query => {
+      query.count('search_alerts.user_id_fk as totalSearch')
+      query.where('search_alerts.user_id_fk', id)
+    }).getOne();
+  }
+
 
 
 }
