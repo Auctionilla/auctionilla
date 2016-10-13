@@ -43,22 +43,29 @@ export class IndexController extends Controller {
 
 
     console.log(today);
-    let getItems = await this.auctionItemService.getCountdownItems();
-    let temp = [];
-    getItems.forEach(items => {
-      let jitem = items.toJSON();
-      temp.push(jitem);
-    });
-    temp.forEach(async (datas) => {
-      let date = String(datas['updated_at']);
-      if (date.indexOf(today) == -1) {
-        let id = datas['id'];
-        let dec = await this.auctionItemService.decreaseDate(id, datas['converted_date']);
-        if (dec) {
-          console.log('nabawasan na');
-        }
-      }
-    });
+    let c = await this.auctionItemService.addHours(34);
+    console.log('this is the date', c.get('newdate'))
+    let d = await this.auctionItemService.addDate(c.get('newdate'));
+    if (d) {
+      console.log(d)
+    }
+
+    // let getItems = await this.auctionItemService.getCountdownItems();
+    // let temp = [];
+    // getItems.forEach(items => {
+    //   let jitem = items.toJSON();
+    //   temp.push(jitem);
+    // });
+    // temp.forEach(async (datas) => {
+    //   let date = String(datas['updated_at']);
+    //   if (date.indexOf(today) == -1) {
+    //     let id = datas['id'];
+    //     let dec = await this.auctionItemService.decreaseDate(id, datas['converted_date']);
+    //     if (dec) {
+    //       console.log('nabawasan na');
+    //     }
+    //   }
+    // });
     return response.render('index');
   }
 }

@@ -22,6 +22,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       query.select('h.site_name')
       query.select('h.site_emblem')
       query.select('h.site_url')
+      query.select(this.db.connection().raw('datediff(auction_date, curdate()) as days_remaining'))
       query.join('categories as c', function () {
           this.on('c.id', '=', 'auction_items.category_id_fk');
       });
@@ -175,6 +176,20 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     return this.decrement(item_id, 'favorites_count', 1)
   }
 
+  addHours(hours) {
+
+     return this.query(query => {
+       query.select(this.db.connection().raw('date_add(curdate(), interval ? hour) as newdate',[hours]))
+     }).getOne();
+  }
+
+  addDate(val) {
+
+    return this.update(1, {
+      auction_date: val
+
+    })
+  }
 
 
 

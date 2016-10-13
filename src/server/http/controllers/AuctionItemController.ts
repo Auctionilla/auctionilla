@@ -2,10 +2,10 @@ import { Controller, Request, Response } from 'chen/web';
 import { injectable } from 'chen/core';
 import { AuctionItemService, CategoryService, AuctionSiteService, CountryListService, FavoriteService, PickOfTheDayService, PopularSearchService } from 'app/services';
 
+const moment = require('moment');
 
 @injectable
 export class AuctionItemController extends Controller {
-
   constructor(private auctionItemService: AuctionItemService,
               private categoryService: CategoryService,
               private auctionSiteService: AuctionSiteService,
@@ -288,6 +288,9 @@ export class AuctionItemController extends Controller {
     if (request.session.get('loggedUser')) {
       data.forEach(async (datas) => {
         let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
+        // console.log('this is the auction_date', String(datas.auction_date))
+        let timeremaining = this.getRemainingHours(String(datas.auction_date))
+        datas['timeremaining'] = timeremaining;
         if (chkfav) {
           console.log('this is a favorite')
           datas['isFavorite'] = chkfav.get('id');
@@ -348,7 +351,7 @@ export class AuctionItemController extends Controller {
       let jsonitem = items.toJSON();
       popularSearches.push(jsonitem)
     });
-    //console.log(data)
+    // console.log(data)
     // search return
 
     return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: convertedCountryName, relevance, itemFilter, user, browsing, thePick, popularSearches });
@@ -382,6 +385,28 @@ export class AuctionItemController extends Controller {
       console.log('add item success');
     }
   }
+
+
+  public getRemainingHours(rawdate) {
+    let hrnow = new Date();
+    console.log('normat date function :', hrnow.getUTCHours())
+    let thistime = hrnow.getUTCHours();
+    let splitdate = String(rawdate).split(' ');
+    let gethrsmin = splitdate[1];
+    let gethr = gethrsmin.split(':')
+    let thehr = parseInt(gethr[0]);
+
+    let remaining = thehr - thistime;
+    console.log(thistime, thehr, remaining)
+    if (remaining > 0) {
+      return remaining;
+    } else {
+      return 0;
+    }
+
+  }
+
+
 
 
 
