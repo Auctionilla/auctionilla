@@ -16,9 +16,10 @@ export class AlreadyLogged extends HttpMiddleware {
       } else {
         console.log('user is not logged in');
         console.log(user);
+        next();
       }
     }
 
-    next();
+
   }
 }

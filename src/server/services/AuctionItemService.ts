@@ -30,13 +30,13 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       });
 
 
-      if (auction_house) {
+      if (auction_house && auction_house != 'all auction houses') {
         query.where('site_name', auction_house);
       }
-      if (country != 'All Countries') {
+      if (country && country != 'All Countries') {
         query.where('location', country)
       }
-      if (category) {
+      if (category && category != 'all categories') {
        query.where('category_name', category)
       }
       query.where('item_title', 'like',  `%${searchItem}%`);
@@ -56,11 +56,11 @@ export class AuctionItemService extends SQLService<AuctionItem> {
 
       if (item_filter) {
         if (item_filter == 'objects') {
-          query.where('price_status', 'Low estimate');
+          query.whereIn('price_status', ['Low estimate', 'Fix price']);
         } else if (item_filter == 'fix-price') {
           query.where('price_status', 'Fix price')
         } else if (item_filter == 'realized') {
-          query.whereIn('price_status', ['Hammer price', 'realized'] )
+          query.whereIn('price_status', ['Hammer price', 'Realized'] )
         }
       }
 
@@ -83,25 +83,23 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       query.join('auction_site as h', function () {
           this.on('h.id', '=', 'auction_items.auction_site_fk');
       });
-      if (auction_house) {
+      if (auction_house && auction_house != 'all auction houses') {
         query.where('site_name', auction_house);
       }
-      if (country != 'All Countries') {
+      if (country && country != 'All Countries') {
         query.where('location', country)
       }
-      if (category) {
-       query.where('category_name', category);
+      if (category && category != 'all categories') {
+       query.where('category_name', category)
       }
 
       if (item_filter) {
-        if (item_filter == 'auctions') {
-          query.where('price_status', 'Low estimate');
+        if (item_filter == 'objects') {
+          query.whereIn('price_status', ['Low estimate', 'Fix price']);
         } else if (item_filter == 'fix-price') {
           query.where('price_status', 'Fix price')
         } else if (item_filter == 'realized') {
           query.whereIn('price_status', ['Hammer price', 'Realized'] )
-        } else if (item_filter == 'objects') {
-          query.whereIn('price_status', ['Fix price', 'Low estimate'])
         }
       }
 
@@ -166,6 +164,15 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       category_id_fk: data.category_id,
       auction_site_fk: data.auction_site
     });
+  }
+
+
+  incrementFavorite(item_id) {
+    return this.increment(item_id, 'favorites_count', 1)
+  }
+
+  decrementFavorite(item_id) {
+    return this.decrement(item_id, 'favorites_count', 1)
   }
 
 

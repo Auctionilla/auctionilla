@@ -13,4 +13,8 @@ private countrylist = new countryList;
   getCountryCode(country) {
     return this.countrylist.getCode(country);
   }
+
+  getName(country) {
+    return this.countrylist.getName(country);
+  }
 }

@@ -35,6 +35,13 @@ export class UserService extends SQLService<User> {
     }).getOne();
   }
 
+  updateTest(){
+    return this.update(10, {
+      first_name: 'hola hola',
+      last_name: 'shuro shuro'
+    })
+  }
+
 
 
 }

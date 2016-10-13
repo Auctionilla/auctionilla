@@ -1,6 +1,6 @@
 import { Controller, Request, Response } from 'chen/web';
 import { injectable } from 'chen/core';
-import { AuctionItemService, CategoryService, AuctionSiteService, CountryListService, FavoriteService, PickOfTheDayService } from 'app/services';
+import { AuctionItemService, CategoryService, AuctionSiteService, CountryListService, FavoriteService, PickOfTheDayService, PopularSearchService } from 'app/services';
 
 
 @injectable
@@ -11,7 +11,8 @@ export class AuctionItemController extends Controller {
               private auctionSiteService: AuctionSiteService,
               private countryListService: CountryListService,
               private favoriteService: FavoriteService,
-              private pickOfTheDayService: PickOfTheDayService) {
+              private pickOfTheDayService: PickOfTheDayService,
+              private popularSearchService: PopularSearchService) {
     super();
   }
 
@@ -71,6 +72,7 @@ export class AuctionItemController extends Controller {
     let getsearch = request.input.get('searchItem');
     if (getsearch) {
       search = getsearch;
+
     }
     let getcategory = request.input.get('category');
     if (getcategory) {
@@ -198,6 +200,7 @@ export class AuctionItemController extends Controller {
     let page = 10;
     let auction_house = '';
     let country = '';
+    let convertedCountryName = '';
     let relevance = '';
     let browsing = 'auction';
     let itemFilter = 'objects';
@@ -226,6 +229,11 @@ export class AuctionItemController extends Controller {
     let getsearch = request.input.get('searchItem');
     if (getsearch) {
       search = getsearch;
+      let insertPopularSearch = await this.popularSearchService.addSearch(search);
+
+      if (insertPopularSearch) {
+        console.log('search inserted to popular search');
+      }
     }
     let getcategory = request.input.get('category');
     if (getcategory) {
@@ -248,8 +256,10 @@ export class AuctionItemController extends Controller {
     if (getCountry) {
       if (getCountry != "All Countries") {
         let getcountrycode = this.countryListService.getCountryCode(getCountry);
+
         if (getcountrycode) {
           country = getcountrycode
+          convertedCountryName = this.countryListService.getName(country);
         } else {
           country = getCountry
         }
@@ -331,9 +341,17 @@ export class AuctionItemController extends Controller {
     } else {
       console.log('erro getting pick')
     }
+
+    let searches = await this.popularSearchService.showSearches(20);
+    let popularSearches = [];
+    searches.forEach(items => {
+      let jsonitem = items.toJSON();
+      popularSearches.push(jsonitem)
+    });
     //console.log(data)
     // search return
-    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country, relevance, itemFilter, user, browsing, thePick });
+
+    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: convertedCountryName, relevance, itemFilter, user, browsing, thePick, popularSearches });
 
   }
 

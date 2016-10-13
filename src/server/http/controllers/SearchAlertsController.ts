@@ -15,7 +15,12 @@ export class SearchAlertsController extends Controller {
 
 
   public async createSearchAlert(request: Request, response: Response) {
-
+    if (request.session.get('loggedUser')) {
+      let user = request.session.get('loggedUser').id;
+      if (!user) {
+        return response.redirect('/login')
+      }
+    }
 
     let data = {
       searchItem: String(request.input.get('search_item')).toLowerCase(),

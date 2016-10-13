@@ -14,18 +14,18 @@ export class UserController extends Controller {
     return response.render('index');
   }
 
-  public async viewLogin(request: Request, response: Response ) {
-
-    let user = 0;
+  public async viewLogin(request: Request, response: Response ): Promise<any> {
     if (request.session.get('loggedUser')) {
-      user = request.session.get('loggedUser').id;
-
+      let user = request.session.get('loggedUser').id;
+      if (user) {
+        return response.redirect('/')
+      }
     }
-    return response.render('login', { user });
+    return response.render('login');
   }
 
   public async registration(request: Request, response: Response) {
-    let user = 0;
+    let user;
     if (request.session.get('loggedUser')) {
       user = request.session.get('loggedUser').id;
     }
@@ -38,15 +38,38 @@ export class UserController extends Controller {
     // let email = await Hash.make('cedrickbuan@gmail.com');
     // console.log(email);
     // let password = await Hash.check('cedrickbuan@gmail.com', await email);
+    let user;
+    if (request.session.get('loggedUser')) {
+      user = request.session.get('loggedUser').id;
+      console.log('the logged user id')
+      console.log(user)
+    }
+
+    let formPass1 = request.input.get('pass')
+    let formPass2 = request.input.get('pass2')
+    let formEmail = request.input.get('email')
+
+    if (String(formPass1).length < 6) {
+      return response.render('register', {alert: 'password too short', user})
+    }
+    if (formPass1 != formPass2) {
+      return response.render('register', {alert: 'password not match', user})
+    }
+
     let alert = '';
-    let hashedpass = await Hash.make(request.input.get('pass'));
+    let hashedpass = await Hash.make(formPass1);
     console.log(hashedpass);
-    let hashedemail = await Hash.make(request.input.get('email'));
+    let hashedemail = await Hash.make(formEmail);
     let email = request.input.get('email');
     let checkIfexistEmail = await this.userService.checkEmail(email);
     let base64email = Buffer.from(hashedemail).toString('base64');
     console.log('base64 email')
     console.log(base64email);
+
+
+
+
+
     let userDetails = {
       email:  email,
       code:  base64email,
@@ -55,7 +78,7 @@ export class UserController extends Controller {
     if (checkIfexistEmail) {
       console.log('email already exist');
       alert = 'email exist';
-      // return response.render('register', { alert: 'email exist' })
+     // return response.render('register', { alert: 'email exist' })
     } else {
       let registerUser = await this.userService.createUser(userDetails);
       if (registerUser) {
@@ -81,14 +104,14 @@ export class UserController extends Controller {
             </td>
           </tr>
         </table>`;
-
-        this.mandrillService.send('Verify Email', msg, [{ email: email }], '');
+        //this.mandrillService.send('Verify Email', msg, [{ email: email }], '');
+        this.mandrillService.test(msg);
         alert= "email sent";
       }
     }
     //return response.redirect('/');
     // return response.json({ data: {status: 'success'} });
-    return response.render('register', { alert })
+    return response.render('register', { alert, user})
 
   }
 
@@ -172,6 +195,8 @@ export class UserController extends Controller {
 
 
   public async logout(request: Request, response: Response) {
+
+
     request.session.flash('loggedUser');
     return response.redirect('/');
   }
