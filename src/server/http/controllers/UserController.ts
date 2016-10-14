@@ -397,6 +397,8 @@ export class UserController extends Controller {
         let update = await this.userService.updateUser(id, data);
         if (update) {
           console.log('update')
+
+          return response.redirect('/viewprofile');
         }
 
       }
