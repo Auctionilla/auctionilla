@@ -20,7 +20,7 @@ export class FavoriteService extends SQLService<Favorite> {
     })
   }
 
-  remvoveFavorite(id) {
+  removeFavorite(id) {
     return this.destroy(id)
   }
 
@@ -64,11 +64,6 @@ export class FavoriteService extends SQLService<Favorite> {
       query.where('favorites.user_id_fk', id)
     }).getOne();
   }
-
-  deleteFavorites (id){
-    return this.destroy(id)
-  }
-
 
   viewFavorites(id, offset?: number, limit?: number) {
     return this.query(query => {

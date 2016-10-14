@@ -39,7 +39,25 @@ export class UserController extends Controller {
   }
 
   public async viewAllAlerts(request: Request, response: Response) {
-    return response.render('allmysearchalerts')
+
+    if (request.session.get('loggedUser')) {
+     console.log ('user.id');
+     console.log (request.session.get('loggedUser').id);
+     let id = request.session.get('loggedUser').id;
+
+      if (id) {
+
+        let allSearchAlerts = await this.searchAlertService.viewAllSearchAlerts(id);
+        let allAlerts = [];
+
+          allSearchAlerts.forEach(item => {
+            let allJson = item.toJSON();
+            allAlerts.push(allJson);
+          });
+          console.log(allAlerts)
+        return response.render('allmysearchalerts', { all : allAlerts })
+      }
+    }
   }
 
   public async viewAllFavorite(request: Request, response: Response) {
@@ -271,15 +289,6 @@ export class UserController extends Controller {
         alert.push(searchAlertJsonItem);
       });
 
-      let allSearchAlerts = await this.searchAlertService.viewAllSearchAlerts(id);
-      let allAlerts = [];
-
-      allSearchAlerts.forEach(item => {
-        let allJson = item.toJSON();
-        allAlerts.push(allJson);
-      });
-      console.log(allAlerts)
-
       let favOffset = 1;
       let favLimit = 5;
       let favorites = await this.favoriteService.viewFavorites(id, (favOffset - 1) * favLimit, favLimit);
@@ -303,7 +312,7 @@ export class UserController extends Controller {
         info.push(updateJson);
       });
       console.log(info);
-      return response.render('profile', { allSearch: allAlerts, favLimit, searchAlertLimit, totalFav, totalSearch, searchAlert: alert, favorites: fav, update : info });
+      return response.render('profile', { favLimit, searchAlertLimit, totalFav, totalSearch, searchAlert: alert, favorites: fav, update : info });
       }
     } else {
       return response.redirect('/login');
@@ -328,10 +337,6 @@ export class UserController extends Controller {
         }
        
         console.log(data, id)
-        let update = await this.userService.updateUser(id, data);
-        if (update) {
-          console.log('update')
-        }
 
             let newPassword = request.input.get('newpassword');
             console.log(newPassword)
@@ -368,7 +373,11 @@ export class UserController extends Controller {
                 console.log('Please enter your old password!')
                 
               }
-            }    
+            }   
+        let update = await this.userService.updateUser(id, data);
+        if (update) {
+          console.log('update')
+        }
 
       }
     }

@@ -42,7 +42,7 @@ export class SearchAlertsService extends SQLService<SearchAlerts> {
     return this.query (query => {
       query.select('search_alerts.*')
       query.select('u.*')
-      
+      query.select('search_alerts.id as alertId')
       query.join('users as u', function () {
         this.on('u.id', '=', 'search_alerts.user_id_fk');
       });

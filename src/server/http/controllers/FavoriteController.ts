@@ -60,11 +60,11 @@ export class FavoriteController extends Controller {
     let item_id = fetchFavorite.get('item_id_fk')
     let decreaseFavCount = await this.auctionItemService.decrementFavorite(item_id)
     if (decreaseFavCount) {
-      console.log('decreate item favorite count')
+      console.log('decrease item favorite count')
     }
     console.log('this is the fav id to delete');
     console.log(id);
-    await this.favoriteService.remvoveFavorite(id);
+    await this.favoriteService.removeFavorite(id);
     return response.json({ data: 'remove favorite' });
   }
 
@@ -76,10 +76,19 @@ export class FavoriteController extends Controller {
 
   public async removeFavoriteFromProfile(request: Request, response:Response) {
     let id = request.input.get('favId');
+
+    let fetchFavorite = await this.favoriteService.getOneBy('id', id)
+    let item_id = fetchFavorite.get('item_id_fk')
+    let decreaseFavCount = await this.auctionItemService.decrementFavorite(item_id)
+    if (decreaseFavCount) {
+      console.log('decrease item favorite count')
+    }
     // console.log('this is the fav id to delete');
     // console.log(id);
-    await this.favoriteService.remvoveFavorite(id);
+    await this.favoriteService.removeFavorite(id);
     return response.redirect('/viewprofile');
+
+
   }
 
 

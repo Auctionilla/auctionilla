@@ -24,13 +24,16 @@ export default function (router: Router, config: Config) {
     router.route('POST', '/create-searchalert', 'SearchAlertsController@createSearchAlert');
     router.route('GET', '/logout', 'UserController@logout');
     router.route('POST', '/addfavorite', 'FavoriteController@addFavorite');
-    router.route('POST', '/removefavorite-profile', 'FavoriteController@removeFavorite'); 
-    router.route('POST', '/removefav', 'FavoriteController@removeFavoriteFromProfile')
+
+    router.route('POST', '/removefavorite-profile', 'FavoriteController@removeFavoriteFromProfile'); 
+    router.route('POST', '/removefav', 'FavoriteController@removeFavoriteFromProfile');
     router.route('GET', '/remove-alert/:id', 'SearchAlertsController@removeAlert');
     router.route('GET', '/delete-account/:id', 'UserController@deleteAccount');
+
     router.route('POST', '/removefavorite', 'FavoriteController@removeFavorite');
     router.route('GET', '/viewprofile', 'UserController@viewProfile')
     router.route('GET', '/viewmyfavorites', 'UserController@viewAllFavorite')
     router.route('GET', '/viewmysearch-alerts', 'UserController@viewAllAlerts')
+    router.route('GET', '/remove-alert-all/:id', 'SearchAlertsController@removeAlertFromNewPage')
   });
 }

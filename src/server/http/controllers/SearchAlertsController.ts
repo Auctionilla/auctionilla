@@ -77,4 +77,14 @@ export class SearchAlertsController extends Controller {
     return response.redirect('/viewprofile');
   }
 
+   public async removeAlertFromNewPage(request: Request, response: Response) {
+    let alertId = request.param('id');
+    // console.log(alertId, 'alert id')
+    let removeAlert = await this.searchAlertsService.destroy(parseInt(alertId));
+    if (removeAlert) {
+      console.log('alert removed')
+    }
+    return response.redirect('/viewmysearch-alerts');
+  }
+
 }
