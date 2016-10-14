@@ -155,6 +155,7 @@
             </h4>
             <div class="form-content">
               <form action="/register" method="post" onsubmit="return validate();">
+              {% if alert != 'email sent' %}
               <div id = "registrationformcontainer">
                 <div class="form-group">
                   <label>Your email</label>
@@ -172,6 +173,7 @@
                 </div>
                 <button onclick="validate()" type="submit" class="btn btn-block btn-submit btn-default">Register</button>
               </div>
+              {% endif %}
               <div id = "emailnotifcontainer" >
               {% if alert == 'email sent' %}
                 <h3>A message has been sent to your e-mail with instructions on how to activate your account.</h3>

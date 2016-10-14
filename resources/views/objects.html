@@ -63,6 +63,11 @@
       window.location.href = '/login';
     }
 
+    function gotoSite(site) {
+
+      window.location.href = site;
+    }
+
     function saveSearchAlert() {
 
       let data = {
@@ -128,7 +133,7 @@
                 <form action="/search" method="get">
                 <div class="search">
                   <div class="form-group ">
-                    <input type="text" name='searchItem' class="form-control" id="inputValidation" placeholder="Quick Search {{browsing}}">
+                    <input type="text" name='searchItem' class="form-control" id="inputValidation" placeholder="Quick Search">
                     <!-- <input type="hidden" name="browsing-auction" value="auction">
                     <input type="hidden" name="radiobuttonsearch" value="objects">
                     <input type="hidden" name="countries" value="All Countries"> -->
@@ -197,20 +202,20 @@
 
             <div class="radio-buttons">
               <div class="radio">
-                <input type="radio" value="objects"{{ "checked" if itemFilter == 'objects' }} name="radiobuttonsearch">
+                <input type="radio" id = "radio1" value="objects"{{ "checked" if itemFilter == 'objects' }} name="radiobuttonsearch">
                 <label for="radio1">
                   Objects
                 </label>
               </div>
               <div class="radio">
-                <input type="radio" value="auctions" {{ "checked" if itemFilter == 'auctions' }} name="radiobuttonsearch">
+                <input type="radio" id = "radio2" value="auctions" {{ "checked" if itemFilter == 'auctions' }} name="radiobuttonsearch">
                 <label for="radio2">
                   Auctions
                 </label>
               </div>
               <div class="radio">
-                <input type="radio" value="fix-price" {{ "checked" if itemFilter == 'fix-price' }} name="radiobuttonsearch">
-                <label for="radio2">
+                <input type="radio" id = "radio3" value="fix-price" {{ "checked" if itemFilter == 'fix-price' }} name="radiobuttonsearch">
+                <label for="radio3">
                   Fixed price objects
                 </label>
               </div>
@@ -229,7 +234,7 @@
       <span>
         <i class="fa fa-bell"></i>
         {% if user %}
-          <label style="text-decoration: underline;" onclick="saveSearchAlert()">
+          <label style="text-decoration: underline;cursor: pointer;" onclick="saveSearchAlert()">
           Create search alert
           {% if search %}
             for <b>' {{ search }} '</b>
@@ -300,7 +305,7 @@
               <label>Sort By</label>
               <div class="dropdown">
                 <button style="width:150px;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  Relevance
+                  {{relevance if relevance else 'Relevance'}}
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -324,8 +329,8 @@
               {% if total > 0%}
               <label>Lots</label>
               <div class="dropdown">
-                <button style="width:150px" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  Lots
+                <button style="width:100px" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  {{page if page else 'Lots'}}
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -418,7 +423,9 @@
                           {% endif %}
                         </li>
                         <li>
-                          <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+
+                          <button onclick="gotoSite('{{ item.auction_url }}')" class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+
                           <span>
                           {% if item.price_status == "Fix price" %}
                             Buy it now
@@ -505,7 +512,7 @@
                           {% endif %}
                         </li>
                         <li>
-                          <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+                          <button onclick="gotoSite('{{ item.auction_url }}')" class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
                           <span>
                           {% if item.price_status == "Fix price" %}
                             Buy it now
