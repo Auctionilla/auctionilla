@@ -35,5 +35,8 @@ export default function (router: Router, config: Config) {
     router.route('GET', '/viewmyfavorites', 'UserController@viewAllFavorite')
     router.route('GET', '/viewmysearch-alerts', 'UserController@viewAllAlerts')
     router.route('GET', '/remove-alert-all/:id', 'SearchAlertsController@removeAlertFromNewPage')
+
+    router.route('GET', '/delete-user', 'UserController@deleteMyAccount')
+
   });
 }

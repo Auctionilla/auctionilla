@@ -118,7 +118,7 @@ export class UserController extends Controller {
     if (formPass1 != formPass2) {
       return response.render('register', {alert: 'password not match', user})
     }
-
+    let activation;
     let alert = '';
     let hashedpass = await Hash.make(formPass1);
     console.log(hashedpass);
@@ -141,6 +141,19 @@ export class UserController extends Controller {
     if (checkIfexistEmail) {
       console.log('email already exist');
       alert = 'email exist';
+
+      let chkifnotactive = checkIfexistEmail.get('is_active');
+      if (chkifnotactive == false) {
+        console.log('this is not active')
+        if (Hash.check(formPass1, checkIfexistEmail.get('password'))) {
+          console.log('not active pass match')
+          let activate = await this.userService.reactivateMyAccount(formEmail)
+          if (activate) {
+            activation = 'activated';
+          }
+        }
+      }
+
      // return response.render('register', { alert: 'email exist' })
     } else {
       let registerUser = await this.userService.createUser(userDetails);
@@ -174,7 +187,7 @@ export class UserController extends Controller {
     }
     //return response.redirect('/');
     // return response.json({ data: {status: 'success'} });
-    return response.render('register', { alert, user})
+    return response.render('register', { alert, user, activation})
 
   }
 
@@ -219,6 +232,10 @@ export class UserController extends Controller {
       let userDetails = await this.userService.getOneBy('email', email);
       if (userDetails) {
         console.log('user details found');
+        let chkIfActive = userDetails.get('is_active')
+        if (chkIfActive == false) {
+          return response.json({data : {alert : 'Account is already Deactivated, Please register the email to reactivate.' }});
+        }
         let chkIfVerified = userDetails.get('email_confirmed');
         if (chkIfVerified == true) {
           console.log('user is verified');
@@ -259,9 +276,6 @@ export class UserController extends Controller {
 
 
   public async logout(request: Request, response: Response) {
-
-
-
     request.session.flash('loggedUser');
     return response.redirect('/');
   }
@@ -413,5 +427,21 @@ export class UserController extends Controller {
     }
 
   }
-  
+
+  public async deleteMyAccount(request: Request, response: Response) {
+    let id;
+    if (request.session.get('loggedUser')) {
+      id = request.session.get('loggedUser').id;
+
+    }
+    console.log('the user id to deactivate:', id);
+    let deactivate = await this.userService.deactivateMyAccount(id)
+    if (deactivate) {
+      console.log('deactivated your account')
+    } else {
+      console.log('deactivation failed')
+    }
+
+    return response.redirect('/login');
+  }
 }

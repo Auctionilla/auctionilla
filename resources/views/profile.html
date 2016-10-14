@@ -11,22 +11,6 @@
 
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  
-  <script type="text/javascript">
-    // function checkNewPass(){
-    //   var newPass = document.getElementById('pass2').value;
-    //   if (newPass != ''){
-    //     var confPass = document.getElementById('pass3').value;
-    //     if (newPass != confPass){
-    //       $('#pass2').html("Password didn't match!");
-    //       return false;
-    //     }
-    //   }
-    // }
-  
-  </script>
-
 
 </head>
 
@@ -297,8 +281,13 @@
                 </div>
               </div>
               <div class="see-all">
-                <a href="/delete-account/{{ info.id }}">Delete my account</a>
-                  {% endfor %}    
+
+                <!-- <a href="/delete-user">Delete my account</a> -->
+                <a href="#" data-href="/delete.php?id=23" data-toggle="modal" data-target="#confirm-delete">Delete record #23</a><br>
+
+                <button class="btn btn-default" data-href="/delete-user" data-toggle="modal" data-target="#confirm-delete">
+                    Delete record #54
+                </button>
               </div>
             </div>
           </div>
@@ -306,7 +295,46 @@
       </div>
     </div>
   </div>
-</section> 
+
+</section>
+
+
+<!-- bootstrap modal -->
+
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>You are about to delete one track, this procedure is irreversible.</p>
+                    <p>Do you want to proceed?</p>
+                    <p class="debug-url"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger btn-ok">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        $('#confirm-delete').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+
+            $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+        });
+    </script>
+
 <footer class="clearfix">
   <div class="container">
     <div class="row">
@@ -328,7 +356,9 @@
 </footer>
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
+
 </script>
+
 <script src="/assets/js/vendor.js"></script>
 <script src="/assets/js/plugins.js"></script>
 <script src="/assets/js/main.js"></script>

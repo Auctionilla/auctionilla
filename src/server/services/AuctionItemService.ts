@@ -43,9 +43,11 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       query.where('item_title', 'like',  `%${searchItem}%`);
       if (relevance) {
         if (relevance == 'latest') {
-          query.orderBy('id', 'desc');
+          query.orderBy('auction_items.id', 'desc');
         } else if (relevance == 'shortest-remaining') {
-          query.orderBy('auction_items.converted_date', 'asc');
+          // query.orderBy('auction_items.converted_date', 'asc');
+          query.whereRaw(this.db.connection().raw('auction_date > curdate()'))
+          query.orderBy('auction_date', 'asc')
         } else if (relevance == 'lowest-price') {
           query.orderBy('auction_items.price', 'asc');
         } else if (relevance == 'highest-price') {
@@ -74,7 +76,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     }).get();
   }
 
-  getSearchItemCount(searchItem = '', category, auction_house, country, item_filter) {
+  getSearchItemCount(searchItem = '', category, auction_house, country, relevance, item_filter) {
 
     return this.query(query => {
       query.count('auction_items.item_title as total')
@@ -94,6 +96,12 @@ export class AuctionItemService extends SQLService<AuctionItem> {
        query.where('category_name', category)
       }
 
+      if (relevance) {
+        if (relevance == 'shortest-remaining') {
+          query.whereRaw(this.db.connection().raw('auction_date > curdate()'))
+          query.orderBy('auction_date', 'asc')
+        }
+      }
       if (item_filter) {
         if (item_filter == 'objects') {
           query.whereIn('price_status', ['Low estimate', 'Fix price']);

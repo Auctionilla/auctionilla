@@ -31,7 +31,6 @@ export class UserService extends SQLService<User> {
   checkEmail(email) {
     return this.query(query => {
       query.where('email', email)
-
     }).getOne();
   }
 
@@ -53,6 +52,19 @@ export class UserService extends SQLService<User> {
     }).getOne();
   }
 
+    
+  deactivateMyAccount(id) {
+    return this.update(id, {
+      is_active: 0
+    });
+  }
+
+  reactivateMyAccount(email) {
+    return this.query(query => {
+      query.where('email', email);
+    }).update({ is_active: 1 });
+  }
+
   getUserUpdate(id) {
     return this.query(query => { 
       query.select ('*')
@@ -63,5 +75,7 @@ export class UserService extends SQLService<User> {
   deleteAccount(id) {
     return this.destroy(id)
   }
+
+
 
 }

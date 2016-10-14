@@ -140,10 +140,11 @@
   <div class="registration-content clearfix">
     <div class="container">
       <div class="col-md-10 content-items">
-        <div class="col-md-6 content-item" style="border: 1px solid red">
-          <div class="content" style="border: 1px solid yellow">
-          {% if alert and alert != 'email sent' %}
-          <div class="alert alert-danger" id = "log-alert" style="border: 1px solid blue">
+        <div class="col-md-6 content-item">
+          <div class="content">
+          {% if alert and alert != 'email sent' and activation != 'activated' %}
+          <div class="alert alert-danger" id = "log-alert">
+
             <strong>Warning!</strong> <span id = "alertlabel"> {{ alert }} </span>
           </div>
           {% endif %}
@@ -174,6 +175,9 @@
                 <h3>A message has been sent to your e-mail with instructions on how to activate your account.</h3>
               {% endif %}
 
+              {% if activation == 'activated' %}
+                <h3>Your account is reactivated.</h3>
+              {% endif %}
               </div>
               </form>
             </div>
