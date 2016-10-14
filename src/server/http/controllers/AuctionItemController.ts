@@ -387,6 +387,7 @@ export class AuctionItemController extends Controller {
 
   public getRemainingHours(rawdate) {
     let hrnow = new Date();
+    console.log('this is a date too')
     console.log('normat date function :', hrnow.getUTCHours())
     let thistime = hrnow.getUTCHours();
     let splitdate = String(rawdate).split(' ');

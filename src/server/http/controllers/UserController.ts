@@ -3,10 +3,12 @@ import { injectable, Hash, _ } from 'chen/core';
 import { FavoriteService, SearchAlertsService, UserService, MandrillService } from 'app/services';
 
 
+
 @injectable
 export class UserController extends Controller {
 
   constructor(private favoriteService: FavoriteService, private searchAlertService: SearchAlertsService, private userService: UserService, private mandrillService: MandrillService) {
+
     super();
   }
 
@@ -32,6 +34,49 @@ export class UserController extends Controller {
     return response.render('register', { user });
   }
 
+  public async viewProfile(request: Request, response: Response) {
+    return response.render('profile');
+  }
+
+  public async viewAllAlerts(request: Request, response: Response) {
+    return response.render('allmysearchalerts')
+  }
+
+  public async viewAllFavorite(request: Request, response: Response) {
+    let id;
+    let limit = 10;
+    let offset = 1;
+    if (request.session.get('loggedUser')) {
+      id = request.session.get('loggedUser').id;
+
+    }
+    let getoffset = request.input.get('offset');
+    if (getoffset) {
+      offset = parseInt(getoffset);;
+    }
+    let getlimit = request.input.get('limit');
+    if (getlimit) {
+      limit = parseInt(getlimit);
+    }
+
+    console.log('the data', id, offset , limit)
+    let allMyFavorite = await this.favoriteService.viewFavorites(id, offset, limit);
+    let myfavorite = [];
+    allMyFavorite.forEach(item => {
+      let jsondata = item.toJSON();
+      myfavorite.push(jsondata);
+    });
+
+    myfavorite.forEach(async(data) => {
+      let timeremaining = this.getRemainingHours(String(data['auction_date']))
+      data['timeremaining'] = timeremaining;
+    });
+
+    console.log('this is the data', myfavorite);
+    let totalFavorite = await this.favoriteService.countFavorites(id)
+    let total = totalFavorite.get('totalFav')
+    return response.render('allmyfavorites', { myfavorite, total, user: id, offset, limit });
+  }
 
 
   public async register(request: Request, response: Response) {
@@ -104,8 +149,8 @@ export class UserController extends Controller {
             </td>
           </tr>
         </table>`;
-        //this.mandrillService.send('Verify Email', msg, [{ email: email }], '');
-        this.mandrillService.test(msg);
+        this.mandrillService.send('Verify Email', msg, [{ email: email }], '');
+        //this.mandrillService.test(msg);
         alert= "email sent";
       }
     }
@@ -196,6 +241,7 @@ export class UserController extends Controller {
 
 
   public async logout(request: Request, response: Response) {
+
 
 
     request.session.flash('loggedUser');
@@ -338,6 +384,25 @@ export class UserController extends Controller {
       console.log('account removed')
     }
     return response.redirect('/');
+  }
+
+  public getRemainingHours(rawdate) {
+    let hrnow = new Date();
+    console.log('normat date function :', hrnow.getUTCHours())
+    let thistime = hrnow.getUTCHours();
+    let splitdate = String(rawdate).split(' ');
+    let gethrsmin = splitdate[1];
+    let gethr = gethrsmin.split(':')
+    let thehr = parseInt(gethr[0]);
+
+    let remaining = thehr - thistime;
+    console.log(thistime, thehr, remaining)
+    if (remaining > 0) {
+      return remaining;
+    } else {
+      return 0;
+    }
+
   }
   
 }
