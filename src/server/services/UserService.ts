@@ -48,7 +48,7 @@ export class UserService extends SQLService<User> {
 
   getOldPassword(id) {
     return this.query(query => {
-      query.select('password')
+      query.select('users.password')
       query.where('id', id)
     }).getOne();
   }

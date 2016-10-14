@@ -12,8 +12,18 @@
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  
   <script type="text/javascript">
-    
+    function checkNewPass(){
+      var newPass = document.getElementById('pass2').value;
+      if (newPass != ''){
+        var confPass = document.getElementById('pass3').value;
+        if (newPass != confPass){
+          $('#pass2').html("Password didn't match!");
+          return false;
+        }
+      }
+    }
   
   </script>
 
@@ -42,7 +52,13 @@
             <li><a href="#about">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li>
+             <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ 'red' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
+            <ul class="dropdown-menu" style="background-color: white ">
+                <li><a style="color:black;" href="/viewprofile">My Profile </a></li>
+                <li><a style="color:black;" href="/logout">Log Out</a></li>
+            </ul>
+          </li>
             <li>
                 <div class="search">
                   <div class="form-group ">
@@ -70,7 +86,7 @@
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-home"></i></a>
           </li>
-          <li><a href="#">My Page</a>
+          <li><a href="/viewprofile">My Page</a>
           </li>
         </ol>
       </div>
@@ -126,8 +142,8 @@
                         <td> {{ alert.location }} </td>
                         <td> {{ alert.auction_house }} </td>
                         <td>
-                          <a href="/search?searchItem={{ alert.search_item }}&browsing-auction=auction&category=&countries=&auction-house=&offset=&page=&radiobuttonsearch=&relevance=" class="btn btn-red">View</a>
-                          <a href="/search" class="btn-default btn"><i class="fa fa-times"></i></a>
+                          <a href="/search?searchItem={{ alert.search_item }}&browsing-auction=auction&category={{alert.category}}&countries={{alert.location}}&auction-house={{alert.auction_house}}&offset=&page=&radiobuttonsearch=&relevance=" class="btn btn-red">View</a>
+                          <a href="/remove-alert/{{alert.alertId}}" class="btn-default btn"><i class="fa fa-times"></i></a>
                         </td>
                       </tr>
 
@@ -138,7 +154,8 @@
                 </div>
               </div>
               <div class="see-all"> 
-                {% if (totalSearch > searchAlertLimit) %} <a href="#">See All ({{ totalSearch }})</a> {% endif %}
+                {% if (totalSearch > searchAlertLimit) %} <a href="#">See All ({{ totalSearch }})</a> 
+                {% else %}{% endif %}
               </div>
             </div>
           </div>
@@ -193,7 +210,7 @@
                             <form action="/removefav" method="post">
                               <input type="hidden" value="{{ fav.favId }}" name="favId"/> 
                               <button id="delFavBtn" type="submit" class="btn btn">
-                                <i class="fa fa-heart-o"></i> <span>Save favorite</span>
+                                <i class="fa fa-heart-o" style="color: {{ 'red' }}"></i> <span>Favorite</span>
                               </button>
                             </form>
                           </li>
@@ -210,7 +227,8 @@
               </div>
               <div class="see-all">
 
-              {% if (totalFav > Favlimit) %}  <a href="#">See All ({{ totalFav }}) </a> {% endif %}
+              {% if (totalFav > favLimit) %}  <a href="/viewprofile">See All ({{ totalFav }}) </a>
+              {% else %}{% endif %}
               </div>
             </div>
           </div>
@@ -256,31 +274,32 @@
                         </div>
                         <br/>
                         <h5>
-                          Change password
+                          
+                        {% if alert %} {{alert}} {% else %} Change Password {% endif %}
                         </h5>
-                        <div class="form-group">
-                          <label>Current password</label>
-                          <input type="password" class="form-control" placeholder="Password" name="oldpassword">
+                        <div class="form-group" style="border: 1px solid yellow">
+                          <label style="border: 1px solid red" id="oldPass"> Current password</label>
+                          <input type="password" class="form-control" placeholder="Password" name="oldpassword" id="pass1">
                         </div>
                         <div class="form-group">
-                          <label>New password</label>
-                          <input type="password" class="form-control" placeholder="New Password" name="newpassword">
+                          <label id="newPass">New password</label>
+                          <input type="password" onblur="checkNewPass()" class="form-control" placeholder="New Password" name="newpassword" id="pass2">
                         </div>
                         <div class="form-group">
-                          <label>Re-type Password</label>
-                          <input type="password" class="form-control" placeholder="Confirm Password" name="confirmnewpassword">
+                          <label id="confPass">Re-type Password</label>
+                          <input type="password" class="form-control" placeholder="Confirm Password" name="confirmnewpassword" id="pass3">
                         </div>
                         <div class="action-submit text-right">
                           <button type="submit" class="btn btn btn-submit btn-default">Save</button>
-                  {% endfor %}    
                         </div>
                       </form>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="see-all">
-                <a href="/search">Delete my account</a>
+              <div class="see-all" style="border: 1px solid red">
+                <a href="/delete-account/{{ info.id }}">Delete my account</a>
+                  {% endfor %}    
               </div>
             </div>
           </div>

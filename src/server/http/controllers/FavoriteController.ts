@@ -76,8 +76,8 @@ export class FavoriteController extends Controller {
 
   public async removeFavoriteFromProfile(request: Request, response:Response) {
     let id = request.input.get('favId');
-    console.log('this is the fav id to delete');
-    console.log(id);
+    // console.log('this is the fav id to delete');
+    // console.log(id);
     await this.favoriteService.remvoveFavorite(id);
     return response.redirect('/viewprofile');
   }

@@ -6,7 +6,7 @@ import { SearchAlertsService } from 'app/services';
 @injectable
 export class SearchAlertsController extends Controller {
 
-  constructor(private searchAlertService: SearchAlertsService) {
+  constructor(private searchAlertsService: SearchAlertsService) {
     super();
   }
 
@@ -31,7 +31,7 @@ export class SearchAlertsController extends Controller {
       user_id_fk: request.session.get('loggedUser').id
     }
     console.log(data)
-    let save = await this.searchAlertService.saveSearchAlert(data);
+    let save = await this.searchAlertsService.saveSearchAlert(data);
     console.log(save);
     if (!save) {
       console.log('item saved')
@@ -66,4 +66,15 @@ export class SearchAlertsController extends Controller {
   //     return response.redirect('/login');
   //   }
   //  }
+
+  public async removeAlert(request: Request, response: Response) {
+    let alertId = request.param('id');
+    // console.log(alertId, 'alert id')
+    let removeAlert = await this.searchAlertsService.destroy(parseInt(alertId));
+    if (removeAlert) {
+      console.log('alert removed')
+    }
+    return response.redirect('/viewprofile');
+  }
+
 }

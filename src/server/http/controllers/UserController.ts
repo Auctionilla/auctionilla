@@ -225,6 +225,15 @@ export class UserController extends Controller {
         alert.push(searchAlertJsonItem);
       });
 
+      let allSearchAlerts = await this.searchAlertService.viewAllSearchAlerts(id);
+      let allAlerts = [];
+
+      allSearchAlerts.forEach(item => {
+        let allJson = item.toJSON();
+        allAlerts.push(allJson);
+      });
+      console.log(allAlerts)
+
       let favOffset = 1;
       let favLimit = 5;
       let favorites = await this.favoriteService.viewFavorites(id, (favOffset - 1) * favLimit, favLimit);
@@ -236,7 +245,7 @@ export class UserController extends Controller {
 
       favorites.forEach(item => {
         let favoriteJsonItem = item.toJSON();
-        console.log('this is my favorite', favoriteJsonItem);
+        // console.log('this is my favorite', favoriteJsonItem);
         fav.push(favoriteJsonItem);
       });
       
@@ -247,7 +256,8 @@ export class UserController extends Controller {
         let updateJson = item.toJSON();
         info.push(updateJson);
       });
-      return response.render('profile', { totalFav, totalSearch, searchAlert: alert, favorites: fav, update : info });
+      console.log(info);
+      return response.render('profile', { allSearch: allAlerts, favLimit, searchAlertLimit, totalFav, totalSearch, searchAlert: alert, favorites: fav, update : info });
       }
     } else {
       return response.redirect('/login');
@@ -260,7 +270,7 @@ export class UserController extends Controller {
      console.log ('user.id');
      console.log (request.session.get('loggedUser').id);
      let id = request.session.get('loggedUser').id;
-
+     
       if (id) {
         let data = {
           first_name : request.input.get('firstname'),
@@ -270,60 +280,29 @@ export class UserController extends Controller {
           phone : request.input.get('phone')
 
         }
-        // let firstname = request.input.get('firstname');
-        // let lastname = request.input.get('lastname');
-        // let city = request.input.get('city');
-        // let country = request.input.get('country');
-        // let phone = request.input.get('phone');
-
+       
         console.log(data, id)
         let update = await this.userService.updateUser(id, data);
         if (update) {
           console.log('update')
         }
 
-       
-        // if (firstname) {
-        //   data['first_name'] = firstname;
-        // } else {
-        //   console.log('no firstname')
-        // }
-
-        // if (lastname) {
-        //   data['last_name'] = lastname;
-        // } else {
-        //   console.log('no lastname')
-        // }
-
-        // if (city) {
-        //   data['city'] = city;
-        // } else {
-        //   console.log('no city')
-        // }
-
-        // if (country){
-        //   data['country'] = country
-        // } else {
-        //   console.log('no country')
-        // }
-
-        // if (phone) {
-        //   data['phone'] = phone;
-        // } else {
-        //   console.log('no phone')
-        // }
-
-        console.log(data);
-          // let test = await Hash.check('1234567890' ,'$2a$10$R2Ctb2HUx/2eSdNGxtcdaOEq6YJ/Eq1.W1FuQd4rBDe/bGLlyNsoi')
-          // console.log('password is match?', test)
             let newPassword = request.input.get('newpassword');
             console.log(newPassword)
             if (newPassword) {
               let oldPassDB = await this.userService.getOldPassword(id);
               console.log(oldPassDB.get('password'));
               let oldPassInput = request.input.get('oldpassword');
+              // let oldPassInput = await Hash.make(oldPass);
+              console.log(oldPassInput)
+              let test = await Hash.check( '1234567890' ,'$2a$10$/EDdOz32kLJOFnYDHRqePeAv5IULtBRpFbzWQy68nkE1DvgysUuIO')
+              console.log('password is match?', test)
+              
               if (oldPassInput) {
-                if (await Hash.check(oldPassInput, String(oldPassDB))) {
+                let check = await Hash.check(oldPassInput, String(oldPassDB.get('password')));
+                console.log('check?', check)
+                if (check) {
+                  console.log(oldPassDB)
                   console.log ('old password matched!')
                   let confirmNewPassword = request.input.get ('confirmnewpassword');
                   if (newPassword == confirmNewPassword) {
@@ -331,22 +310,34 @@ export class UserController extends Controller {
                     let newHashPassword = await Hash.make(newPassword);
                     data['password'] = newHashPassword;
                     console.log(newHashPassword)
+                    console.log(data);
                   } else {
                     console.log ('Password confirmation did not matched!');
                   }      
                 } else {
                   console.log('Re-enter old password')
-                  return response.redirect('/viewprofile');
+                  return response.redirect('/');
                 } 
               } else {
                 console.log('Please enter your old password!')
+                
               }
-            }
-
-        
+            }    
 
       }
     }
-
   }
+
+  public async deleteAccount(request: Request, response: Response){
+    // let a = request.param.get('id');
+    let userId = request.param('id');
+    console.log(userId, 'user id')
+
+    let removeAccount = await this.userService.destroy(parseInt(userId));
+    if (removeAccount) {
+      console.log('account removed')
+    }
+    return response.redirect('/');
+  }
+  
 }
