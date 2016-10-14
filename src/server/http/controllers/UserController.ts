@@ -359,9 +359,9 @@ export class UserController extends Controller {
               console.log(oldPassDB.get('password'));
               let oldPassInput = request.input.get('oldpassword');
               // let oldPassInput = await Hash.make(oldPass);
-              console.log(oldPassInput)
-              let test = await Hash.check( '1234567890' ,'$2a$10$/EDdOz32kLJOFnYDHRqePeAv5IULtBRpFbzWQy68nkE1DvgysUuIO')
-              console.log('password is match?', test)
+              // console.log(oldPassInput)
+              // let test = await Hash.check( '1234567890' ,'$2a$10$UbcUJ.jqtZowHvtYji9W0e2DzWDSF.kLqeoYzSHyng7fm5Hnm1W4W')
+              // console.log('password is match?', test)
               
               if (oldPassInput) {
                 let check = await Hash.check(oldPassInput, String(oldPassDB.get('password')));
@@ -372,20 +372,22 @@ export class UserController extends Controller {
                   let confirmNewPassword = request.input.get ('confirmnewpassword');
                   if (newPassword == confirmNewPassword) {
                     console.log('password matched!');
+                    console.log(newPassword);
                     let newHashPassword = await Hash.make(newPassword);
                     data['password'] = newHashPassword;
                     console.log(newHashPassword)
                     console.log(data);
                   } else {
                     console.log ('Password confirmation did not matched!');
+                    return response.redirect('/viewprofile');
                   }      
                 } else {
                   console.log('Re-enter old password')
-                  return response.redirect('/');
+                  return response.redirect('/viewprofile');
                 } 
               } else {
                 console.log('Please enter your old password!')
-                
+                return response.redirect('/viewprofile');
               }
             }   
         let update = await this.userService.updateUser(id, data);

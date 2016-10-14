@@ -87,8 +87,21 @@ export class FavoriteController extends Controller {
     // console.log(id);
     await this.favoriteService.removeFavorite(id);
     return response.redirect('/viewprofile');
+  }
 
-
+  public async removeFavoriteFromNew(request: Request, response: Response){
+    let id = request.input.get('removeFav');
+    console.log(id)
+    let fetchFavorite = await this.favoriteService.getOneBy('id', id)
+    let item_id = fetchFavorite.get('item_id_fk')
+    let decreaseFavCount = await this.auctionItemService.decrementFavorite(item_id)
+    if (decreaseFavCount) {
+      console.log('decrease item favorite count')
+    }
+    // console.log('this is the fav id to delete');
+    // console.log(id);
+    await this.favoriteService.removeFavoriteAll(id);
+    return response.redirect('/viewmyfavorites');
   }
 
 

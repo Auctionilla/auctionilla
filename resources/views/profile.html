@@ -11,7 +11,8 @@
 
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  
 </head>
 
 <body>
@@ -32,7 +33,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance={{relevance}}">Browse objects</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance={{relevance}}">Browse objects</a></li>
             <li><a href="/search?searchItem={{search}}&browsing-auction=realized&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=realized&relevance={{relevance}}">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -45,10 +46,12 @@
           </li>
             <li>
                 <div class="search">
-                  <div class="form-group ">
-                    <input type="text" class="form-control" id="inputValidation" placeholder="Quick Search">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                  </div>
+                 <form method="get" action="/search">
+                    <div class="form-group ">
+                      <input type="text" class="form-control" id="inputValidation" name = "searchItem" placeholder="Quick Search">
+                      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                  </form>
                 </div>
             </li>
           </ul>
@@ -68,7 +71,7 @@
     <div class="container">
       <div class="row">
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-home"></i></a>
+          <li><a href="/"><i class="fa fa-home"></i></a>
           </li>
           <li><a href="/viewprofile">My Page</a>
           </li>
@@ -194,7 +197,7 @@
                             <form action="/removefav" method="post">
                               <input type="hidden" value="{{ fav.favId }}" name="favId"/> 
                               <button id="delFavBtn" type="submit" class="btn btn">
-                                <i class="fa fa-heart-o" style="color: {{ 'red' }}"></i> <span>Favorite</span>
+                                <i class="fa fa-heart-o"></i> <span>Remove</span>
                               </button>
                             </form>
                           </li>
@@ -281,13 +284,8 @@
                 </div>
               </div>
               <div class="see-all">
-
-                <!-- <a href="/delete-user">Delete my account</a> -->
-                <a href="#" data-href="/delete.php?id=23" data-toggle="modal" data-target="#confirm-delete">Delete record #23</a><br>
-
-                <button class="btn btn-default" data-href="/delete-user" data-toggle="modal" data-target="#confirm-delete">
-                    Delete record #54
-                </button>
+                <a href="/delete-account/{{ info.id }}">Delete my account</a>
+                  {% endfor %}    
               </div>
             </div>
           </div>
@@ -295,51 +293,12 @@
       </div>
     </div>
   </div>
-
-</section>
-
-
-<!-- bootstrap modal -->
-
-    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
-                </div>
-
-                <div class="modal-body">
-                    <p>You are about to delete one track, this procedure is irreversible.</p>
-                    <p>Do you want to proceed?</p>
-                    <p class="debug-url"></p>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-danger btn-ok">Delete</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-    <script>
-        $('#confirm-delete').on('show.bs.modal', function(e) {
-            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-
-            $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
-        });
-    </script>
-
+</section> 
 <footer class="clearfix">
   <div class="container">
     <div class="row">
       <div class="text-left item col-sm-3 col-md-3">
-        <a href="#"><img src="/assets/images/logo.png" /></a>
+        <a href="/"><img src="/assets/images/logo.png" /></a>
       </div>
       <div class="item col-sm-6 col-md-6">
         <span>
@@ -356,9 +315,7 @@
 </footer>
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
-
 </script>
-
 <script src="/assets/js/vendor.js"></script>
 <script src="/assets/js/plugins.js"></script>
 <script src="/assets/js/main.js"></script>

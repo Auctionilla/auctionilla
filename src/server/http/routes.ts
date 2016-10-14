@@ -37,6 +37,7 @@ export default function (router: Router, config: Config) {
     router.route('GET', '/remove-alert-all/:id', 'SearchAlertsController@removeAlertFromNewPage')
 
     router.route('GET', '/delete-user', 'UserController@deleteMyAccount')
+    router.route('POST', '/removeFavAll', 'FavoriteController@removeFavoriteFromNew')
 
   });
 }

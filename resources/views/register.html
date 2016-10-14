@@ -108,10 +108,12 @@
             <li>
                 <form method="GET" action="/search">
                 <div class="search">
-                  <div class="form-group ">
-                    <input type="text" name="searchItem" class="form-control" id="inputValidation" placeholder="Quick Search">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                  </div>
+                  <form method="get" action="/search">
+                    <div class="form-group ">
+                      <input type="text" class="form-control" id="inputValidation" name = "searchItem" placeholder="Quick Search">
+                      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                  </form>
                 </div>
                 </form>
             </li>
@@ -129,7 +131,7 @@
     <div class="container">
       <div class="row">
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-home"></i></a>
+          <li><a href="/"><i class="fa fa-home"></i></a>
           </li>
           <li><a href="/registration">Register</a>
           </li>
@@ -204,7 +206,7 @@
   <div class="container">
     <div class="row">
       <div class="text-left item col-sm-3 col-md-3">
-        <a href="#"><img src="/assets/images/logo.png" /></a>
+        <a href="/"><img src="/assets/images/logo.png" /></a>
       </div>
       <div class="item col-sm-6 col-md-6">
         <span>

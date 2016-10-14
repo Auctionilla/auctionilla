@@ -89,4 +89,8 @@ export class FavoriteService extends SQLService<Favorite> {
        }
     }).get();
   }
+
+  removeFavoriteAll(id){
+    return this.destroy(id);
+  }
 }
