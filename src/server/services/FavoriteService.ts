@@ -41,6 +41,32 @@ export class FavoriteService extends SQLService<Favorite> {
   }
   // SELECT item_id_fk as item ,COUNT(user_id_fk) As 'users' FROM favorites group by item_id_fk order by users desc;
 
+  viewFavorites(id, offset?: number, limit?: number) {
+    return this.query(query => {
+       query.select('favorites.id as favId')
+       query.select('ai.*')
+       query.select(this.db.connection().raw('datediff(ai.auction_date, curdate()) as days_remaining'))
+       query.join('users as u', function () {
+         this.on('u.id', '=', 'favorites.user_id_fk')
+       });
+       query.join('auction_items as ai', function() {
+         this.on('ai.id', '=', 'favorites.item_id_fk')
+       });
+       query.where('favorites.user_id_fk', id)
+       if (offset) {
+         query.offset(offset);
+       }
+       if (limit) {
+         query.limit(limit);
+       }
+    }).get();
+  }
 
+  countFavorites(id) {
+    return this.query(query => {
+      query.count('favorites.user_id_fk as totalFav')
+      query.where('favorites.user_id_fk', id)
+    }).getOne();
+   }
 
 }
