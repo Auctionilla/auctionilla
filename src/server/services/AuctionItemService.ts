@@ -255,9 +255,5 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       query.limit(1)
     }).getOne();
 
-  }
-
-
-
-
+  }  
 }

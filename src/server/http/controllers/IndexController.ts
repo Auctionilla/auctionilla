@@ -17,8 +17,8 @@ export class IndexController extends Controller {
 
     let fav = await this.favoriteService.getFavorite();
     let pic = await this.pickOfTheDayService.getOneBy('id', 1);
-    console.log('pic date');
-    console.log(String(pic.get('updated_at')))
+    // console.log('pic date');
+    // console.log(String(pic.get('updated_at')))
     let thepicdate = String(pic.get('updated_at'))
     console.log('current fav date')
     console.log(thepicdate);

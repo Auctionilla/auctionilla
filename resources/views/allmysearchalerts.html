@@ -27,21 +27,29 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html"><img src="/assets/images/logo.png" alt="logo" /></a>
+          <a class="navbar-brand" href="/"><img src="/assets/images/logo.png" alt="logo" /></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Browse objects</a></li>
-            <li><a href="#about">See realized prices</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance={{relevance}}">Browse objects</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance={{relevance}}">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ 'red' }}" class="fa fa-user"></i> <span class="">My Pages</span></a>
+            <ul class="dropdown-menu" style="background-color: white ">
+                <li><a style="color:black;" href="/viewprofile">My Profile </a></li>
+                <li><a style="color:black;" href="/logout">Log Out</a></li>
+            </ul>
+            </li>
             <li>
                 <div class="search">
-                  <div class="form-group ">
-                    <input type="text" class="form-control" id="inputValidation" placeholder="Quick Search">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                  </div>
+                  <<form method="get" action="/search">
+                    <div class="form-group ">
+                      <input type="text" class="form-control" id="inputValidation" name = "searchItem" placeholder="Quick Search">
+                      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                  </form>
                 </div>
             </li>
           </ul>
@@ -61,7 +69,7 @@
     <div class="container">
       <div class="row">
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-home"></i></a>
+          <li><a href="/"><i class="fa fa-home"></i></a>
           </li>
           <li><a href="#">My Page</a>
           </li>
@@ -102,6 +110,7 @@
                 <div class="search-table-content">
                   <table class="table table-striped table-condensed cf">
                     <thead class="cf">
+
                       <tr>
                         <th>Search words</th>
                         <th>Categories</th>
@@ -112,34 +121,17 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td>Lots (1197)</td>
-                        <td>Ancient Art</td>
-                        <td>10 countries</td>
-                        <td>All auction houses</td>
+                      {% for allAlerts in all %}
+                        <td>{{ allAlerts.search_item }}</td>
+                        <td>{{ allAlerts.category }}</td>
+                        <td>{{ allAlerts.location }}</td>
+                        <td>{{ allAlerts.auction_house }}</td>
                         <td>
-                          <a href="#" class="btn btn-red">View</a>
-                          <a href="#" class="btn-default btn"><i class="fa fa-times"></i></a>
+                          <a href="/search?searchItem={{ allAlert.search_item }}&browsing-auction=auction&category={{ allAlert.category}}&countries={{allAlert.location}}&auction-house={{allAlert.auction_house}}&offset=&page=&radiobuttonsearch=&relevance=" class="btn btn-red" class="btn btn-red">View</a>
+                          <a href="/remove-alert-all/{{ allAlerts.alertId }}" class="btn-default btn"><i class="fa fa-times"></i></a>
                         </td>
                       </tr>
-                      <tr>
-                        <td>Lots (1197)</td>
-                        <td>Ancient Art</td>
-                        <td>10 countries</td>
-                        <td>All auction houses</td>
-                        <td>
-                          <a href="#" class="btn btn-red">View</a>
-                          <a href="#" class="btn-default btn"><i class="fa fa-times"></i></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Lots (1197)</td>
-                        <td>Ancient Art</td>
-                        <td>10 countries</td>
-                        <td>All auction houses</td>
-                        <td><a href="#" class="btn btn-red">View</a>
-                          <a href="#" class="btn-default btn"><i class="fa fa-times"></i></a>
-                        </td>
-                      </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -188,7 +180,7 @@
   <div class="container">
     <div class="row">
       <div class="text-left item col-sm-3 col-md-3">
-        <a href="#"><img src="/assets/images/logo.png" /></a>
+        <a href=""><img src="/assets/images/logo.png" /></a>
       </div>
       <div class="item col-sm-6 col-md-6">
         <span>

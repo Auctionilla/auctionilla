@@ -22,7 +22,7 @@
           item_id: id
         }
         $.ajax({
-          method: 'POST',
+          method: 'POST', 
           url: '/addfavorite',
           contentType: 'application/json',
           dataType: 'json',
@@ -129,6 +129,7 @@
             </ul>
           </li>
             <li>
+
                 <form action="/search" method="get">
                 <div class="search">
                   <div class="form-group ">
@@ -271,7 +272,7 @@
     <div class="container">
       <div class="row">
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-home"></i></a>
+          <li><a href="/"><i class="fa fa-home"></i></a>
           </li>
           <li><a href="#">{{ category if category else "All Categories" }}</a>
           </li>

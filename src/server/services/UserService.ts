@@ -34,6 +34,25 @@ export class UserService extends SQLService<User> {
     }).getOne();
   }
 
+  updateUser(id, data){
+    return this.update(id, {
+      first_name : data.first_name,
+      last_name : data.last_name,
+      city : data.city,
+      country : data.country,
+      phone : data.phone,
+      password : data.password
+    });
+  }
+
+  getOldPassword(id) {
+    return this.query(query => {
+      query.select('users.password')
+      query.where('id', id)
+    }).getOne();
+  }
+
+    
   deactivateMyAccount(id) {
     return this.update(id, {
       is_active: 0
@@ -46,7 +65,16 @@ export class UserService extends SQLService<User> {
     }).update({ is_active: 1 });
   }
 
+  getUserUpdate(id) {
+    return this.query(query => { 
+      query.select ('*')
+      query.where('id', id)
+    }).get();
+  }
 
+  deleteAccount(id) {
+    return this.destroy(id)
+  }
 
 
 

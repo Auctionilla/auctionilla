@@ -385,7 +385,6 @@ export class AuctionItemController extends Controller {
     }
   }
 
-
   public getRemainingHours(rawdate) {
     let hrnow = new Date();
     console.log('this is a date too')
@@ -405,11 +404,4 @@ export class AuctionItemController extends Controller {
     }
 
   }
-
-
-
-
-
-
-
 }

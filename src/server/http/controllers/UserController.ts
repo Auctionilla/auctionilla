@@ -1,12 +1,14 @@
 import { Controller, Request, Response } from 'chen/web';
 import { injectable, Hash, _ } from 'chen/core';
-import { UserService, MandrillService, FavoriteService } from 'app/services';
+import { FavoriteService, SearchAlertsService, UserService, MandrillService } from 'app/services';
+
 
 
 @injectable
 export class UserController extends Controller {
 
-  constructor(private userService: UserService, private mandrillService: MandrillService, private favoriteService: FavoriteService) {
+  constructor(private favoriteService: FavoriteService, private searchAlertService: SearchAlertsService, private userService: UserService, private mandrillService: MandrillService) {
+
     super();
   }
 
@@ -41,7 +43,25 @@ export class UserController extends Controller {
   }
 
   public async viewAllAlerts(request: Request, response: Response) {
-    return response.render('allmysearchalerts')
+
+    if (request.session.get('loggedUser')) {
+     console.log ('user.id');
+     console.log (request.session.get('loggedUser').id);
+     let id = request.session.get('loggedUser').id;
+
+      if (id) {
+
+        let allSearchAlerts = await this.searchAlertService.viewAllSearchAlerts(id);
+        let allAlerts = [];
+
+          allSearchAlerts.forEach(item => {
+            let allJson = item.toJSON();
+            allAlerts.push(allJson);
+          });
+          console.log(allAlerts)
+        return response.render('allmysearchalerts', { all : allAlerts })
+      }
+    }
   }
 
   public async viewAllFavorite(request: Request, response: Response) {
@@ -233,6 +253,7 @@ export class UserController extends Controller {
 
             request.session.set('loggedUser',{'email': userDetails.get('email'), 'id': userDetails.get('id')});
             request.session.get('loggedUser');
+
             //response.redirect('/search')
           } else {
             console.log('user is not registered');
@@ -263,6 +284,139 @@ export class UserController extends Controller {
     return response.redirect('/');
   }
 
+  public async viewSearchAlertAndFavorites(request: Request, response: Response): Promise<any> {
+
+
+   if (request.session.get('loggedUser')) {
+     console.log ('user.id');
+     console.log (request.session.get('loggedUser').id);
+     let id = request.session.get('loggedUser').id;
+
+    if (id) {
+      let searchAlertOffset = 1;
+      let searchAlertLimit = 10;
+      console.log('view alerts')
+      let searchAlerts = await this.searchAlertService.viewSearchAlerts(id, (searchAlertOffset - 1) * searchAlertLimit, searchAlertLimit);
+      let alert = [];
+      let countSearch = await this.searchAlertService.countSavedSearch(id);
+      let totalSearch = countSearch.get('totalSearch');
+      console.log(totalSearch, 'THIS IS THE TOTAL SEARCH');
+
+      searchAlerts.forEach(item => {
+        let searchAlertJsonItem = item.toJSON();
+        alert.push(searchAlertJsonItem);
+      });
+
+      let favOffset = 1;
+      let favLimit = 5;
+      let favorites = await this.favoriteService.viewFavorites(id, (favOffset - 1) * favLimit, favLimit);
+      let fav = [];
+      let countFav = await this.favoriteService.countFavorites(id);
+
+      let totalFav = countFav.get('totalFav');
+      console.log(totalFav, 'THIS IS THE TOTAL Favorites');
+
+      favorites.forEach(item => {
+        let favoriteJsonItem = item.toJSON();
+        // console.log('this is my favorite', favoriteJsonItem);
+        fav.push(favoriteJsonItem);
+      });
+      
+      let getUpdate = await this.userService.getUserUpdate(id);
+      let info = [];
+
+      getUpdate.forEach(item => {
+        let updateJson = item.toJSON();
+        info.push(updateJson);
+      });
+      console.log(info);
+      return response.render('profile', { favLimit, searchAlertLimit, totalFav, totalSearch, searchAlert: alert, favorites: fav, update : info });
+      }
+    } else {
+      return response.redirect('/login');
+    }
+   }
+
+  public async updateUserPost(request: Request, response: Response): Promise<any> {
+
+    if (request.session.get('loggedUser')) {
+     console.log ('user.id');
+     console.log (request.session.get('loggedUser').id);
+     let id = request.session.get('loggedUser').id;
+     
+      if (id) {
+        let data = {
+          first_name : request.input.get('firstname'),
+          last_name : request.input.get('lastname'),
+          city : request.input.get('city'),
+          country : request.input.get('country'),
+          phone : request.input.get('phone')
+
+        }
+       
+        console.log(data, id)
+
+            let newPassword = request.input.get('newpassword');
+            console.log(newPassword)
+            if (newPassword) {
+              let oldPassDB = await this.userService.getOldPassword(id);
+              console.log(oldPassDB.get('password'));
+              let oldPassInput = request.input.get('oldpassword');
+              // let oldPassInput = await Hash.make(oldPass);
+              // console.log(oldPassInput)
+              // let test = await Hash.check( '1234567890' ,'$2a$10$UbcUJ.jqtZowHvtYji9W0e2DzWDSF.kLqeoYzSHyng7fm5Hnm1W4W')
+              // console.log('password is match?', test)
+              
+              if (oldPassInput) {
+                let check = await Hash.check(oldPassInput, String(oldPassDB.get('password')));
+                console.log('check?', check)
+                if (check) {
+                  console.log(oldPassDB)
+                  console.log ('old password matched!')
+                  let confirmNewPassword = request.input.get ('confirmnewpassword');
+                  if (newPassword == confirmNewPassword) {
+                    console.log('password matched!');
+                    console.log(newPassword);
+                    let newHashPassword = await Hash.make(newPassword);
+                    data['password'] = newHashPassword;
+                    console.log(newHashPassword)
+                    console.log(data);
+                  } else {
+                    console.log ('Password confirmation did not matched!');
+                    return response.redirect('/viewprofile');
+                  }      
+                } else {
+                  console.log('Re-enter old password')
+                  return response.redirect('/viewprofile');
+                } 
+              } else {
+                console.log('Please enter your old password!')
+                return response.redirect('/viewprofile');
+              }
+            }   
+        let update = await this.userService.updateUser(id, data);
+        if (update) {
+          console.log('update')
+
+          return response.redirect('/viewprofile');
+        }
+
+      }
+    }
+  }
+
+  public async deleteAccount(request: Request, response: Response){
+    // let a = request.param.get('id');
+    let userId = request.param('id');
+    console.log(userId, 'user id')
+
+    let removeAccount = await this.userService.destroy(parseInt(userId));
+    if (removeAccount) {
+      console.log('account removed')
+    }
+    return response.redirect('/');
+  }
+
   public getRemainingHours(rawdate) {
     let hrnow = new Date();
     console.log('normat date function :', hrnow.getUTCHours())
@@ -282,7 +436,6 @@ export class UserController extends Controller {
 
   }
 
-
   public async deleteMyAccount(request: Request, response: Response) {
     let id;
     if (request.session.get('loggedUser')) {
@@ -299,6 +452,4 @@ export class UserController extends Controller {
 
     return response.redirect('/login');
   }
-
-
 }

@@ -2,10 +2,11 @@ import { Controller, Request, Response } from 'chen/web';
 import { injectable } from 'chen/core';
 import { SearchAlertsService } from 'app/services';
 
+
 @injectable
 export class SearchAlertsController extends Controller {
 
-  constructor(private searchAlertService: SearchAlertsService) {
+  constructor(private searchAlertsService: SearchAlertsService) {
     super();
   }
 
@@ -30,7 +31,7 @@ export class SearchAlertsController extends Controller {
       user_id_fk: request.session.get('loggedUser').id
     }
     console.log(data)
-    let save = await this.searchAlertService.saveSearchAlert(data);
+    let save = await this.searchAlertsService.saveSearchAlert(data);
     console.log(save);
     if (!save) {
       console.log('item saved')
@@ -39,4 +40,51 @@ export class SearchAlertsController extends Controller {
     console.log(data);
     return response.json({data: {alert: 'created'} });
   }
+
+  // public async viewSearchAlert(request: Request, response: Response): Promise<any> {
+
+
+  //  if (request.session.get('loggedUser')) {
+  //    console.log ('user.id');
+  //    console.log (request.session.get('loggedUser').id);
+  //    let id = request.session.get('loggedUser').id;
+
+  //   if (id) {
+  //     let offset = 1;
+  //     let limit = 10;
+  //     console.log('view alerts')
+  //     let searchAlerts = await this.searchAlertService.viewSearchAlerts(id, (offset - 1) * limit, limit);
+  //     let alert = [];
+
+  //     searchAlerts.forEach(item => {
+  //       let jsonItem = item.toJSON();
+  //       alert.push(jsonItem);
+  //     });
+  //     return response.render('profile', { data: alert });
+  //     }
+  //   } else {
+  //     return response.redirect('/login');
+  //   }
+  //  }
+
+  public async removeAlert(request: Request, response: Response) {
+    let alertId = request.param('id');
+    // console.log(alertId, 'alert id')
+    let removeAlert = await this.searchAlertsService.destroy(parseInt(alertId));
+    if (removeAlert) {
+      console.log('alert removed')
+    }
+    return response.redirect('/viewprofile');
+  }
+
+   public async removeAlertFromNewPage(request: Request, response: Response) {
+    let alertId = request.param('id');
+    // console.log(alertId, 'alert id')
+    let removeAlert = await this.searchAlertsService.destroy(parseInt(alertId));
+    if (removeAlert) {
+      console.log('alert removed')
+    }
+    return response.redirect('/viewmysearch-alerts');
+  }
+
 }

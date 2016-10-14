@@ -16,7 +16,7 @@
     function login(data) {
           if(!data){
             data = {
-              email: $('input#login-email').val(),
+              email: $('input#login-email').val(), 
               password: $('input#login-pass').val()
             }
           }
@@ -41,7 +41,7 @@
               // }
               $('#log-alert').hide();
               $('#alertlabel').html(status);
-              window.location.href="http://localhost:3000/search";
+              window.location.href="http://localhost:3000/viewprofile";
             } else {
               $('#log-alert').show();
               $('#alertlabel').html(status);
@@ -101,8 +101,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="#">Browse objects</a></li>
-            <li><a href="#about">See realized prices</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance={{relevance}}">Browse objects</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=realized&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=realized&relevance={{relevance}}">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
@@ -120,10 +120,12 @@
           </li>
             <li>
                 <div class="search">
-                  <div class="form-group ">
-                    <input type="text" class="form-control" id="inputValidation" placeholder="Quick Search">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                  </div>
+                  <form method="get" action="/search">
+                    <div class="form-group ">
+                      <input type="text" class="form-control" id="inputValidation" name = "searchItem" placeholder="Quick Search">
+                      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                  </form>
                 </div>
             </li>
           </ul>
@@ -140,7 +142,7 @@
     <div class="container">
       <div class="row">
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-home"></i></a>
+          <li><a href="/"><i class="fa fa-home"></i></a>
           </li>
           <li><a href="#">Register</a>
           </li>
@@ -195,7 +197,7 @@
   <div class="container">
     <div class="row">
       <div class="text-left item col-sm-3 col-md-3">
-        <a href="#"><img src="/assets/images/logo.png" /></a>
+        <a href="/"><img src="/assets/images/logo.png" /></a>
       </div>
       <div class="item col-sm-6 col-md-6">
         <span>

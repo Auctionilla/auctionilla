@@ -11,11 +11,8 @@
 
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
-
-  <style type="text/css">
-
-
-  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  
 </head>
 
 <body>
@@ -32,21 +29,29 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html"><img src="/assets/images/logo.png" alt="logo" /></a>
+          <a class="navbar-brand" href="/"><img src="/assets/images/logo.png" alt="logo" /></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Browse objects</a></li>
-            <li><a href="#about">See realized prices</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance={{relevance}}">Browse objects</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=realized&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=realized&relevance={{relevance}}">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li>
+             <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ 'red' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
+            <ul class="dropdown-menu" style="background-color: white ">
+                <li><a style="color:black;" href="/viewprofile">My Profile </a></li>
+                <li><a style="color:black;" href="/logout">Log Out</a></li>
+            </ul>
+          </li>
             <li>
                 <div class="search">
-                  <div class="form-group ">
-                    <input type="text" class="form-control" id="inputValidation" placeholder="Quick Search">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                  </div>
+                 <form method="get" action="/search">
+                    <div class="form-group ">
+                      <input type="text" class="form-control" id="inputValidation" name = "searchItem" placeholder="Quick Search">
+                      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                  </form>
                 </div>
             </li>
           </ul>
@@ -66,9 +71,9 @@
     <div class="container">
       <div class="row">
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-home"></i></a>
+          <li><a href="/"><i class="fa fa-home"></i></a>
           </li>
-          <li><a href="#">My Page</a>
+          <li><a href="/viewprofile">My Page</a>
           </li>
         </ol>
       </div>
@@ -107,6 +112,7 @@
                 <div class="search-table-content">
                   <table class="table table-striped table-condensed cf">
                     <thead class="cf">
+
                       <tr>
                         <th>Search words</th>
                         <th>Categories</th>
@@ -116,41 +122,27 @@
                       </tr>
                     </thead>
                     <tbody>
+                    {% for alert in searchAlert %}
                       <tr>
-                        <td>Lots (1197)</td>
-                        <td>Ancient Art</td>
-                        <td>10 countries</td>
-                        <td>All auction houses</td>
+                        <td> {{ alert.search_item }} </td>
+                        <td> {{ alert.category }} </td>
+                        <td> {{ alert.location }} </td>
+                        <td> {{ alert.auction_house }} </td>
                         <td>
-                          <a href="#" class="btn btn-red">View</a>
-                          <a href="#" class="btn-default btn"><i class="fa fa-times"></i></a>
+                          <a href="/search?searchItem={{ alert.search_item }}&browsing-auction=auction&category={{alert.category}}&countries={{alert.location}}&auction-house={{alert.auction_house}}&offset=&page=&radiobuttonsearch=&relevance=" class="btn btn-red">View</a>
+                          <a href="/remove-alert/{{alert.alertId}}" class="btn-default btn"><i class="fa fa-times"></i></a>
                         </td>
                       </tr>
-                      <tr>
-                        <td>Lots (1197)</td>
-                        <td>Ancient Art</td>
-                        <td>10 countries</td>
-                        <td>All auction houses</td>
-                        <td>
-                          <a href="#" class="btn btn-red">View</a>
-                          <a href="#" class="btn-default btn"><i class="fa fa-times"></i></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Lots (1197)</td>
-                        <td>Ancient Art</td>
-                        <td>10 countries</td>
-                        <td>All auction houses</td>
-                        <td><a href="#" class="btn btn-red">View</a>
-                          <a href="#" class="btn-default btn"><i class="fa fa-times"></i></a>
-                        </td>
-                      </tr>
+
+                    {% endfor %}
+
                     </tbody>
                   </table>
                 </div>
               </div>
-              <div class="see-all">
-                <a href="#">See All</a>
+              <div class="see-all"> 
+                {% if (totalSearch > searchAlertLimit) %} <a href="/viewmysearch-alerts">See All ({{ totalSearch }})</a> 
+                {% else %}{% endif %}
               </div>
             </div>
           </div>
@@ -168,18 +160,20 @@
               </p>
               <div class="favourite-auctions">
                 <h5>
-                  My favorites (5)
+                  My favorites ({{ totalFav }})
                 </h5>
-                <div class="main-object-list">
+                {% for fav in favorites %}
+                <div id="main-object-list" class="main-object-list">
+
                   <div class="object-item">
                     <div class="thumb-image image">
-                      <img src="/assets/images/objects/item-thumb-1.png" />
+                      <img src="{{fav.item_image}}" />
                     </div>
                     <div class="descriptions">
                       <div class="clearfix tag-timestamp">
                         <ul>
                           <li>
-                            <i class="fa fa-map-marker" aria-hidden="true"></i> USA
+                            <i class="fa fa-map-marker" aria-hidden="true"></i> {{fav.location }}
                           </li>
                           <li>
                             <i class="fa fa-clock-o" aria-hidden="true"></i> 2d 9h
@@ -188,31 +182,40 @@
                       </div>
                       <div class="content">
                         <h4>
-                          CHARLTON HESTON BEN HUR PHOTOGRAPH ...
+                         {{ fav.item_title }}
                         </h4>
                         <p>
-                          A large format color photograph of Charlton Heston in costume...
+                          {{ fav.item_description }}
                         </p>
                         <p class="estimate">
-                          Fixed Priced: 2,500 USD
+                          {{ fav.price_status }}: {{ fav.price }} {{ fav.currency }}
                         </p>
                       </div>
                       <div class="actions text-right clearfix">
                         <ul>
                           <li>
-                            <button class="btn btn"><i class="fa fa-heart-o"></i> <span>Save favorite</span></button>
+                            <form action="/removefav" method="post">
+                              <input type="hidden" value="{{ fav.favId }}" name="favId"/> 
+                              <button id="delFavBtn" type="submit" class="btn btn">
+                                <i class="fa fa-heart-o"></i> <span>Remove</span>
+                              </button>
+                            </form>
                           </li>
                           <li>
-                            <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button>
+                            <button class="btn red btn" ><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button>
                           </li>
                         </ul>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                {% endfor %}
               </div>
               <div class="see-all">
-                <a href="/viewmyfavorites">See All (5)</a>
+
+              {% if (totalFav > favLimit) %}  <a href="/viewmyfavorites">See All ({{ totalFav }}) </a>
+              {% else %}{% endif %}
               </div>
             </div>
           </div>
@@ -233,43 +236,44 @@
                 <br/>
                 <div class="row">
                   <div class="col-md-6">
-                    <div class="form-content">
-                      <form>
+                  {% for info in update %}
+                    <div class="form-content"">
+                      <form action="/viewprofile" method="post">
                         <div class="form-group">
                           <label>Your First Name</label>
-                          <input type="text" class="form-control" placeholder="First Name">
+                          <input type="text" class="form-control" placeholder="First Name" name="firstname" value="{{ info.first_name}}">
                         </div>
                         <div class="form-group">
                           <label>Your Last Name</label>
-                          <input type="text" class="form-control" placeholder="Last Name">
+                          <input type="text" class="form-control" placeholder="Last Name" name="lastname" value="{{ info.last_name }}">
                         </div>
                         <div class="form-group">
                           <label>City</label>
-                          <input type="text" class="form-control" placeholder="City">
+                          <input type="text" class="form-control" placeholder="City" name="city" value="{{ info.city }}">
                         </div>
                         <div class="form-group">
                           <label>Country</label>
-                          <input type="text" class="form-control" placeholder="Country">
+                          <input type="text" class="form-control" placeholder="Country" name="country" value="{{ info.country }}">
                         </div>
                         <div class="form-group">
                           <label>Phone</label>
-                          <input type="text" class="form-control" placeholder="Phone">
+                          <input type="text" class="form-control" placeholder="Phone" name="phone" value="{{ info.phone }}">
                         </div>
                         <br/>
                         <h5>
-                          Change password
+                         Change Password
                         </h5>
                         <div class="form-group">
-                          <label>Current password</label>
-                          <input type="password" class="form-control" placeholder="Password">
+                          <label id="oldPass"> Current password</label>
+                          <input type="password" class="form-control" placeholder="Password" name="oldpassword" id="pass1">
                         </div>
                         <div class="form-group">
-                          <label>New password</label>
-                          <input type="password" class="form-control" placeholder="New Password">
+                          <label id="newPass">New password</label>
+                          <input type="password" class="form-control" placeholder="New Password" name="newpassword" id="pass2">
                         </div>
                         <div class="form-group">
-                          <label>Re-type Password</label>
-                          <input type="password" class="form-control" placeholder="Confirm Password">
+                          <label id="confPass">Re-type Password</label>
+                          <input type="password" class="form-control" placeholder="Confirm Password" name="confirmnewpassword" id="pass3">
                         </div>
                         <div class="action-submit text-right">
                           <button type="submit" class="btn btn btn-submit btn-default">Save</button>
@@ -280,12 +284,8 @@
                 </div>
               </div>
               <div class="see-all">
-                <!-- <a href="/delete-user">Delete my account</a> -->
-                <a href="#" data-href="/delete.php?id=23" data-toggle="modal" data-target="#confirm-delete">Delete record #23</a><br>
-
-                <button class="btn btn-default" data-href="/delete-user" data-toggle="modal" data-target="#confirm-delete">
-                    Delete record #54
-                </button>
+                <a href="/delete-account/{{ info.id }}">Delete my account</a>
+                  {% endfor %}    
               </div>
             </div>
           </div>
@@ -293,52 +293,12 @@
       </div>
     </div>
   </div>
-</section>
-
-
-<!-- bootstrap modal -->
-
-    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
-                </div>
-
-                <div class="modal-body">
-                    <p>You are about to delete one track, this procedure is irreversible.</p>
-                    <p>Do you want to proceed?</p>
-                    <p class="debug-url"></p>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-danger btn-ok">Delete</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-    <script>
-        $('#confirm-delete').on('show.bs.modal', function(e) {
-            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-
-            $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
-        });
-    </script>
-
-<!--  -->
-
+</section> 
 <footer class="clearfix">
   <div class="container">
     <div class="row">
       <div class="text-left item col-sm-3 col-md-3">
-        <a href="#"><img src="/assets/images/logo.png" /></a>
+        <a href="/"><img src="/assets/images/logo.png" /></a>
       </div>
       <div class="item col-sm-6 col-md-6">
         <span>
@@ -355,9 +315,7 @@
 </footer>
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
-
 </script>
-
 <script src="/assets/js/vendor.js"></script>
 <script src="/assets/js/plugins.js"></script>
 <script src="/assets/js/main.js"></script>
