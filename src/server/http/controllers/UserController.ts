@@ -36,7 +36,9 @@ export class UserController extends Controller {
     return response.render('profile');
   }
 
-
+  public async viewAllAlerts(request: Request, response: Response) {
+    return response.render('allmysearchalerts')
+  }
 
   public async viewAllFavorite(request: Request, response: Response) {
     let id;
@@ -56,7 +58,7 @@ export class UserController extends Controller {
     }
 
     console.log('the data', id, offset , limit)
-    let allMyFavorite = await this.favoriteService.viewFavorites(id);
+    let allMyFavorite = await this.favoriteService.viewFavorites(id, offset, limit);
     let myfavorite = [];
     allMyFavorite.forEach(item => {
       let jsondata = item.toJSON();
@@ -69,8 +71,9 @@ export class UserController extends Controller {
     });
 
     console.log('this is the data', myfavorite);
-
-    return response.render('allmyfavorites', { myfavorite });
+    let totalFavorite = await this.favoriteService.countFavorites(id)
+    let total = totalFavorite.get('totalFav')
+    return response.render('allmyfavorites', { myfavorite, total, user: id, offset, limit });
   }
 
 

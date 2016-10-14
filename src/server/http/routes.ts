@@ -26,6 +26,7 @@ export default function (router: Router, config: Config) {
     router.route('POST', '/removefavorite', 'FavoriteController@removeFavorite');
     router.route('GET', '/viewprofile', 'UserController@viewProfile')
     router.route('GET', '/viewmyfavorites', 'UserController@viewAllFavorite')
+    router.route('GET', '/viewmysearch-alerts', 'UserController@viewAllAlerts')
   });
 
 

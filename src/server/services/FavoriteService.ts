@@ -45,12 +45,16 @@ export class FavoriteService extends SQLService<Favorite> {
     return this.query(query => {
        query.select('favorites.id as favId')
        query.select('ai.*')
+       query.select('as.site_emblem')
        query.select(this.db.connection().raw('datediff(ai.auction_date, curdate()) as days_remaining'))
        query.join('users as u', function () {
          this.on('u.id', '=', 'favorites.user_id_fk')
        });
        query.join('auction_items as ai', function() {
          this.on('ai.id', '=', 'favorites.item_id_fk')
+       });
+       query.join('auction_site as as', function () {
+         this.on('as.id', '=', 'ai.auction_site_fk')
        });
        query.where('favorites.user_id_fk', id)
        if (offset) {

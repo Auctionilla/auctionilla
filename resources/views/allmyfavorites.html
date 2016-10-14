@@ -27,15 +27,27 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html"><img src="/assets/images/logo.png" alt="logo" /></a>
+          <a class="navbar-brand" href="/"><img src="/assets/images/logo.png" alt="logo" /></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="#">Browse objects</a></li>
-            <li><a href="#about">See realized prices</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance={{relevance}}">Browse objects</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=realized&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=realized&relevance={{relevance}}">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li>
+            <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ 'red' if user else 'white' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
+            <ul class="dropdown-menu" style="background-color: white; ">
+              {% if user %}
+                <li><a style="color:black;" href="/viewprofile">My Profile </a></li>
+                <li><a style="color:black;" href="/logout">Log Out</a></li>
+              {% else %}
+                <li><a style="color:black;" href="/registration">Register</a></li>
+                <li><a style="color:black;" href="/login">Login</a></li>
+              {% endif %}
+            </ul>
+          </li>
             <li>
                 <div class="search">
                   <div class="form-group ">
@@ -63,7 +75,7 @@
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-home"></i></a>
           </li>
-          <li><a href="#">All my favorites </a>
+          <li><a href="#">My Page</a>
           </li>
         </ol>
       </div>
@@ -73,7 +85,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-11 profile-items">
-          <!-- <div class="profile-item">
+          <div class="profile-item">
             <div class="content">
               <h4>
                 Welcome!
@@ -82,11 +94,11 @@
                 On My pages you're able to save searches and have your stuff appraised
               </p>
             </div>
-          </div> -->
+          </div>
 
           <div class="profile-item">
             <div class="content">
-              <!-- <h4>
+              <h4>
                <span class="fa-stack fa-lg">
                   <i class="fa fa-circle fa-stack-2x"></i>
                   <i class="fa fa-thumb-tack fa-stack-1x fa-inverse"></i>
@@ -95,71 +107,106 @@
              </h4>
               <p>
                 Remind me when the auction is about to end
-              </p> -->
+              </p>
               <div class="favourite-auctions">
                 <h5>
-                  My favorites (5)
+                  My favorites ({{ total }}) {{offset}} {{limit}}
                 </h5>
                 {% for item in myfavorite %}
-                <div class="main-object-list" style="border:1px solid green">
-                  <div class="object-item" >
-                    <div class="thumb-image image">
-                      <img src="{{ item.item_image }}" />
-                    </div>
-                    <div class="descriptions">
-                      <div class="clearfix tag-timestamp">
-                        <ul>
-                          <li>
-                            <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
-                          </li>
-                          <li>
-                            <i class="fa fa-clock-o" aria-hidden="true"></i>
-                            {% if item.days_remaining > 0 %}
-                              {{ item.days_remaining }}d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h
-                            {% else %}
-                              0d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h
-                            {% endif %}
-                          </li>
-                        </ul>
+                  <div class="main-object-list">
+                    <div class="object-item">
+                      <div class="thumb-image image">
+                        <img src="{{ item.item_image }}" />
                       </div>
-                      <div class="content">
-                        <h4>
-                          {{ item.item_title}} ...
-                        </h4>
-                        <p>
-                          {{ item.item_description }}
-                        </p>
-                        <p class="estimate">
-                          {{ item.price_status }}: {{item.price}} {{item.currency}}
-                        </p>
-                      </div>
-                      <div class="actions text-right clearfix">
-                        <ul>
-                          <li>
-                            <button class="btn btn"><i class="fa fa-heart-o" style="color:red"></i> <span>favorite</span></button>
-                          </li>
-                          <li>
-                            <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button>
-                          </li>
-                        </ul>
+                      <div class="descriptions">
+                        <div class="clearfix tag-timestamp">
+                          <ul>
+                            <li>
+                              <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
+                            </li>
+                            <li>
+                              <i class="fa fa-clock-o" aria-hidden="true"></i>
+                              {% if item.days_remaining > 0 %}
+                                {{ item.days_remaining }}d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h
+                              {% else %}
+                                0d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h
+                              {% endif %}
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="content">
+                          <h4>
+                            {{ item.item_title }}
+                          </h4>
+                          <p>
+                            {{ item.item_description }}
+                          </p>
+                          <p class="estimate">
+                            {{ item.price_status }}: {{item.price}} {{item.currency}}
+                          </p>
+                        </div>
+                        <div class="actions text-right clearfix">
+                          <ul>
+                            <li class="auction-emblem">
+                              <a href="{{ item.site_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                            </li>
+                            <li>
+                              <button class="btn btn"><i class="fa fa-heart-o"></i> <span>Remove</span></button>
+                            </li>
+                            <li>
+                              <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
                 {% endfor %}
-
               </div>
               <div class="see-all">
-
-              </div>
-              <div id = "pagination">
-                <ul class="pagination">
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">4</a></li>
-                  <li><a href="#">5</a></li>
-                </ul>
+                 <nav aria-label="Page navigation">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <a class="page-link" href="/viewmyfavorites?offset={{1}}&limit={{limit}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="/viewmyfavorites?offset={{ offset - 1 if offset > 1 else offset }}&limit={{limit}}" aria-label="Next">
+                        <span aria-hidden="true">&lang;</span>
+                        <span class="sr-only">first</span>
+                      </a>
+                    </li>
+                    {% if (total / limit) < 16 %}
+                      {% for i in range(1, (total / limit ) | round)  %}
+                        <li class="page-item {{'active' if offset == i}}"><a class="page-link" href="/viewmyfavorites?offset={{i}}&limit={{limit}}">{{i}}</a></li>
+                      {% endfor %}
+                    {% else %}
+                      {% if offset >= ((total / limit) - 15) %}
+                        {% for i in range((total / limit) - 15, total / limit)  %}
+                          <li class="page-item {{'active' if offset == i}}"><a class="page-link" href="/viewmyfavorites?offset={{i}}&limit={{limit}}">{{i | round}}</a></li>
+                        {% endfor %}
+                      {% elif (offset >= 15 and offset < (total / limit) - 15 ) %}
+                        {% for i in range(offset - 7, offset + 7)  %}
+                          <li class="page-item {{'active' if offset == i}}"><a class="page-link" href="/viewmyfavorites?offset={{i}}&limit={{limit}}">{{i | round}}</a></li>
+                        {% endfor %}
+                      {% endif %}
+                    {% endif %}
+                    <li class="page-item">
+                      <a class="page-link" href="/viewmyfavorites?offset={{ offset + 1 if offset < (total / limit) - 1 else offset }}&limit={{limit}}" aria-label="Next">
+                        <span aria-hidden="true">&rang;</span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </li>
+                    <li class = "page-item">
+                      <a class="page-link" href="viewmyfavorites?offset={{(total / limit)}}&limit={{limit}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">last</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
               </div>
 
             </div>
@@ -178,7 +225,7 @@
       </div>
       <div class="item col-sm-6 col-md-6">
         <span>
-          © Antique.com 2016  | ALL RIGHTS RESERVED
+          © Antique.com 2016  | ALL RIGHTS RESERVED {{ (total / limit) }}
         </span>
       </div>
       <div class="item col-sm-3 col-md-3">
