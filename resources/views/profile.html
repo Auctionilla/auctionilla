@@ -12,7 +12,17 @@
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  
+  <script type="text/javascript">
+    function confirmation () {
+      var answer = confirm("Are you sure you want to delete your account?")
+      if (answer){
+         window.location.href="/delete-user";
+      }
+      else{
+
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -140,8 +150,8 @@
                   </table>
                 </div>
               </div>
-              <div class="see-all"> 
-                {% if (totalSearch > searchAlertLimit) %} <a href="/viewmysearch-alerts">See All ({{ totalSearch }})</a> 
+              <div class="see-all">
+                {% if (totalSearch > searchAlertLimit) %} <a href="/viewmysearch-alerts">See All ({{ totalSearch }})</a>
                 {% else %}{% endif %}
               </div>
             </div>
@@ -195,7 +205,7 @@
                         <ul>
                           <li>
                             <form action="/removefav" method="post">
-                              <input type="hidden" value="{{ fav.favId }}" name="favId"/> 
+                              <input type="hidden" value="{{ fav.favId }}" name="favId"/>
                               <button id="delFavBtn" type="submit" class="btn btn">
                                 <i class="fa fa-heart-o"></i> <span>Remove</span>
                               </button>
@@ -284,8 +294,10 @@
                 </div>
               </div>
               <div class="see-all">
-                <a href="/delete-account/{{ info.id }}">Delete my account</a>
-                  {% endfor %}    
+               <!--  <a href="/delete-account/{{ info.id }}">Delete my account</a> -->
+               <button type="button" onclick="confirmation()" class="btn btn-danger">Delete my account</button>
+                  {% endfor %}
+
               </div>
             </div>
           </div>
@@ -293,7 +305,13 @@
       </div>
     </div>
   </div>
-</section> 
+</section>
+
+
+<!-- modal delete verification -->
+
+
+<!-- end modal -->
 <footer class="clearfix">
   <div class="container">
     <div class="row">

@@ -321,7 +321,7 @@ export class UserController extends Controller {
         // console.log('this is my favorite', favoriteJsonItem);
         fav.push(favoriteJsonItem);
       });
-      
+
       let getUpdate = await this.userService.getUserUpdate(id);
       let info = [];
 
@@ -343,7 +343,7 @@ export class UserController extends Controller {
      console.log ('user.id');
      console.log (request.session.get('loggedUser').id);
      let id = request.session.get('loggedUser').id;
-     
+
       if (id) {
         let data = {
           first_name : request.input.get('firstname'),
@@ -353,7 +353,7 @@ export class UserController extends Controller {
           phone : request.input.get('phone')
 
         }
-       
+
         console.log(data, id)
 
             let newPassword = request.input.get('newpassword');
@@ -366,7 +366,7 @@ export class UserController extends Controller {
               // console.log(oldPassInput)
               // let test = await Hash.check( '1234567890' ,'$2a$10$UbcUJ.jqtZowHvtYji9W0e2DzWDSF.kLqeoYzSHyng7fm5Hnm1W4W')
               // console.log('password is match?', test)
-              
+
               if (oldPassInput) {
                 let check = await Hash.check(oldPassInput, String(oldPassDB.get('password')));
                 console.log('check?', check)
@@ -384,16 +384,16 @@ export class UserController extends Controller {
                   } else {
                     console.log ('Password confirmation did not matched!');
                     return response.redirect('/viewprofile');
-                  }      
+                  }
                 } else {
                   console.log('Re-enter old password')
                   return response.redirect('/viewprofile');
-                } 
+                }
               } else {
                 console.log('Please enter your old password!')
                 return response.redirect('/viewprofile');
               }
-            }   
+            }
         let update = await this.userService.updateUser(id, data);
         if (update) {
           console.log('update')
@@ -446,6 +446,7 @@ export class UserController extends Controller {
     let deactivate = await this.userService.deactivateMyAccount(id)
     if (deactivate) {
       console.log('deactivated your account')
+      request.session.flash('loggedUser');
     } else {
       console.log('deactivation failed')
     }
