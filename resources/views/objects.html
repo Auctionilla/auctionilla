@@ -22,7 +22,7 @@
           item_id: id
         }
         $.ajax({
-          method: 'POST', 
+          method: 'POST',
           url: '/addfavorite',
           contentType: 'application/json',
           dataType: 'json',
@@ -629,10 +629,10 @@
   <div class="object-pagination">
     <div class="container">
       <ul class="nav nav-justified">
-        <li>
+        <li class = "{{ 'disabled' if offset <= 1 }}">
           <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=1&page={{page}}&relevance={{ relevance }}"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a>
         </li>
-        <li>
+        <li class = "{{ 'disabled' if offset <= 1 }}">
           <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset - 1 if offset > 1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-left" aria-hidden="true"></i> </a>
         </li>
         {% if total == 0%}
@@ -672,10 +672,10 @@
           <li>last item</li>
 
         {% endif %}
-        <li>
+        <li class=" {{'disabled' if (offset >= (total / page))}}">
           <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset + 1 if (offset < (total / page)) else offset}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
         </li>
-        <li>
+        <li class=" {{'disabled' if (offset >= (total / page))}}">
           <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ total / page }}&page={{page}}&relevance={{ relevance }}"> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
         </li>
       </ul>
