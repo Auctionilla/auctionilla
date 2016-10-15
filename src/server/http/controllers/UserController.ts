@@ -24,7 +24,11 @@ export class UserController extends Controller {
     return response.render('login');
   }
 
-  public async registration(request: Request, response: Response) {
+  public async registration(request: Request, response: Response): Promise<any> {
+    if (request.session.get('loggedUser')) {
+      return response.redirect('/')
+    }
+
     let user;
     if (request.session.get('loggedUser')) {
       user = request.session.get('loggedUser').id;
