@@ -27,6 +27,8 @@ export default function (router: Router, config: Config) {
     router.route('GET', '/viewprofile', 'UserController@viewProfile')
     router.route('GET', '/viewmyfavorites', 'UserController@viewAllFavorite')
     router.route('GET', '/viewmysearch-alerts', 'UserController@viewAllAlerts')
+    router.route('GET', '/delete-user', 'UserController@deleteMyAccount')
+
   });
 
 
