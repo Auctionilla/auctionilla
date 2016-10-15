@@ -141,7 +141,7 @@
                       <tr>
                         <td> {{'( all new items )' if alert.search_item == '' else alert.search_item }} </td>
                         <td> {{alert.category if alert.category else '( all categories )'}} </td>
-                        <td> {{ alert.location if alert.location else '( all countries )' }} </td>
+                        <td> {{ alert.location if alert.location else ' all countries ' }} </td>
                         <td> {{ alert.auction_house if alert.auction_house else '( all auction house )' }} </td>
                         <td>
                           <a href="/search?searchItem={{ alert.search_item }}&browsing-auction=auction&category={{alert.category}}&countries={{alert.location}}&auction-house={{alert.auction_house}}&offset=&page=&radiobuttonsearch=&relevance=" class="btn btn-red">View</a>
@@ -191,7 +191,12 @@
                             <i class="fa fa-map-marker" aria-hidden="true"></i> {{fav.location }}
                           </li>
                           <li>
-                            <i class="fa fa-clock-o" aria-hidden="true"></i> 2d 9h
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            {% if item.days_remaining > 0 %}
+                              {{ item.days_remaining }}d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h
+                            {% else %}
+                              0d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h
+                            {% endif %}
                           </li>
                         </ul>
                       </div>
@@ -208,6 +213,9 @@
                       </div>
                       <div class="actions text-right clearfix">
                         <ul>
+                          <!-- <li class="auction-emblem">
+                              <a href="{{ item.site_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                            </li> -->
                           <li>
                             <form action="/removefav" method="post">
                               <input type="hidden" value="{{ fav.favId }}" name="favId"/>
@@ -253,11 +261,21 @@
                   <div class="col-md-6">
                   {% for info in update %}
                     <div class="form-content"">
-                    {% if alertuserupdate %}
-                    <div class="alert alert-warning">
-                      <strong>{{ alertuserupdate }}</strong>
-                    </div>
-                    {% endif %}
+                      {% if alertuserupdate %}
+                      <div class="alert alert-warning">
+                        <strong>{{ alertuserupdate }}</strong>
+                      </div>
+                      {% endif %}
+
+                    <!-- {% if alertpassupdate != '' %}
+                      {% if alertpassupdate == 'Password successfully updated.' %}
+                        {% if alertuserupdate %}
+                        <div class="alert alert-warning">
+                          <strong>{{ alertuserupdate }}</strong>
+                        </div>
+                        {% endif %}
+                      {% endif %}
+                    {% endif %} -->
                       <form action="/viewprofile" method="post">
                         <div class="form-group">
                           <label>Your First Name</label>
@@ -284,7 +302,7 @@
                          Change Password
                         </h5>
                         {% if alertpassupdate %}
-                        <div class="alert alert-warning">
+                        <div class="alert {{'alert-danger' if alertpassupdate != 'Password successfully updated.' else 'alert-success' }}">
                           <strong> {{ alertpassupdate }} </strong>
                         </div>
                         {% endif %}

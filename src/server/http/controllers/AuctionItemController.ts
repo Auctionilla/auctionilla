@@ -345,7 +345,7 @@ export class AuctionItemController extends Controller {
       thePick = viewPick.toJSON()
       // console.log(thePick)
     } else {
-      console.log('erro getting pick')
+      console.log('error getting pick')
     }
 
     let searches = await this.popularSearchService.showSearches(20);

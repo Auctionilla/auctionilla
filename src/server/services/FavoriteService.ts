@@ -29,7 +29,7 @@ export class FavoriteService extends SQLService<Favorite> {
       query.where('user_id_fk', user_id)
       query.where('item_id_fk', item_id)
     }).getOne();
-  } 
+  }
 
   getFavorite() {
      return this.query(query => {
@@ -52,7 +52,7 @@ export class FavoriteService extends SQLService<Favorite> {
   //       this.on('ai.id', '=', 'favorites.item_id_fk')
   //     });
   //     query.where('favorites.user_id_fk', id)
-      
+
   //     query.offset(offset);
   //     query.limit(limit);
   //   }).get();

@@ -39,9 +39,10 @@ export class UserController extends Controller {
   }
 
   public async viewProfile(request: Request, response: Response) {
-    if (request.session.get('updateAlert')) {
-        request.session.flash('updateAlert');
-      }
+    // if (request.session.get('updateAlert')) {
+    //     var testing = request.session.flash('updateAlert');
+    //     console.log('testing lang kung ma reretain', testing)
+    //   }
     return response.render('profile');
   }
 
@@ -323,7 +324,6 @@ export class UserController extends Controller {
       let countSearch = await this.searchAlertService.countSavedSearch(id);
       let totalSearch = countSearch.get('totalSearch');
       console.log(totalSearch, 'THIS IS THE TOTAL SEARCH');
-
       searchAlerts.forEach(item => {
         let searchAlertJsonItem = item.toJSON();
         alert.push(searchAlertJsonItem);
@@ -343,6 +343,10 @@ export class UserController extends Controller {
         // console.log('this is my favorite', favoriteJsonItem);
         fav.push(favoriteJsonItem);
       });
+      fav.forEach(async(data) => {
+        let timeremaining = this.getRemainingHours(String(data['auction_date']))
+        data['timeremaining'] = timeremaining;
+      });
 
       let getUpdate = await this.userService.getUserUpdate(id);
       let info = [];
@@ -355,10 +359,21 @@ export class UserController extends Controller {
       let alertpassupdate;
       let alertuserupdate;
       if (request.session.get('updateAlert')) {
-        alertuserupdate = request.session.get('updateAlert').userupdate
-        alertpassupdate = request.session.get('updateAlert').passupdate
-        console.log('this is the user alert' ,alertpassupdate , alertuserupdate )
+        alertuserupdate = request.session.flash('updateAlert').alertuser
       }
+      if (request.session.get('passAlert')) {
+        alertpassupdate = request.session.flash('passAlert').alertpass
+      }
+      console.log('this is the user alert' ,alertpassupdate , alertuserupdate )
+
+      ////=============================update user here==========================================
+
+
+
+      ///===================================update user end =====================================
+
+
+
 
       return response.render('profile', { favLimit, searchAlertLimit, totalFav, totalSearch, searchAlert: alert, favorites: fav, update : info, alertpassupdate, alertuserupdate });
       }
@@ -376,9 +391,9 @@ export class UserController extends Controller {
      let id = request.session.get('loggedUser').id;
 
       if (id) {
-        if (request.session.get('updateAlert')) {
-          request.session.flash('updateAlert');
-        }
+
+
+
         let data = {
           first_name : request.input.get('firstname'),
           last_name : request.input.get('lastname'),
@@ -389,17 +404,20 @@ export class UserController extends Controller {
         }
 
         console.log(data, id)
-
             let newPassword = request.input.get('newpassword');
             console.log(newPassword)
             if (newPassword) {
               let oldPassDB = await this.userService.getOldPassword(id);
               console.log(oldPassDB.get('password'));
+
+              if (String(newPassword).length < 6) {
+                alertpass = 'Password too short!'
+                request.session.set('updateAlert', { alertuser })
+                request.session.set('passAlert', { alertpass })
+                return response.redirect('/viewprofile')
+              }
+
               let oldPassInput = request.input.get('oldpassword');
-              // let oldPassInput = await Hash.make(oldPass);
-              // console.log(oldPassInput)
-              // let test = await Hash.check( '1234567890' ,'$2a$10$UbcUJ.jqtZowHvtYji9W0e2DzWDSF.kLqeoYzSHyng7fm5Hnm1W4W')
-              // console.log('password is match?', test)
 
               if (oldPassInput) {
                 let check = await Hash.check(oldPassInput, String(oldPassDB.get('password')));
@@ -420,16 +438,25 @@ export class UserController extends Controller {
                   } else {
                     console.log ('Password confirmation did not matched!');
                     alertpass = 'Password did not match!';
+                    request.session.set('updateAlert', { alertuser })
+                    request.session.set('passAlert', { alertpass })
+                    return response.redirect('/viewprofile')
                     //return response.redirect('/viewprofile');
                   }
                 } else {
                   console.log('Re-enter old password')
-                  alertpass = 'Password did not match!';
+                  alertpass = 'Old password incorrect!';
+                  request.session.set('updateAlert', { alertuser })
+                  request.session.set('passAlert', { alertpass })
+                  return response.redirect('/viewprofile')
                   //return response.redirect('/viewprofile');
                 }
               } else {
                 console.log('Please enter your old password!')
                 alertpass = 'Please enter your old password';
+                request.session.set('updateAlert', { alertuser })
+                request.session.set('passAlert', { alertpass })
+                return response.redirect('/viewprofile')
                 //return response.redirect('/viewprofile');
               }
             }
@@ -438,7 +465,8 @@ export class UserController extends Controller {
           alertuser = 'Successfully updated your account'
 
           console.log('update', alertuser, alertpass )
-          request.session.set('updateAlert', { userupdate: alertuser, passupdate: alertpass })
+          request.session.set('updateAlert', { alertuser })
+          request.session.set('passAlert', { alertpass })
 
         }
 

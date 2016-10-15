@@ -8,8 +8,8 @@ export default function (router: Router, config: Config) {
   router.route('POST', '/register', 'UserController@register');
   router.route('GET', '/registration', 'UserController@registration');
   router.route('GET', '/verify-account/:verification_code/:id', 'UserController@verifyAccount');
-  router.route('GET', '/viewprofile', 'UserController@viewSearchAlertAndFavorites');
-  router.route('POST', '/viewprofile', 'UserController@updateUserPost');
+  // router.route('GET', '/viewprofile', 'UserController@viewSearchAlertAndFavorites');
+  // router.route('POST', '/viewprofile', 'UserController@updateUserPost');
 
   router.route('GET', '/search', 'AuctionItemController@searchItem');
   router.route('GET', '/getcategories', 'CategoryController@getCategories');
@@ -25,19 +25,23 @@ export default function (router: Router, config: Config) {
     router.route('GET', '/logout', 'UserController@logout');
     router.route('POST', '/addfavorite', 'FavoriteController@addFavorite');
 
-    router.route('POST', '/removefavorite-profile', 'FavoriteController@removeFavoriteFromProfile'); 
+    router.route('POST', '/removefavorite-profile', 'FavoriteController@removeFavoriteFromProfile');
     router.route('POST', '/removefav', 'FavoriteController@removeFavoriteFromProfile');
     router.route('GET', '/remove-alert/:id', 'SearchAlertsController@removeAlert');
     router.route('GET', '/delete-account/:id', 'UserController@deleteAccount');
 
     router.route('POST', '/removefavorite', 'FavoriteController@removeFavorite');
-    router.route('GET', '/viewprofile', 'UserController@viewProfile')
+    //router.route('GET', '/viewprofile', 'UserController@viewProfile')
     router.route('GET', '/viewmyfavorites', 'UserController@viewAllFavorite')
     router.route('GET', '/viewmysearch-alerts', 'UserController@viewAllAlerts')
     router.route('GET', '/remove-alert-all/:id', 'SearchAlertsController@removeAlertFromNewPage')
 
     router.route('GET', '/delete-user', 'UserController@deleteMyAccount')
     router.route('POST', '/removeFavAll', 'FavoriteController@removeFavoriteFromNew')
+
+
+    router.route('GET', '/viewprofile', 'UserController@viewSearchAlertAndFavorites');
+    router.route('POST', '/viewprofile', 'UserController@updateUserPost');
 
   });
 }
