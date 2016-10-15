@@ -355,7 +355,7 @@ export class UserController extends Controller {
         let updateJson = item.toJSON();
         info.push(updateJson);
       });
-      console.log(info);
+      console.log(fav);
       let alertpassupdate;
       let alertuserupdate;
       if (request.session.get('updateAlert')) {

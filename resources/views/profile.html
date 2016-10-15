@@ -192,10 +192,10 @@
                           </li>
                           <li>
                             <i class="fa fa-clock-o" aria-hidden="true"></i>
-                            {% if item.days_remaining > 0 %}
-                              {{ item.days_remaining }}d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h
+                            {% if fav.days_remaining > 0 %}
+                              {{ fav.days_remaining }}d {{fav.timeremaining if (fav.timeremaining > 0) else '0' }}h
                             {% else %}
-                              0d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h
+                              0d {{fav.timeremaining if (fav.timeremaining > 0) else '0' }}h
                             {% endif %}
                           </li>
                         </ul>
