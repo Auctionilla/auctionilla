@@ -13,6 +13,10 @@ export class IndexController extends Controller {
     let today = new Date().toDateString();
     // let pickDay = new Date()
     // let current = pickDay.getFullYear() + '-' + pickDay.getMonth() + '-' + pickDay.getDate();
+    if (request.session.get('updateAlert')) {
+      request.session.flash('updateAlert');
+    }
+
 
 
     let fav = await this.favoriteService.getFavorite();

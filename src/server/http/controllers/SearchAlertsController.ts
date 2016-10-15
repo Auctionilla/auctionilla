@@ -16,23 +16,47 @@ export class SearchAlertsController extends Controller {
 
 
   public async createSearchAlert(request: Request, response: Response) {
+    let user;
     if (request.session.get('loggedUser')) {
-      let user = request.session.get('loggedUser').id;
+      user = request.session.get('loggedUser').id;
       if (!user) {
         return response.redirect('/login')
       }
     }
-
+    let auction_house = request.input.get('auction_house')
+    // if (auction_house == 'all auction houses'){
+    //   auction_house = '';
+    // }
+    let category = request.input.get('category');
+    // if (category == 'all categories') {
+    //   category = '';
+    // }
     let data = {
       searchItem: String(request.input.get('search_item')).toLowerCase(),
-      category: request.input.get('category'),
-      auctionHouse: request.input.get('auction_house'),
+      category: category,
+      auctionHouse: auction_house,
       location: request.input.get('location'),
       user_id_fk: request.session.get('loggedUser').id
     }
-    console.log(data)
+
+    let checkIfExist = await this.searchAlertsService.checkIfAlertExist(data.user_id_fk, data.searchItem, data.category, data.location, data.auctionHouse)
+    let datasearch = [];
+    checkIfExist.forEach(item => {
+      let js = item.toJSON();
+      datasearch.push(js)
+      console.log(js);
+    })
+    //console.log('the thing is existing', checkIfExist.get('id'))
+    if (datasearch.length > 0) {
+
+
+      console.log('search alert is already existing');
+      return response.json({data: {alert: 'created'} });
+    }
+
+
     let save = await this.searchAlertsService.saveSearchAlert(data);
-    console.log(save);
+
     if (!save) {
       console.log('item saved')
     }
@@ -66,6 +90,7 @@ export class SearchAlertsController extends Controller {
   //     return response.redirect('/login');
   //   }
   //  }
+
 
   public async removeAlert(request: Request, response: Response) {
     let alertId = request.param('id');

@@ -39,19 +39,32 @@ export class UserController extends Controller {
   }
 
   public async viewProfile(request: Request, response: Response) {
+    if (request.session.get('updateAlert')) {
+        request.session.flash('updateAlert');
+      }
     return response.render('profile');
   }
 
   public async viewAllAlerts(request: Request, response: Response) {
+    let offset = 1;
+    let limit = 10;
+    if (request.input.get('offset')) {
+      offset = request.input.get('offset')
+    }
+    if (request.input.get('page')) {
+      limit = request.input.get('page')
+    }
 
     if (request.session.get('loggedUser')) {
      console.log ('user.id');
      console.log (request.session.get('loggedUser').id);
      let id = request.session.get('loggedUser').id;
-
+     if (request.session.get('updateAlert')) {
+        request.session.flash('updateAlert');
+      }
       if (id) {
 
-        let allSearchAlerts = await this.searchAlertService.viewAllSearchAlerts(id);
+        let allSearchAlerts = await this.searchAlertService.viewAllSearchAlerts(id, (offset - 1) * limit, limit);
         let allAlerts = [];
 
           allSearchAlerts.forEach(item => {
@@ -59,7 +72,10 @@ export class UserController extends Controller {
             allAlerts.push(allJson);
           });
           console.log(allAlerts)
-        return response.render('allmysearchalerts', { all : allAlerts })
+
+          let gettotal = await this.searchAlertService.countSavedSearch(id)
+          let total = gettotal.get('totalSearch')
+        return response.render('allmysearchalerts', { all : allAlerts , offset, limit, total })
       }
     }
   }
@@ -72,6 +88,9 @@ export class UserController extends Controller {
       id = request.session.get('loggedUser').id;
 
     }
+    if (request.session.get('updateAlert')) {
+          request.session.flash('updateAlert');
+        }
     let getoffset = request.input.get('offset');
     if (getoffset) {
       offset = parseInt(getoffset);;
@@ -145,19 +164,19 @@ export class UserController extends Controller {
     if (checkIfexistEmail) {
       console.log('email already exist');
       alert = 'email exist';
-
-      let chkifnotactive = checkIfexistEmail.get('is_active');
-      if (chkifnotactive == false) {
-        console.log('this is not active')
-        if (Hash.check(formPass1, checkIfexistEmail.get('password'))) {
-          console.log('not active pass match')
-          let activate = await this.userService.reactivateMyAccount(formEmail)
-          if (activate) {
-            activation = 'activated';
-          }
-        }
-      }
-
+      // =============email reactivation ========================
+      // let chkifnotactive = checkIfexistEmail.get('is_active');
+      // if (chkifnotactive == false) {
+      //   console.log('this is not active')
+      //   if (Hash.check(formPass1, checkIfexistEmail.get('password'))) {
+      //     console.log('not active pass match')
+      //     let activate = await this.userService.reactivateMyAccount(formEmail)
+      //     if (activate) {
+      //       activation = 'activated';
+      //     }
+      //   }
+      // }
+      //=========================================================
      // return response.render('register', { alert: 'email exist' })
     } else {
       let registerUser = await this.userService.createUser(userDetails);
@@ -178,7 +197,7 @@ export class UserController extends Controller {
             <td>
               <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td bgcolor="#EB7035" style="padding: 12px 18px 12px 18px; -webkit-border-radius:3px; border-radius:3px" align="center"><a href="http://localhost:3000/verify-account/${base64email}/${id}" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #ffffff; text-decoration: none; display: inline-block;">Click Here. &rarr;</a></td>
+                  <td bgcolor="#EB7035" style="padding: 12px 18px 12px 18px; -webkit-border-radius:3px; border-radius:3px" align="center"><a href="http://${this.context.baseUrl(`/verify-account/${base64email}/${id}`)}" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #ffffff; text-decoration: none; display: inline-block;">Click Here. &rarr;</a></td>
                 </tr>
               </table>
             </td>
@@ -281,6 +300,9 @@ export class UserController extends Controller {
 
   public async logout(request: Request, response: Response) {
     request.session.flash('loggedUser');
+    if (request.session.get('updateAlert')) {
+      request.session.flash('updateAlert');
+    }
     return response.redirect('/');
   }
 
@@ -330,7 +352,15 @@ export class UserController extends Controller {
         info.push(updateJson);
       });
       console.log(info);
-      return response.render('profile', { favLimit, searchAlertLimit, totalFav, totalSearch, searchAlert: alert, favorites: fav, update : info });
+      let alertpassupdate;
+      let alertuserupdate;
+      if (request.session.get('updateAlert')) {
+        alertuserupdate = request.session.get('updateAlert').userupdate
+        alertpassupdate = request.session.get('updateAlert').passupdate
+        console.log('this is the user alert' ,alertpassupdate , alertuserupdate )
+      }
+
+      return response.render('profile', { favLimit, searchAlertLimit, totalFav, totalSearch, searchAlert: alert, favorites: fav, update : info, alertpassupdate, alertuserupdate });
       }
     } else {
       return response.redirect('/login');
@@ -338,13 +368,17 @@ export class UserController extends Controller {
    }
 
   public async updateUserPost(request: Request, response: Response): Promise<any> {
-
+    let alertuser;
+    let alertpass;
     if (request.session.get('loggedUser')) {
      console.log ('user.id');
      console.log (request.session.get('loggedUser').id);
      let id = request.session.get('loggedUser').id;
 
       if (id) {
+        if (request.session.get('updateAlert')) {
+          request.session.flash('updateAlert');
+        }
         let data = {
           first_name : request.input.get('firstname'),
           last_name : request.input.get('lastname'),
@@ -376,33 +410,42 @@ export class UserController extends Controller {
                   let confirmNewPassword = request.input.get ('confirmnewpassword');
                   if (newPassword == confirmNewPassword) {
                     console.log('password matched!');
+                    alertpass = 'Password successfully updated.';
                     console.log(newPassword);
                     let newHashPassword = await Hash.make(newPassword);
                     data['password'] = newHashPassword;
                     console.log(newHashPassword)
                     console.log(data);
+
                   } else {
                     console.log ('Password confirmation did not matched!');
-                    return response.redirect('/viewprofile');
+                    alertpass = 'Password did not match!';
+                    //return response.redirect('/viewprofile');
                   }
                 } else {
                   console.log('Re-enter old password')
-                  return response.redirect('/viewprofile');
+                  alertpass = 'Password did not match!';
+                  //return response.redirect('/viewprofile');
                 }
               } else {
                 console.log('Please enter your old password!')
-                return response.redirect('/viewprofile');
+                alertpass = 'Please enter your old password';
+                //return response.redirect('/viewprofile');
               }
             }
         let update = await this.userService.updateUser(id, data);
         if (update) {
-          console.log('update')
+          alertuser = 'Successfully updated your account'
 
-          return response.redirect('/viewprofile');
+          console.log('update', alertuser, alertpass )
+          request.session.set('updateAlert', { userupdate: alertuser, passupdate: alertpass })
+
         }
 
       }
     }
+    //end of function
+    return response.redirect('/viewprofile');
   }
 
   public async deleteAccount(request: Request, response: Response){

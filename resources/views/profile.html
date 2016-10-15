@@ -22,6 +22,11 @@
 
       }
     }
+
+    function gotoSite(site) {
+
+      window.location.href = site;
+    }
   </script>
 </head>
 
@@ -134,10 +139,10 @@
                     <tbody>
                     {% for alert in searchAlert %}
                       <tr>
-                        <td> {{ alert.search_item }} </td>
-                        <td> {{ alert.category }} </td>
-                        <td> {{ alert.location }} </td>
-                        <td> {{ alert.auction_house }} </td>
+                        <td> {{'( all new items )' if alert.search_item == '' else alert.search_item }} </td>
+                        <td> {{alert.category if alert.category else '( all categories )'}} </td>
+                        <td> {{ alert.location if alert.location else '( all countries )' }} </td>
+                        <td> {{ alert.auction_house if alert.auction_house else '( all auction house )' }} </td>
                         <td>
                           <a href="/search?searchItem={{ alert.search_item }}&browsing-auction=auction&category={{alert.category}}&countries={{alert.location}}&auction-house={{alert.auction_house}}&offset=&page=&radiobuttonsearch=&relevance=" class="btn btn-red">View</a>
                           <a href="/remove-alert/{{alert.alertId}}" class="btn-default btn"><i class="fa fa-times"></i></a>
@@ -212,7 +217,7 @@
                             </form>
                           </li>
                           <li>
-                            <button class="btn red btn" ><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button>
+                            <button onclick="gotoSite('{{ fav.auction_url }}')" class="btn red btn" ><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button>
                           </li>
                         </ul>
                       </div>
@@ -248,6 +253,11 @@
                   <div class="col-md-6">
                   {% for info in update %}
                     <div class="form-content"">
+                    {% if alertuserupdate %}
+                    <div class="alert alert-warning">
+                      <strong>{{ alertuserupdate }}</strong>
+                    </div>
+                    {% endif %}
                       <form action="/viewprofile" method="post">
                         <div class="form-group">
                           <label>Your First Name</label>
@@ -273,6 +283,11 @@
                         <h5>
                          Change Password
                         </h5>
+                        {% if alertpassupdate %}
+                        <div class="alert alert-warning">
+                          <strong> {{ alertpassupdate }} </strong>
+                        </div>
+                        {% endif %}
                         <div class="form-group">
                           <label id="oldPass"> Current password</label>
                           <input type="password" class="form-control" placeholder="Password" name="oldpassword" id="pass1">
@@ -295,7 +310,7 @@
               </div>
               <div class="see-all">
                <!--  <a href="/delete-account/{{ info.id }}">Delete my account</a> -->
-               <button type="button" onclick="confirmation()" class="btn btn-danger">Delete my account</button>
+               <button type="button" onclick="confirmation()" class="btn btn-danger">Deactivate my account</button>
                   {% endfor %}
 
               </div>

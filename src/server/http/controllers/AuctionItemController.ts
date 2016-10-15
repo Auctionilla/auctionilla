@@ -193,6 +193,10 @@ export class AuctionItemController extends Controller {
       console.log(loggedUserId);
       user = loggedUserId;
     }
+    if (request.session.get('updateAlert')) {
+      request.session.flash('updateAlert');
+    }
+
     let search = '';
     let category = '';
     let offset = 1;

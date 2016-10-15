@@ -16,7 +16,7 @@
     function login(data) {
           if(!data){
             data = {
-              email: $('input#login-email').val(), 
+              email: $('input#login-email').val(),
               password: $('input#login-pass').val()
             }
           }
@@ -41,7 +41,7 @@
               // }
               $('#log-alert').hide();
               $('#alertlabel').html(status);
-              window.location.href="http://localhost:3000/viewprofile";
+              window.location.href="/viewprofile";
             } else {
               $('#log-alert').show();
               $('#alertlabel').html(status);

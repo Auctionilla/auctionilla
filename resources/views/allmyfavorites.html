@@ -11,6 +11,14 @@
 
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
+
+  <script type="text/javascript">
+    function gotoSite(site) {
+      alert(site)
+      window.location.href = site;
+    }
+  </script>
+
 </head>
 
 <body>
@@ -159,7 +167,7 @@
                             </form>
                             </li>
                             <li>
-                              <a href="/"> <button type="submit" class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button></a>
+                              <a href="{{item.auction_url}}"> <button type="submit" class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button></a>
                             </li>
                           </ul>
                         </div>

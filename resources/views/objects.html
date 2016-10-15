@@ -244,14 +244,14 @@
         <label style="text-decoration: underline;" onclick="gotologin()">
         Create search alert
         {% if search %}
-            for <b> '{{ search if search != '' else ' all new item' }}' </b>
+            for <b> '{{ search if search != '' else ' all new item' }} ' </b>
         {% endif %}
         </label>. We'll email you when we got what you're looking for.
         {% endif %}
       </span>
       </div>
       <div id = "saveSearchContainerDone" style="display:none">
-      <span class="glyphicon glyphicon-ok"></span> You've now saved the search word '{{ search if search != '' else ' all new item'}}''
+      <span class="glyphicon glyphicon-ok"></span> You've now saved the search word '{{ search if search != '' else ' all new item'}}'
       <h5><small style="color:white">
       {% if category %}
         <strong>category: </strong> {{category}}
