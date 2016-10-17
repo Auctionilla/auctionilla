@@ -35,6 +35,7 @@ export class SearchAlertsService extends SQLService<SearchAlerts> {
       query.where('search_alerts.user_id_fk', id)
       query.offset(offset);
       query.limit(limit);
+      query.orderBy('search_alerts.created_at', 'desc')
     }).get();
   }
 

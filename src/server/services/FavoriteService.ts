@@ -33,7 +33,7 @@ export class FavoriteService extends SQLService<Favorite> {
 
   getFavorite() {
      return this.query(query => {
-       query.select('item_id_fk as ite`m')
+       query.select('item_id_fk as item')
        query.count('user_id_fk as users')
        query.groupByRaw('item_id_fk')
        query.orderBy('users', 'desc')
@@ -87,6 +87,8 @@ export class FavoriteService extends SQLService<Favorite> {
        if (limit) {
          query.limit(limit);
        }
+       query.orderBy('favorites.created_at', 'desc')
+
     }).get();
   }
 

@@ -1,5 +1,5 @@
 import { Controller, Request, Response } from 'chen/web';
-import { injectable } from 'chen/core';
+import { injectable, _ } from 'chen/core';
 import { AuctionItemService, FavoriteService, PickOfTheDayService, CategoryService } from 'app/services';
 
 @injectable
@@ -16,13 +16,15 @@ export class IndexController extends Controller {
     if (request.session.get('updateAlert')) {
       request.session.flash('updateAlert');
     }
-
+    let randomnum = _.sample([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    console.log('this is a ramdom number', randomnum)
 
 
     let fav = await this.favoriteService.getFavorite();
     let pic = await this.pickOfTheDayService.getOneBy('id', 1);
     // console.log('pic date');
     // console.log(String(pic.get('updated_at')))
+    let newpicid = fav.get('item')
     let thepicdate = String(pic.get('updated_at'))
     console.log('current fav date')
     console.log(thepicdate);
@@ -33,8 +35,16 @@ export class IndexController extends Controller {
     console.log(today)
     if (thepicdate.indexOf(today) == -1) {
       console.log('not match date')
-      let setPic = await this.pickOfTheDayService.setPickOfTheDay(fav.get('item'))
+      let viewcurrent = await this.pickOfTheDayService.getOneBy('id', 1)
+      console.log('current favorite', viewcurrent.get('item_id_fk'))
+      if (newpicid == viewcurrent.get('item_id_fk')) {
+        console.log('still the same item')
+        newpicid = _.sample([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+      }
+      let setPic = await this.pickOfTheDayService.setPickOfTheDay(newpicid);
       if (setPic) {
+        let theitemid = fav.get('id')
+        console.log('the pick of the day', fav.get('user_id_fk'), theitemid)
         console.log('pick set!')
       }
     }
