@@ -24,13 +24,23 @@ export class IndexController extends Controller {
     let pic = await this.pickOfTheDayService.getOneBy('id', 1);
     // console.log('pic date');
     // console.log(String(pic.get('updated_at')))
-    let newpicid = fav.get('item')
-    let thepicdate = String(pic.get('updated_at'))
+    let newpicid;
+    let thepicdate;
+    if (fav) {
+       newpicid = fav.get('item');
+    } else {
+      newpicid = 1;
+    }
+    if (pic) {
+      thepicdate = String(pic.get('updated_at'))
+    } else {
+      thepicdate = today
+    }
     console.log('current fav date')
     console.log(thepicdate);
     console.log('the faveorite')
-    console.log(fav.get('item'))
-    console.log(fav.get('users'))
+    //console.log(fav.get('item'))
+    //console.log(fav.get('users'))
     console.log('today');
     console.log(today)
     if (thepicdate.indexOf(today) == -1) {
@@ -57,12 +67,12 @@ export class IndexController extends Controller {
 
 
     console.log(today);
-    let c = await this.auctionItemService.addHours(34);
-    console.log('this is the date', c.get('newdate'))
-    let d = await this.auctionItemService.addDate(c.get('newdate'));
-    if (d) {
-      console.log(d)
-    }
+    // let c = await this.auctionItemService.addHours(34);
+    //console.log('this is the date', c.get('newdate'))
+    // let d = await this.auctionItemService.addDate(c.get('newdate'));
+    // if (d) {
+    //   console.log(d)
+    // }
 
     // let getItems = await this.auctionItemService.getCountdownItems();
     // let temp = [];
