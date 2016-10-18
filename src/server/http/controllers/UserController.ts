@@ -198,7 +198,7 @@ export class UserController extends Controller {
             <td>
               <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td bgcolor="#EB7035" style="padding: 12px 18px 12px 18px; -webkit-border-radius:3px; border-radius:3px" align="center"><a href="http://${this.context.baseUrl(`/verify-account/${base64email}/${id}`)}" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #ffffff; text-decoration: none; display: inline-block;">Click Here. &rarr;</a></td>
+                  <td bgcolor="#EB7035" style="padding: 12px 18px 12px 18px; -webkit-border-radius:3px; border-radius:3px" align="center"><a href="${this.context.baseUrl(`/verify-account/${base64email}/${id}`)}" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #ffffff; text-decoration: none; display: inline-block;">Click Here. &rarr;</a></td>
                 </tr>
               </table>
             </td>
