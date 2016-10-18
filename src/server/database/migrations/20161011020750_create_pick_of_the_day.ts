@@ -7,7 +7,7 @@ import { knex } from 'chen/sql';
 export async function up(db: knex) {
   return db.schema.createTable('pick_of_the_day', table => {
     table.increments('id');
-    table.integer('item_id_fk').unsigned().notNullable();
+    table.integer('item_id_fk').unsigned().notNullable().defaultTo(1);
 
     table.timestamps();
 
