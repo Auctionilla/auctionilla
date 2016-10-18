@@ -24,13 +24,14 @@ export class IndexController extends Controller {
     let pic = await this.pickOfTheDayService.getOneBy('id', 1);
     // console.log('pic date');
     // console.log(String(pic.get('updated_at')))
-    let newpicid;
+    let newpicid;// = fav.get('item');
     let thepicdate;
     if (fav) {
        newpicid = fav.get('item');
     } else {
       newpicid = 1;
     }
+
     if (pic) {
       thepicdate = String(pic.get('updated_at'))
     } else {
@@ -53,8 +54,8 @@ export class IndexController extends Controller {
       }
       let setPic = await this.pickOfTheDayService.setPickOfTheDay(newpicid);
       if (setPic) {
-        let theitemid = fav.get('id')
-        console.log('the pick of the day', fav.get('user_id_fk'), theitemid)
+        // let theitemid = fav.get('id')
+        // console.log('the pick of the day', fav.get('user_id_fk'), theitemid)
         console.log('pick set!')
       }
     }

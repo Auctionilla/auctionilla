@@ -1,5 +1,5 @@
 
-import { AuctionSite, Category, AuctionItem } from 'app/models';
+import { AuctionSite, Category, AuctionItem, PickOfTheDay } from 'app/models';
 
 
 export async function seed() {
@@ -82,6 +82,11 @@ export async function seed() {
      let addtosite = await Category.connection().create(categories[item])
      console.log(addtosite)
   }
+
+
+
+  //seed pick of the day
+
 
   //===============================end seeding categories =================
 
@@ -220,7 +225,7 @@ export async function seed() {
     },
     item9: {
       item_title: 'Rolex Vintage Oyster Watch',
-      item_description: 'Ladies stainless steel 28mm Rolex Vintage Oyster manual wind watch with engraved bezel, flat dial, index and Arabic numerals, sword hands, signed crown, black lizard strap and tang buckle closure.',
+      item_description: 'Ladies stainless steel 28mm Rolex Vintage Oyster manual wind watch with engraved bezel...',
       auction_url: 'https://www.therealreal.com/products/women/fine-watches/leather-strap/rolex-2103832?sid=vg5cq9&utm_source=auctions&utm_medium=www.barnebys.com&cvosrc=cse.barnebys.barnebys&cvo_crid=%7Bcreative%7D&utm_content=therealreal&utm_campaign=barnebys',
       item_image: 'https://product-images4.therealreal.com/RLX21922_1_product.jpg',
       price_status: 'Fix price',
@@ -236,7 +241,7 @@ export async function seed() {
     },
     item10: {
       item_title: 'Unused Breitling Bentley GMT EB043210/BD23-222S',
-      item_description: 'Gents Breitling Bentley GMT in titanium on a rubber strap. Auto w/ subseconds, date, chronograph and world time. Unused with box and papers. Ref EB043210/BD23-222S. Circa 2015 Fine Unused Breitling Watch.',
+      item_description: 'Gents Breitling Bentley GMT in titanium on a rubber strap. ',
       auction_url: 'http://www.grayandsons.com/fine-watches/w519331-unused-breitling-bentley-gmt-eb043210.html?utm_source=auctions&utm_medium=www.barnebys.com&utm_content=gray-and-sons&utm_campaign=barnebys',
       item_image: 'http://www.grayandsons.com/media/catalog/product/cache/1/image/500x500/9df78eab33525d08d6e5fb8d27136e95/w/5/w519331_z.jpg',
       price_status: 'Fix price',
@@ -364,7 +369,7 @@ export async function seed() {
     },
     item18: {
       item_title: 'Yogi Berra Signed Black & White Wire Photo - Berra with Avila 7/24/51',
-      item_description: 'Yogi Berra is a name that will forever be synonymous with baseball. He dedicated decades of his life to baseball as a catcher, manager, and coach who played 19 seasons in Major League Baseball (MLB) (194663, 1965)',
+      item_description: 'Yogi Berra is a name that will forever be synonymous with baseball (194663, 1965).',
       auction_url: 'http://auction.steinersports.com/Yogi_Berra_Signed_Black___White_Wire_Photo___Berra-LOT63067.aspx?utm_source=auctions&utm_medium=www.barnebys.com&utm_content=the-fall-classic&utm_campaign=barnebys',
       item_image: 'https://d16tpmyokmwdws.cloudfront.net/lot.php?src=http%3A%2F%2Fauction.steinersports.com%2FItemImages%2F000063%2FCATALTD000120_med.jpeg&w=250&h=250&crop=true&bg=FFFFFF',
       price_status: 'Low estimate',
@@ -396,7 +401,7 @@ export async function seed() {
     },
     item520: {
       item_title: 'Manuel Alvarez Bravo (1902-2002) - Couple, ca.1940',
-      item_description: 'Gelatin silver print, printed later, signed and annotated in pencil verso, 24 x 18.8cm (9 1/2 x 7 3/8in)Provenance: Acquired directly from Colette Alvarez Urbajtel',
+      item_description: 'Gelatin silver print, printed later, signed and annotated in pencil verso ..',
       auction_url: 'http://clk.tradedoubler.com/click?p=255260&a=2453825&g=22215724&epi=fine-photographs&epi2=manuel-alvarez-bravo-1902-2002-couple-ca1940&url=http%3A%2F%2Fwww.dreweatts.com%2Fcms%2Fpages%2Flot%2F36233%2F84%3Futm_source%3Dauctions%26utm_medium%3Dwww.barnebys.com%26utm_content%3Dfine-photographs%26utm_campaign%3Dbarnebys',
       item_image: 'https://d16tpmyokmwdws.cloudfront.net/lot.php?src=http%3A%2F%2Fwww.dreweatts.com%2Fmedia%2Fdreweatts%2Finventory%2F4%2F7%2F3%2F473045-14.jpg&w=250&h=250&crop=true&bg=FFFFFF',
       price_status: 'Fix price',
@@ -541,12 +546,18 @@ export async function seed() {
 
   }
 
+
   for (var item in auctionItems) {
      console.log(auctionItems[item])
      let addtosite = await AuctionItem.connection().create(auctionItems[item])
      console.log(addtosite)
   }
 
+  let pick = {
+    item_id_fk: 1
+  }
+  let picoftheday = await PickOfTheDay.connection().create(pick)
+  console.log('pic seeded', picoftheday);
   console.log('seeder done')
 
 }
