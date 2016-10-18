@@ -199,7 +199,7 @@
             {% endfor %}
           </select>
           <button class="submit-search"><i class="fa fa-search"></i></button>
-
+            {% if browsing != 'realized' %}
             <div class="radio-buttons">
               <div class="radio">
                 <input type="radio" id = "radio1" value="objects"{{ "checked" if itemFilter == 'objects' }} name="radiobuttonsearch">
@@ -220,6 +220,7 @@
                 </label>
               </div>
             </div>
+            {% endif %}
         </div>
       </form>
     </div>
