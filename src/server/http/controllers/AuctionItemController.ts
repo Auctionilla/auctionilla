@@ -356,8 +356,12 @@ export class AuctionItemController extends Controller {
     });
     // console.log(data)
     // search return
-
-    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: convertedCountryName, relevance, itemFilter, user, browsing, thePick, popularSearches });
+    let catdesc;
+    let cat = await this.categoryService.getOneBy('category_name', category)
+    if (cat) {
+      catdesc = cat.get('description')
+    }
+    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: convertedCountryName, relevance, itemFilter, user, browsing, thePick, popularSearches, catdesc });
 
   }
 

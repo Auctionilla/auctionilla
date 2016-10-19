@@ -56,7 +56,7 @@ export async function seed() {
   let categories = {
     category1: {
       category_name: 'Arts And Graphics',
-      description: 'category description'
+      description: 'Modern, Post-War, Contemporary art, Old Masters and more'
     },
     category2: {
       category_name: 'Watches And Clocks',
