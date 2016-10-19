@@ -305,6 +305,20 @@ export class AuctionItemController extends Controller {
         }
         // console.log(datas.id)
       });
+    } else {
+      data.forEach(async (datas) => {
+        //let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
+        // console.log('this is the auction_date', String(datas.auction_date))
+        let timeremaining = this.getRemainingHours(String(datas.auction_date))
+        let limitedDescription = String(datas.item_description).substring(0, 110)
+        console.log(limitedDescription)
+        
+        datas['new_item_description'] = limitedDescription + '...'
+        
+        datas['timeremaining'] = timeremaining;
+        
+        // console.log(datas.id)
+      });
     }
 
     console.log('the offset')
