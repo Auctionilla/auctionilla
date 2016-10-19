@@ -293,6 +293,11 @@ export class AuctionItemController extends Controller {
         let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
         // console.log('this is the auction_date', String(datas.auction_date))
         let timeremaining = this.getRemainingHours(String(datas.auction_date))
+        let limitedDescription = String(datas.item_description).substring(0, 110)
+        console.log(limitedDescription)
+        
+        datas['new_item_description'] = limitedDescription + '...'
+        
         datas['timeremaining'] = timeremaining;
         if (chkfav) {
           console.log('this is a favorite')
@@ -354,7 +359,7 @@ export class AuctionItemController extends Controller {
       let jsonitem = items.toJSON();
       popularSearches.push(jsonitem)
     });
-    // console.log(data)
+    console.log(data)
     // search return
     let catdesc;
     let cat = await this.categoryService.getOneBy('category_name', category)
