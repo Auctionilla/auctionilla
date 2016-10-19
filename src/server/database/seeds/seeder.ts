@@ -10,12 +10,12 @@ export async function seed() {
     site1: {
       site_name: 'A-1 Auction',
       site_url: 'http://www.fellows.co.uk/1800-lot-48-A-superb-pair-of-Wedgwood-three-colour-jasperware-figural-candelabra?view=lot_detail&utm_source=auctions&utm_medium=www.barnebys.com&utm_content=antiques-general-and-fine-art&utm_campaign=barnebys',
-      site_emblem: 'http://www.fellows.co.uk/images/logo.svg '
+      site_emblem: 'https://d16tpmyokmwdws.cloudfront.net/logo.php?src=https%3A%2F%2Fd16tpmyokmwdws.cloudfront.net%2Fah%2F28%2Flogo_small.jpg&bg=FFFFFF'
     },
     site2: {
       site_name: '888 Auctions',
       site_url: 'http://austinauction.hibid.com/lot/27717655/sergio-mazza-for-artemide-delta-wall-light/?utm_source=auctions&utm_medium=www.barnebys.com&utm_content=nassour-estate-day-one&utm_campaign=barnebys',
-      site_emblem: 'https://auctionimages.s3.amazonaws.com/t/1x1blank.png'
+      site_emblem: 'https://d16tpmyokmwdws.cloudfront.net/logo.php?src=https%3A%2F%2Fd16tpmyokmwdws.cloudfront.net%2Fah%2F299%2Flogo_small.jpg&bg=FFFFFF'
     },
     site3: {
       site_name: 'AAA Public Auction',
@@ -34,16 +34,16 @@ export async function seed() {
     },
     site6: {
       site_name: 'Abbingdon Auctions',
-      site_url: 'site url 1',
+      site_url: 'http://www.bruun-rasmussen.dk/search.do?pg=2&t=c&iid=300834415&did=1004912&cid=498&mode=detail&utm_source=auctions&utm_medium=www.barnebys.com&utm_content=jewellery&utm_campaign=barnebys',
       site_emblem: 'http://image.invaluable.com/housePhotos/logos/Whytes-logo.jpg'
     },
     site7: {
       site_name: 'Aaron Joseph and Company',
       site_url: 'https://connect.invaluable.com/whytes/',
-      site_emblem: 'site emblem url'
+      site_emblem: 'http://www.bruun-rasmussen.dk/res/br_logo_small.png'
     }
   }
-
+  
   for (var item in auctionSites) {
      //console.log(auctionSites[item])
      let addtosite = await AuctionSite.connection().create(auctionSites[item])

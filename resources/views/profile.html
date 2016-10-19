@@ -139,7 +139,7 @@
                     <tbody>
                     {% for alert in searchAlert %}
                       <tr>
-                        <td> {{'( all new items )' if alert.search_item == '' else alert.search_item }} </td>
+                        <td style="max-width:100px;overflow: hidden;"> {{'( all new items )' if alert.search_item == '' else alert.search_item }} </td>
                         <td> {{alert.category if alert.category else '( all categories )'}} </td>
                         <td> {{ alert.location if alert.location else ' all countries ' }} </td>
                         <td> {{ alert.auction_house if alert.auction_house else '( all auction house )' }} </td>

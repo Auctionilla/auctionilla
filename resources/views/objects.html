@@ -305,7 +305,7 @@
               {% if total > 0 %}
               <label>Sort By</label>
               <div class="dropdown">
-                <button style="width:150px;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button style="width:158px;overflow: hidden;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   {{relevance if relevance else 'Relevance'}}
                   <span class="caret"></span>
                 </button>
@@ -385,9 +385,11 @@
                       </ul>
                     </div>
                     <div class="content">
+                      <a style="text-decoration: none" href="{{ item.auction_url }}">
                       <h4>
-                        {{ item.item_title}}
+                        {{ item.item_title }}
                       </h4>
+                      </a>
                       <p>
                         {{ item.new_item_description }}
                       </p>
@@ -479,9 +481,11 @@
                       </ul>
                     </div>
                     <div class="content">
+                      <a style="text-decoration: none" href="{{ item.auction_url }}">
                       <h4>
-                        {{ item.item_title}}
+                        {{ item.item_title }}
                       </h4>
+                      </a>
                       <p>
                         {{ item.new_item_description }}
                       </p>

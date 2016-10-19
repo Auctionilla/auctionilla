@@ -123,7 +123,7 @@
                       <tr>
                       {% for allAlerts in all %}
                         <tr>
-                        <td> {{ allAlerts.search_item if allAlerts.search_item else '( all new items )'}}</td>
+                        <td style="max-width:130px;overflow: hidden;"> {{ allAlerts.search_item if allAlerts.search_item else '( all new items )'}}</td>
                         <td> {{ allAlerts.category if allAlerts.category else '( all categories )'}} </td>
                         <td> {{ allAlerts.location if allAlerts.location else ' all countries ' }} </td>
                         <td> {{ allAlerts.auction_house if allAlerts.auction_house else '( all auction house )' }} </td>

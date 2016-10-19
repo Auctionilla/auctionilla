@@ -102,7 +102,7 @@ export class UserController extends Controller {
     }
 
     console.log('the data', id, offset , limit)
-    let allMyFavorite = await this.favoriteService.viewFavorites(id, offset, limit);
+    let allMyFavorite = await this.favoriteService.viewFavorites(id, (offset - 1 ) * limit, limit);
     let myfavorite = [];
     allMyFavorite.forEach(item => {
       let jsondata = item.toJSON();
@@ -514,13 +514,13 @@ export class UserController extends Controller {
 
     }
     console.log('the user id to deactivate:', id);
-    let deactivate = await this.userService.deactivateMyAccount(id)
-    if (deactivate) {
-      console.log('deactivated your account')
-      request.session.flash('loggedUser');
-    } else {
-      console.log('deactivation failed')
-    }
+    // let deactivate = await this.userService.deactivateMyAccount(id)
+    // if (deactivate) {
+    //   console.log('deactivated your account')
+    //   request.session.flash('loggedUser');
+    // } else {
+    //   console.log('deactivation failed')
+    // }
 
     return response.redirect('/login');
   }
