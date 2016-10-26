@@ -7,17 +7,18 @@ import { knex } from 'chen/sql';
 export async function up(db: knex) {
   return db.schema.createTable('users', table => {
     table.increments('id');
-    table.string('user_email').notNullable();
+    table.string('email').notNullable();
     table.string('password').notNullable();
     table.string('first_name').nullable();
     table.string('last_name').nullable();
     table.string('city').nullable();
     table.string('country').nullable();
     table.string('phone').nullable();
+    table.text('validation_code').notNullable();
     table.boolean('email_confirmed').notNullable().defaultTo('false');
     table.timestamps();
 
-
+    table.unique(['email']);
 
   });
 }

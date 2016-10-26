@@ -14,4 +14,27 @@ export class UserService extends SQLService<User> {
     super();
   }
 
+  createUser(data) {
+    return this.create({
+      validation_code: data.code,
+      email: data.email,
+      password: data.password
+    });
+  }
+
+  verifyUser(id) {
+    return this.update(id, {
+      email_confirmed: true
+    });
+  }
+
+  checkEmail(email) {
+    return this.query(query => {
+      query.where('email', email)
+
+    }).getOne();
+  }
+
+
+
 }

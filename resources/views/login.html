@@ -1,9 +1,120 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>user login</title>
+    <title>antique site</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript">
+        function register(data) {
+          if (!data) {
+              data = {
+                  email: $('input#email').val(),
+                  password: $('input#pass').val()
+              }
+          }
+
+          $.ajax({
+              method: 'post',
+              url: '/register',
+              contentType: 'application/json',
+              dataType: 'json',
+              data: JSON.stringify(data)
+          }).done(function (resp) {
+              let data = resp.data;
+              console.log(resp.data.status);
+              var status = resp.data.status;
+              if (status == 'success') {
+                console.log('registration success');
+                $('#registration-form').hide();
+                $('#registration-result').show();
+              }
+
+              // window.location.reload();
+          });
+        }
+
+
+        function login() {
+            data = {
+                email: $('input#login-email').val(),
+                password: $('input#login-pass').val()
+            }
+            $.ajax({
+                method: 'post',
+                url: '/login',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(data)
+            }).done(function (resp) {
+                let data = resp.data;
+                console.log(resp.data.alert);
+                var status = resp.data.alert;
+                if (status == 'success') {
+                  console.log('registration success');
+                  $('#login-result').html(status);
+                  $('#login-form').hide();
+                  $('#login-result').show();
+                } else {
+                  $('#login-result').html(status);
+                  $('#login-result').show();
+                }
+
+                // window.location.reload();
+            });
+        }
+    </script>
 </head>
 <body>
+<div id = "registration-container">
+<h1>registration</h1>
+<!-- <form> -->
+<div id = "registration-form">
+  <table>
+    <tr>
+      <td>Email:</td>
+      <td><input type="email" id = 'email' name="email"></td>
+    </tr>
+    <tr>
+      <td>Password:</td>
+      <td><input type="password" id = 'pass' name="pass"></td>
+    </tr>
+    <tr>
+      <td><button onclick="register()">register</button></td>
+    </tr>
+  </table>
+</div>
+<div id = "registration-result" style="display:none">
+  <h3>a verification code is send to your email</h3>
+</div>
+<!-- </form> -->
+</div>
 
+<div id = "mydiv">
+
+
+<div id = "user-login">
+  <h1>login</h1>
+  <div id = "login-form">
+    <table>
+      <tr>
+        <td>Email</td>
+        <td><input type="text" name = "login-email" id = "login-email"></td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td><input type="password" name = "login-pass" id = "login-pass"></td>
+      </tr>
+      <tr>
+        <td><button onclick="login()">login</button></td>
+      </tr>
+    </table>
+  </div>
+  <div id = "login-result" style="display:none">
+    <h3>login success</h3>
+  </div>
+
+</div>
+
+</div>
 </body>
 </html>

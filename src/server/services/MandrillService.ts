@@ -9,7 +9,7 @@ export class MandrillService extends Service {
   client() {
     if (!this.mandrill) {
       console.log('not mandrill');
-      this.mandrill = new mandrill_api.Mandrill('KuLtXevYpMoZ5F2lSaAn1g');
+      this.mandrill = new mandrill_api.Mandrill('r3xUNUS6dLsJ2N5RdK4GYA');
     }
     return this.mandrill;
   }
@@ -17,7 +17,7 @@ export class MandrillService extends Service {
   send(subject, message, toEmail, fromEmail) {
 
     if (!fromEmail) {
-      fromEmail = this.context.app.getConfig().get('util.mandrill.from');
+      fromEmail = 'noreply@mashgraph.com';//this.context.app.getConfig().get('util.mandrill.from');
     }
 
     let msg = {
@@ -28,5 +28,9 @@ export class MandrillService extends Service {
     };
 
     return this.client().messages.send({ message: msg, async: true });
+  }
+
+  test(msg){
+    return true;
   }
 }

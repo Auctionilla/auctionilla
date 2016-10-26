@@ -1,21 +1,25 @@
 import { Controller, Request, Response } from 'chen/web';
 import { injectable } from 'chen/core';
-import { AuctionItemService, MandrillService } from 'app/services';
+import { AuctionItemService } from 'app/services';
+
 
 @injectable
 export class AuctionItemController extends Controller {
 
-  constructor(private auctionItemService: AuctionItemService, private mandrillService: MandrillService) {
+  constructor(private auctionItemService: AuctionItemService) {
     super();
   }
 
   public async index(request: Request, response: Response) {
-    let a = await this.auctionItemService.getAll();
-    console.log(a);
-    console.log("this is the result");
-    let sendEmail = this.mandrillService.send('subject', 'msg', [{ email: 'cedrickbuan@gmail.com' }], '');
-    console.log(sendEmail);
 
-    return response.render('auctionpage');
+    return response.render('index');
   }
+
+
+  public async listItems(requst: Request, response: Response) {
+    let items = await this.auctionItemService.searchAuction('', '', 100);
+    console.log(items);
+    return response.render('/index', { data: items });
+  }
+
 }
