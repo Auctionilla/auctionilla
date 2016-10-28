@@ -5,47 +5,78 @@
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+
+
 </head>
 <body>
-<form action="/auction/search" method="post">
+<form action = '/search' method="get">
 
 
 <div class="input-group">
 
-    <input type="text" id="searchItem" name="searchItem" value = "{{ search }}" required="required" class="form-control" >
+    <input type="text" id="searchItem" name="searchItem" value = "{{ search }}" class="form-control" >
 
     <!-- insert this line -->
     <span class="input-group-addon" style="width:0px; padding-left:0px; padding-right:0px; border:none;"></span>
 
     <select id="categorires" name="category" class="form-control">
-        <option value="all_category">all category</option>
+        <option value="">all category</option>
         <option value="1">category 1</option>
         <option value="2">category 2</option>
         <option value="3">category 3</option>
         <option value="4">category 4</option>
     </select>
     <select id="country" name="countries" class="form-control">
-        <option value=""></option>
+        <option value="">all countries</option>
         <option value="1">USA</option>
         <option value="2">Canada</option>
         <option value="3">payatas</option>
         <option value="4">cubao</option>
     </select>
     <select id="auction_house" name="auction_house" class="form-control">
-        <option value=""></option>
-        <option value="1">sothebys</option>
-        <option value="2">the real real</option>
-        <option value="3">old things</option>
-        <option value="4">some stuff</option>
+        <option value="">all auction houses</option>
+        <option value="sothebys">sothebys</option>
+        <option value="the real real">the real real</option>
+        <option value="old things">old things</option>
+        <option value="some stuff">some stuff</option>
     </select>
 </div>
 </form>
+    <!-- <select id="lots" name="lots" class="form-control pull-right">
+        <option><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{i}}&page={{10}}">10</a></option>
+        <option><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{i}}&page={{20}}">20</a></option>
+        <option><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{i}}&page={{30}}">30</a></option>
+        <option><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{i}}&page={{40}}">40</a></option>
+        <option><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{i}}&page={{50}}">50</a></option>
+
+    </select> -->
+<div>
+  <div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Lots
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li{% if page == 10 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{i}}&page={{10}}">10</a></li>
+    <li {% if page == 20 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{i}}&page={{20}}">20</a></li>
+    <li{% if page == 30 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{i}}&page={{30}}">30</a></li>
+    <li {% if page == 40 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{i}}&page={{40}}">40</a></li>
+    <li {% if page == 50 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{i}}&page={{50}}">50</a></li>
+  </ul>
+</div>
+</div>
+{% if data.length %}
 <table border="1">
 <tr>
   <th>id num</th>
   <th>item name</th>
   <th>description</th>
   <th>category</th>
+  <th>location</th>
+  <th>price</th>
 </tr>
   {% for item in data %}
   <tr>
@@ -53,31 +84,46 @@
     <td>{{ item.item_title }}</td>
     <td>{{ item.item_description }}</td>
     <td>{{ item.category_name }}</td>
+    <td>{{ item.location }}</td>
+    <td>{{ item.price }}</td>
   </tr>
   {% endfor %}
 </table>
+{% else %}
+  <h3>'{{ search }}' is not found</h3>
+{% endif %}
 
-
-
+{% if data.length %}
   <ul class="pagination">
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
+      <a class="page-link" href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{offset - 1 if offset > 1 else offset}}&page={{page}}" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
         <span class="sr-only">Previous</span>
       </a>
     </li>
     {% for i in range(1, total + 1)  %}
-      <li class="page-item"><a class="page-link" href="/auction/page-offset/{{i}}/10/{{ search }}">{{i}}</a></li>
+      <li class="page-item {% if offset == i %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{i}}&page={{page}}">{{i}}</a></li>
     {% endfor %}
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
+      <a class="page-link" href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction_house={{auction_house}}&offset={{offset + 1 if offset < total else offset}}&page={{page}}" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
         <span class="sr-only">Next</span>
       </a>
     </li>
   </ul>
+{% endif %}
+
+
+
 </body>
 </html>
+<hr>
+offset stop {{offset + 1 if offset < total else offset}}<br>
+auctionhouse {{ auction_house }}<br>
+page {{ page }}<br>
+offset {{ offset }}<br>
+categoory {{ category }}<br>
+search {{ search }}<br>
 <hr>
 {{ total }}
 <br>

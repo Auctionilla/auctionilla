@@ -35,8 +35,8 @@ export class AuctionItemController extends Controller {
     }
     let page = request.param('offset');
     if (!page) {
-      console.log('no page specified');
-
+      console.log('no offset specified');
+      offset = 1;
     } else {
       offset = parseInt(page);
     }
@@ -66,6 +66,56 @@ export class AuctionItemController extends Controller {
     return response.render('/index', { data: data, page : page, search : searchItem, total: total });
   }
 
+  public async searchItem(request: Request, response: Response) {
+    let search = '';
+    let category = '';
+    let offset = 1;
+    let page = 10;
+    let auction_house = '';
+    let getsearch = request.input.get('searchItem');
+    if (getsearch) {
+      search = getsearch;
+    }
+    let getcategory = request.input.get('category');
+    if (getcategory) {
+      category = getcategory;
+    }
+    let getoffset = request.input.get('offset');
+    if (getoffset) {
+      console.log('meron offset')
+      offset = parseInt(getoffset);
+    }
+    let getpage = request.input.get('page');
+    if (getpage) {
+      page = parseInt(getpage);
+    }
+    let getAuction_house = request.input.get('auction_house');
+    if (getAuction_house) {
+      auction_house = getAuction_house;
+    }
+    console.log('the offset')
+    console.log(offset)
+    console.log('the page')
+    console.log(page)
+    console.log('the category');
+    console.log(category)
+    console.log('this is the new search Item')
+    console.log(search);
+    console.log('the auction house')
+    console.log(auction_house)
+    let items = await this.auctionItemService.searchAuction(search, category, (offset - 1) * 10, page);
+    let data = [];
+    items.forEach(item => {
+      let jsonItem = item.toJSON();
+      data.push(jsonItem);
+    });
+    let itemcount = await this.auctionItemService.getSearchItemCount(search);
+    let total = parseInt(itemcount.get('total')) / page;
+    console.log('total items');
+    console.log(total);
+    return response.render('index', { data: data, page: page, search: search, category: category, auction_house: auction_house, offset: offset, total: total });
+  }
+
 
   public async createAuctionItem(request: Request, response: Response) {
     let data = {
@@ -86,6 +136,8 @@ export class AuctionItemController extends Controller {
       console.log('add item success')
     }
   }
+
+
 
 
 
