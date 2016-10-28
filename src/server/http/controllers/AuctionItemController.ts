@@ -16,10 +16,77 @@ export class AuctionItemController extends Controller {
   }
 
 
-  public async listItems(requst: Request, response: Response) {
-    let items = await this.auctionItemService.searchAuction('', '', 100);
-    console.log(items);
-    return response.render('/index', { data: items });
+  public async listItems(request: Request, response: Response) {
+    let searchItem = "";
+    let offset = 1;
+    let categoryName = "";
+    let chkparamsearch = request.param('searchItem')
+    let category = request.input.get('categories')
+    if (category != 'all_category') {
+      categoryName = category;
+    } else if (category == 'all_category') {
+      categoryName = "";
+    }
+    if (chkparamsearch) {
+      console.log('no param search')
+      searchItem = chkparamsearch
+    } else {
+      searchItem = request.input.get('searchItem');
+    }
+    let page = request.param('offset');
+    if (!page) {
+      console.log('no page specified');
+
+    } else {
+      offset = parseInt(page);
+    }
+    let limit = 5;
+    let chkparamlimit = request.param('limit');
+    if (!chkparamlimit) {
+      console.log('no limit specified');
+      limit = 10;
+    } else {
+      limit = parseInt(chkparamlimit)
+    }
+    let items = await this.auctionItemService.searchAuction(searchItem, category, (offset - 1) * 10, limit);
+    let data = [];
+    items.forEach(item => {
+      let jsonItem = item.toJSON();
+      data.push(jsonItem);
+    });
+    let itemcount = await this.auctionItemService.getSearchItemCount(searchItem);
+    let total = itemcount.get('total') / limit;
+    console.log(total)
+    console.log('the search:');
+    console.log(searchItem);
+    console.log('search param');
+    console.log(chkparamsearch);
+    console.log('the category');
+    console.log(category)
+    return response.render('/index', { data: data, page : page, search : searchItem, total: total });
   }
+
+
+  public async createAuctionItem(request: Request, response: Response) {
+    let data = {
+      item_title: 'item 1',
+      item_description: 'this is item 1',
+      auction_url: 'http://www.itemsite.com/thisistheurl-of-the-item-1',
+      item_image: 'some image',
+      price_status: 'hammer price',
+      price: '100',
+      currency: 'USD',
+      location: 'USA',
+      auction_date: '2d 2h',
+      category_id_fk: 1,
+      auction_site_fk: 1
+    }
+    let additem = await this.auctionItemService.addAuctionItem(data);
+    if (additem) {
+      console.log('add item success')
+    }
+  }
+
+
 
 }

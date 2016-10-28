@@ -21,4 +21,11 @@ export class CategoryService extends SQLService<Category> {
     });
   }
 
+
+  getAllCategories(){
+    return this.query(query => {
+      query.select('*')
+    }).get();
+  }
+
 }
