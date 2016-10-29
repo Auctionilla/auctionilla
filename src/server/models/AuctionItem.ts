@@ -6,11 +6,11 @@ export class AuctionItem extends SQLModel {
   protected table: string = 'auction_items';
   protected fillable:string[] = ['item_title', 'item_description', 'auction_url', 'item_image', 'price_status', 'price', 'currency', 'location', 'auction_date', 'category_id_fk', 'auction_site_fk'];
 
-  category(){
+  category() {
     return this.belongsTo(Category, 'category_id_fk');
   }
 
-  auctionSite(){
+  auctionSite() {
     return this.belongsTo(AuctionSite, 'auction_site_fk');
   }
 

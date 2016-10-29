@@ -63,7 +63,7 @@ export class AuctionItemController extends Controller {
     console.log(chkparamsearch);
     console.log('the category');
     console.log(category)
-    return response.render('/index', { data: data, page : page, search : searchItem, total: total });
+    return response.render('/index', { data, page, search : searchItem, total });
   }
 
   public async searchItem(request: Request, response: Response) {

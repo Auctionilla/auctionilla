@@ -6,7 +6,7 @@ export class Category extends SQLModel {
   protected table: string = 'categories';
   protected fillable:string[] = ['category_name', 'description'];
 
-  auctionItems(){
+  auctionItems() {
     return this.hasMany(AuctionItem, 'category_id_fk');
   }
 

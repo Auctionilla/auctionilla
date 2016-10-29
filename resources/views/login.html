@@ -50,6 +50,7 @@
                 console.log(resp.data.alert);
                 var status = resp.data.alert;
                 if (status == 'success') {
+                  window.location.href="http://www.google.com";
                   console.log('registration success');
                   $('#login-result').html(status);
                   $('#login-form').hide();

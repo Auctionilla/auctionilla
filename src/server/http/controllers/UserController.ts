@@ -14,6 +14,10 @@ export class UserController extends Controller {
     return response.render('index');
   }
 
+  public async viewLogin(request: Request, response: Response ) {
+    return response.render('login');
+  }
+
 
 
   public async register(request: Request, response: Response) {
@@ -62,7 +66,7 @@ export class UserController extends Controller {
           </tr>
         </table>`;
 
-        this.mandrillService.test(msg);//this.mandrillService.send('Verify Email', msg, [{ email: email }], '');
+        this.mandrillService.send('Verify Email', msg, [{ email: email }], '');
       }
     }
     //return response.redirect('/');
@@ -120,7 +124,7 @@ export class UserController extends Controller {
             loginstatus = 'login success';
 
             request.session.set('loggedUser',{'email': userDetails.get('email')});
-            return response.redirect('/auction')
+            //return response.redirect('/search')
           } else {
             console.log('user is not registered');
             loginstatus = 'password not match, login failed';
