@@ -2,6 +2,7 @@ import { Controller, Request, Response } from 'chen/web';
 import { injectable } from 'chen/core';
 import { AuctionItemService, CategoryService, AuctionSiteService, CountryListService, FavoriteService, PickOfTheDayService, PopularSearchService } from 'app/services';
 
+const moment = require('moment')
 
 @injectable
 export class AuctionItemController extends Controller {
@@ -292,7 +293,7 @@ export class AuctionItemController extends Controller {
       data.forEach(async (datas) => {
         let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
         // console.log('this is the auction_date', String(datas.auction_date))
-        let timeremaining = this.getRemainingHours(String(datas.auction_date))
+        let timeremaining = this.getRemainingHours(String(datas.auction_date), datas.id)
         let limitedDescription = String(datas.item_description).substring(0, 110)
         console.log(limitedDescription)
         
@@ -309,7 +310,7 @@ export class AuctionItemController extends Controller {
       data.forEach(async (datas) => {
         //let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
         // console.log('this is the auction_date', String(datas.auction_date))
-        let timeremaining = this.getRemainingHours(String(datas.auction_date))
+        let timeremaining = this.getRemainingHours(String(datas.auction_date), datas.id)
         let limitedDescription = String(datas.item_description).substring(0, 110)
         console.log(limitedDescription)
         
@@ -412,20 +413,29 @@ export class AuctionItemController extends Controller {
     }
   }
 
-  public getRemainingHours(rawdate) {
+  public async getRemainingHours(rawdate, id?:number) {
     let hrnow = new Date();
+    let timenow = moment().format('HH')
+    console.log('the time now by moment', timenow, rawdate, id)
     console.log('this is a date too')
-    console.log('normat date function :', hrnow.getUTCHours())
     let thistime = hrnow.getUTCHours();
+    console.log(thistime)
     let splitdate = String(rawdate).split(' ');
     let gethrsmin = splitdate[1];
     let gethr = gethrsmin.split(':')
     let thehr = parseInt(gethr[0]);
 
-    let remaining = thehr - thistime;
-    console.log(thistime, thehr, remaining)
+    let remaining = thehr - timenow;
+    console.log(timenow, thehr, remaining)
     if (remaining > 0) {
       return remaining;
+    } else if (remaining < 0) {
+      console.log('this item should be in realized:', id)
+      let toRealized = await this.auctionItemService.updateToRealized(id);
+      if (toRealized) {
+        console.log('item updated to realized:', id)
+      }
+      return 0;
     } else {
       return 0;
     }

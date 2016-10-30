@@ -87,6 +87,7 @@ export class FavoriteService extends SQLService<Favorite> {
        if (limit) {
          query.limit(limit);
        }
+       query.whereIn('price_status', ['Fix price', 'Low estimate'])
        query.orderBy('favorites.created_at', 'desc')
 
     }).get();

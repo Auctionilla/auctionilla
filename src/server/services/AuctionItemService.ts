@@ -256,4 +256,11 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     }).getOne();
 
   }  
+
+  updateToRealized(id) {
+    return this.update(id, {
+      price_status: 'Realized'
+    })
+  }
+
 }
