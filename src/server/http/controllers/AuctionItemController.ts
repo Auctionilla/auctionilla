@@ -293,7 +293,7 @@ export class AuctionItemController extends Controller {
       data.forEach(async (datas) => {
         let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
         // console.log('this is the auction_date', String(datas.auction_date))
-        let timeremaining = this.getRemainingHours(String(datas.auction_date), datas.id)
+        let timeremaining = await this.getRemainingHours(String(datas.auction_date), datas.id, datas.days_remaining)
         let limitedDescription = String(datas.item_description).substring(0, 110)
         console.log(limitedDescription)
         
@@ -310,7 +310,7 @@ export class AuctionItemController extends Controller {
       data.forEach(async (datas) => {
         //let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
         // console.log('this is the auction_date', String(datas.auction_date))
-        let timeremaining = this.getRemainingHours(String(datas.auction_date), datas.id)
+        let timeremaining = await this.getRemainingHours(String(datas.auction_date), datas.id, datas.days_remaining)
         let limitedDescription = String(datas.item_description).substring(0, 110)
         console.log(limitedDescription)
         
@@ -413,10 +413,10 @@ export class AuctionItemController extends Controller {
     }
   }
 
-  public async getRemainingHours(rawdate, id?:number) {
+  public async getRemainingHours(rawdate, id?:number, remdays?:number) {
     let hrnow = new Date();
     let timenow = moment().format('HH')
-    console.log('the time now by moment', timenow, rawdate, id)
+    console.log('the time now by moment', timenow, rawdate, id, remdays)
     console.log('this is a date too')
     let thistime = hrnow.getUTCHours();
     console.log(thistime)
@@ -430,11 +430,15 @@ export class AuctionItemController extends Controller {
     if (remaining > 0) {
       return remaining;
     } else if (remaining < 0) {
-      console.log('this item should be in realized:', id)
-      let toRealized = await this.auctionItemService.updateToRealized(id);
-      if (toRealized) {
-        console.log('item updated to realized:', id)
+      if (remdays <= 0) {
+        console.log('this item should be in realized:', id)
+        let toRealized = await this.auctionItemService.updateToRealized(id);
+        if (toRealized) {
+          console.log('item updated to realized:', id)
+        }
       }
+      
+      
       return 0;
     } else {
       return 0;

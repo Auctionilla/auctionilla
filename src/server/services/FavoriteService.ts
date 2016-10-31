@@ -61,13 +61,18 @@ export class FavoriteService extends SQLService<Favorite> {
   countFavorites(id){
     return this.query(query => {
       query.count('favorites.user_id_fk as totalFav')
+      // query.join('auction_items as ai', function() {
+      //    this.on('ai.id', '=', 'favorites.item_id_fk')
+      //  });
       query.where('favorites.user_id_fk', id)
+      // query.whereIn('price_status', ['Fix price', 'Low estimate'])
     }).getOne();
   }
 
   viewFavorites(id, offset?: number, limit?: number) {
     return this.query(query => {
        query.select('favorites.id as favId')
+       query.select('favorites.user_id_fk as user_id')
        query.select('ai.*')
        query.select('as.site_emblem')
        query.select(this.db.connection().raw('datediff(ai.auction_date, curdate()) as days_remaining'))
@@ -87,7 +92,7 @@ export class FavoriteService extends SQLService<Favorite> {
        if (limit) {
          query.limit(limit);
        }
-       query.whereIn('price_status', ['Fix price', 'Low estimate'])
+       // query.whereIn('price_status', ['Fix price', 'Low estimate'])
        query.orderBy('favorites.created_at', 'desc')
 
     }).get();

@@ -1,13 +1,13 @@
 import { Controller, Request, Response } from 'chen/web';
 import { injectable, Hash, _ } from 'chen/core';
-import { FavoriteService, SearchAlertsService, UserService, MandrillService } from 'app/services';
+import { FavoriteService, SearchAlertsService, UserService, MandrillService, AuctionItemService } from 'app/services';
 
-
+const moment = require('moment')
 
 @injectable
 export class UserController extends Controller {
 
-  constructor(private favoriteService: FavoriteService, private searchAlertService: SearchAlertsService, private userService: UserService, private mandrillService: MandrillService) {
+  constructor(private auctionItemService:AuctionItemService, private favoriteService: FavoriteService, private searchAlertService: SearchAlertsService, private userService: UserService, private mandrillService: MandrillService) {
 
     super();
   }
@@ -110,7 +110,7 @@ export class UserController extends Controller {
     });
 
     myfavorite.forEach(async(data) => {
-      let timeremaining = this.getRemainingHours(String(data['auction_date']))
+      let timeremaining = await this.getRemainingHours(String(data['auction_date']), parseInt(data['id']))
       data['timeremaining'] = timeremaining;
     });
 
@@ -331,20 +331,23 @@ export class UserController extends Controller {
 
       let favOffset = 1;
       let favLimit = 5;
-      let favorites = await this.favoriteService.viewFavorites(id, (favOffset - 1) * favLimit, favLimit);
+      
       let fav = [];
       let countFav = await this.favoriteService.countFavorites(id);
 
       let totalFav = countFav.get('totalFav');
       console.log(totalFav, 'THIS IS THE TOTAL Favorites');
-
+      let favorites = await this.favoriteService.viewFavorites(id, (favOffset - 1) * favLimit, favLimit);
       favorites.forEach(item => {
         let favoriteJsonItem = item.toJSON();
         // console.log('this is my favorite', favoriteJsonItem);
         fav.push(favoriteJsonItem);
       });
       fav.forEach(async(data) => {
-        let timeremaining = this.getRemainingHours(String(data['auction_date']))
+        let timeremaining = await this.getRemainingHours(String(data['auction_date']),data['id'])
+        if (data['days_remaining'] <= 0 && timeremaining <= 0) {
+          console.log('this should be removed from favorites', data['favId'])
+        }
         data['timeremaining'] = timeremaining;
       });
 
@@ -488,19 +491,30 @@ export class UserController extends Controller {
     return response.redirect('/');
   }
 
-  public getRemainingHours(rawdate) {
+  public async getRemainingHours(rawdate, id?: number) {
     let hrnow = new Date();
-    console.log('normat date function :', hrnow.getUTCHours())
+    let timenow = moment().format('HH')
+    console.log('the time now by moment', timenow, rawdate, id)
+    console.log('this is a date too')
     let thistime = hrnow.getUTCHours();
+    console.log(thistime)
     let splitdate = String(rawdate).split(' ');
     let gethrsmin = splitdate[1];
     let gethr = gethrsmin.split(':')
     let thehr = parseInt(gethr[0]);
 
-    let remaining = thehr - thistime;
-    console.log(thistime, thehr, remaining)
+    let remaining = thehr - timenow;
+    console.log(timenow, thehr, remaining)
     if (remaining > 0) {
       return remaining;
+    } else if (remaining < 0) {
+      console.log('this item should be in realized:', id)
+      // let toRealized = await this.auctionItemService.updateToRealized(id);
+
+      // if (toRealized) {
+      //   console.log('item updated to realized:', id)
+      // }
+      return 0;
     } else {
       return 0;
     }
