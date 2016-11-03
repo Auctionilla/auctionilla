@@ -123,8 +123,8 @@ export class UserController extends Controller {
             console.log('user is registered, login ok!');
             loginstatus = 'login success';
 
-            request.session.set('loggedUser',{'email': userDetails.get('email')});
-            //return response.redirect('/search')
+            request.session.set('loggedUser',{'email': userDetails.get('email'), 'id': userDetails.get('id')});
+            response.redirect('/search')
           } else {
             console.log('user is not registered');
             loginstatus = 'password not match, login failed';
@@ -146,6 +146,12 @@ export class UserController extends Controller {
     }
     return response.json({data : {alert : loginstatus }});
 
+  }
+
+
+  public async logout(request: Request, response: Response) {
+    request.session.flash('loggedUser');
+    return response.redirect('/search');
   }
 
 

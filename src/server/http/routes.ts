@@ -17,11 +17,12 @@ export default function (router: Router, config: Config) {
   router.route('GET', '/getcategories', 'CategoryController@getCategories');
 
 
-  // router.group({middleware: ['UserAuth']}, route => {
-  //   router.route('GET', '/logout', 'UserController@logout');
-  //   router.route('GET', '/savefavorite/:itemid', 'UserController@saveFavorite');
-  //   router.route('GET', '/save-search-alert', 'UserController@saveSearchAlert');
-  // });
+
+  router.group({middleware: ['UserAuth']}, route => {
+    router.route('GET', '/logout', 'UserController@logout');
+    router.route('POST', '/addfavorite', 'FavoriteController@addFavorite');
+    router.route('POST', '/removefavorite', 'FavoriteController@removeFavorite')
+  });
 
 
 

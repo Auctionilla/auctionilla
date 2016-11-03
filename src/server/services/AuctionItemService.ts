@@ -14,34 +14,64 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     super();
   }
 
-  searchAuction(searchItem = '', category, offset?: number, itemPerPage?: number) {
+  searchAuction(searchItem = '', category, auction_house, offset?: number, itemPerPage?: number) {
     return this.query(query => {
-       query.select('auction_items.*')
-       query.select('c.category_name')
-       query.join('categories as c', function () {
-            this.on('c.id', '=', 'auction_items.category_id_fk');
-       });
-       if (category) {
-         query.where('category_name', 'like', `%${searchItem}%`)
-       }
-       query.where('item_title', 'like',  `%${searchItem}%`)
-       if (offset) {
-         query.offset(offset)
-       }
-       if (itemPerPage) {
-          query.limit(itemPerPage)
-       }
 
-
-
-
-     }).get();
+      query.select('auction_items.*')
+      query.select('c.category_name')
+      query.select('h.site_name')
+      //query.distinct('f.user_id_fk')
+      query.join('categories as c', function () {
+          this.on('c.id', '=', 'auction_items.category_id_fk');
+      });
+      query.join('auction_site as h', function () {
+          this.on('h.id', '=', 'auction_items.auction_site_fk');
+      });
+      // query.leftJoin('favorites as f', function () {
+      //     this.on('f.item_id_fk', '=', 'auction_items.id');
+      // });
+      if (auction_house) {
+        query.where('site_name', auction_house);
+      }
+      if (category) {
+       query.where('category_name', category)
+      }
+      query.where('item_title', 'like',  `%${searchItem}%`)
+      if (offset) {
+       query.offset(offset)
+      }
+      if (itemPerPage) {
+        query.limit(itemPerPage)
+      }
+    }).get();
   }
 
-  getSearchItemCount(searchItem = ''){
+  getSearchItemCount(searchItem = '', category, auction_house, offset?: number, itemPerPage?: number){
+    // return this.query(query => {
+    //   query.count('item_title as total')
+    //   query.where('item_title','like', `%${searchItem}%`).,><
+    // }).getOne();
     return this.query(query => {
-      query.count('item_title as total')
-      query.where('item_title','like', `%${searchItem}%`)
+      query.count('auction_items.item_title as total')
+      query.join('categories as c', function () {
+          this.on('c.id', '=', 'auction_items.category_id_fk');
+      });
+      query.join('auction_site as h', function () {
+          this.on('h.id', '=', 'auction_items.auction_site_fk');
+      });
+      if (auction_house) {
+        query.where('site_name', auction_house);
+      }
+      if (category) {
+       query.where('category_name', category);
+      }
+      query.where('item_title', 'like',  `%${searchItem}%`);
+      // if (offset) {
+      //  query.offset(offset)
+      // }
+      // if (itemPerPage) {
+      //   query.limit(itemPerPage)
+      // }
     }).getOne();
   }
 

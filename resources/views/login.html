@@ -27,6 +27,7 @@
                 console.log('registration success');
                 $('#registration-form').hide();
                 $('#registration-result').show();
+
               }
 
               // window.location.reload();
@@ -34,35 +35,70 @@
         }
 
 
-        function login() {
+        function login(data) {
+          if(!data){
             data = {
-                email: $('input#login-email').val(),
-                password: $('input#login-pass').val()
+              email: $('input#login-email').val(),
+              password: $('input#login-pass').val()
             }
-            $.ajax({
-                method: 'post',
-                url: '/login',
-                contentType: 'application/json',
-                dataType: 'json',
-                data: JSON.stringify(data)
-            }).done(function (resp) {
-                let data = resp.data;
-                console.log(resp.data.alert);
-                var status = resp.data.alert;
-                if (status == 'success') {
-                  window.location.href="http://www.google.com";
-                  console.log('registration success');
-                  $('#login-result').html(status);
-                  $('#login-form').hide();
-                  $('#login-result').show();
-                } else {
-                  $('#login-result').html(status);
-                  $('#login-result').show();
-                }
+          }
 
-                // window.location.reload();
-            });
+          $.ajax({
+            method: 'post',
+            url: '/login',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(data)
+          }).done(function (resp) {
+            let data = resp.data;
+            console.log(resp.data.alert);
+            var status = resp.data.alert;
+            alert(status)
+            if (status == 'login success') {
+
+              console.log('registration success');
+              if ($('#staylogin').is(":checked")) {
+                document.cookie = "antique-email= " + $('input#login-email').val();
+                document.cookie = "antique-password="+ $('input#login-pass').val();
+                alert(document.cookie);
+              }
+
+              $('#login-result').html(status);
+              $('#login-form').hide();
+              $('#login-result').show();
+              window.location.href="http://localhost:3000/search";
+            } else {
+              $('#login-result').html(status);
+              $('#login-result').show();
+            }
+
+              // window.location.reload();
+          });
         }
+
+        $(function() {
+          var cookieUserEmail = '';
+          var cookieUserPassword = '';
+          var thecookie = document.cookie;
+          var cookiedata = thecookie.split(';')
+          for (i = 0; i < cookiedata.length; i++) {
+            if (cookiedata[i].search('antique-email') > -1) {
+              cookieUserEmail = cookiedata[i];
+            } else if(cookiedata[i].search('antique-password') > -1) {
+              cookieUserPassword = cookiedata[i];
+            }
+          }
+
+          if (cookieUserEmail && cookieUserPassword) {
+            alert(cookieUserEmail.replace('antique-email=','') + '-' + cookieUserPassword.replace('antique-password=',''))
+            var data = {
+              email: cookieUserEmail.replace('antique-email=','').trim(),
+              password: cookieUserPassword.replace('antique-password=','').trim()
+            }
+            login(data);
+          }
+        });
+
     </script>
 </head>
 <body>
@@ -107,6 +143,11 @@
       </tr>
       <tr>
         <td><button onclick="login()">login</button></td>
+      </tr>
+      <tr>
+        <div class="checkbox">
+          <label><input type="checkbox" id = "staylogin" >stay login</label>
+        </div>
       </tr>
     </table>
   </div>

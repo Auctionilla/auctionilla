@@ -1,18 +1,22 @@
 import { Controller, Request, Response } from 'chen/web';
 import { injectable } from 'chen/core';
-import { AuctionItemService } from 'app/services';
+import { AuctionItemService, CategoryService, AuctionSiteService, CountryListService } from 'app/services';
 
 
 @injectable
 export class AuctionItemController extends Controller {
 
-  constructor(private auctionItemService: AuctionItemService) {
+  constructor(private auctionItemService: AuctionItemService,
+              private categoryService: CategoryService,
+              private auctionSiteService: AuctionSiteService,
+              private countryListService: CountryListService) {
     super();
   }
 
   public async index(request: Request, response: Response) {
-
-    return response.render('index');
+    let countries = await this.countryListService.getAllCountry();
+    console.log(countries);
+    return response.render('indexitem');
   }
 
 
@@ -20,8 +24,13 @@ export class AuctionItemController extends Controller {
     let searchItem = "";
     let offset = 1;
     let categoryName = "";
-    let chkparamsearch = request.param('searchItem')
-    let category = request.input.get('categories')
+    let auction_house = "";
+    let chkparamsearch = request.param('searchItem');
+    let auctionHouse = request.input.get('auction-house');
+    if (auctionHouse) {
+      auction_house = auctionHouse
+    }
+    let category = request.input.get('categories');
     if (category != 'all_category') {
       categoryName = category;
     } else if (category == 'all_category') {
@@ -54,8 +63,9 @@ export class AuctionItemController extends Controller {
       let jsonItem = item.toJSON();
       data.push(jsonItem);
     });
-    let itemcount = await this.auctionItemService.getSearchItemCount(searchItem);
-    let total = itemcount.get('total') / limit;
+    //let itemcount = await this.auctionItemService.getSearchItemCount(searchItem);
+    //let total = itemcount.get('total') / limit;
+    let total = 1;
     console.log(total)
     console.log('the search:');
     console.log(searchItem);
@@ -67,11 +77,21 @@ export class AuctionItemController extends Controller {
   }
 
   public async searchItem(request: Request, response: Response) {
+    let countries = await this.countryListService.getAllCountry();
+    console.log('the session');
+    console.log(request.session.get('loggedUser'))
+    if (request.session.get('loggedUser').id) {
+      let loggedUserId = request.session.get('loggedUser').id;
+      console.log('this is the logged user id');
+      console.log(loggedUserId);
+    }
     let search = '';
     let category = '';
     let offset = 1;
     let page = 10;
     let auction_house = '';
+    let country = '';
+    let relevance = '';
     let getsearch = request.input.get('searchItem');
     if (getsearch) {
       search = getsearch;
@@ -89,31 +109,60 @@ export class AuctionItemController extends Controller {
     if (getpage) {
       page = parseInt(getpage);
     }
-    let getAuction_house = request.input.get('auction_house');
+    let getAuction_house = request.input.get('auction-house');
     if (getAuction_house) {
       auction_house = getAuction_house;
     }
+    let getCountry = request.input.get('countries');
+    if (getCountry) {
+      country = this.countryListService.getCountryCode(getCountry);
+    }
+    let getRelevance = request.input.get('relevance');
+    if (getRelevance) {
+      relevance = getRelevance;
+    }
+
+    let items = await this.auctionItemService.searchAuction(search, category, auction_house, (offset - 1) * 10, page);
+    let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, (offset - 1) * 10, page);
+    let data = [];
+    items.forEach(item => {
+      let jsonItem = item.toJSON();
+      data.push(jsonItem);
+    });
     console.log('the offset')
     console.log(offset)
     console.log('the page')
     console.log(page)
     console.log('the category');
     console.log(category)
-    console.log('this is the new search Item')
+    console.log('this is the new search Item');
     console.log(search);
-    console.log('the auction house')
-    console.log(auction_house)
-    let items = await this.auctionItemService.searchAuction(search, category, (offset - 1) * 10, page);
-    let data = [];
-    items.forEach(item => {
-      let jsonItem = item.toJSON();
-      data.push(jsonItem);
-    });
-    let itemcount = await this.auctionItemService.getSearchItemCount(search);
+    console.log('the auction house');
+    console.log(auction_house);
+    console.log('the country');
+    console.log(country);
+    console.log('this is the relevance');
+    console.log(relevance)
+
     let total = parseInt(itemcount.get('total')) / page;
     console.log('total items');
     console.log(total);
-    return response.render('index', { data: data, page: page, search: search, category: category, auction_house: auction_house, offset: offset, total: total });
+
+    let categories = await this.categoryService.getAllCategories();
+    let categoryItems = [];
+    categories.forEach(items => {
+      let jsonItem = items.toJSON();
+      categoryItems.push(jsonItem);
+    });
+
+    let sitesItem = await this.auctionSiteService.getAll();
+    let sites = [];
+    sitesItem.forEach(items => {
+      let jsonItem = items.toJSON();
+      sites.push(jsonItem);
+    });
+
+    return response.render('indexitem', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country });
   }
 
 
@@ -133,7 +182,7 @@ export class AuctionItemController extends Controller {
     }
     let additem = await this.auctionItemService.addAuctionItem(data);
     if (additem) {
-      console.log('add item success')
+      console.log('add item success');
     }
   }
 

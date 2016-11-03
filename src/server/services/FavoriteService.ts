@@ -13,4 +13,19 @@ export class FavoriteService extends SQLService<Favorite> {
     super();
   }
 
+  createFavorite(data) {//,.<>
+    return this.create({
+      user_id_fk: data.user_id,
+      item_id_fk: data.item_id
+    })
+  }
+
+  remvoveFavorite(id) {
+    return this.destroy(id)
+  }
+
+  checkIfFavorite() {
+    return true;
+  }
+
 }
