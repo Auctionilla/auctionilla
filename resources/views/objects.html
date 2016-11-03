@@ -385,12 +385,12 @@
                       </ul>
                     </div>
                     <div class="content">
-                      <a style="text-decoration: none" href="{{ item.auction_url }}">
-                      <h4>
-                        {{ item.item_title }}
+                      <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                      <h4 title="{{item.item_title}}">
+                        {{ item.new_item_title }}
                       </h4>
                       </a>
-                      <p>
+                      <p title="{{item.item_description}}">
                         {{ item.new_item_description }}
                       </p>
                       <p class="estimate">
@@ -481,12 +481,12 @@
                       </ul>
                     </div>
                     <div class="content">
-                      <a style="text-decoration: none" href="{{ item.auction_url }}">
-                      <h4>
-                        {{ item.item_title }}
+                      <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                      <h4 title = "{{item.item_title}}">
+                        {{ item.new_item_title }}
                       </h4>
                       </a>
-                      <p>
+                      <p title = "{{item.item_description}}">
                         {{ item.new_item_description }}
                       </p>
                       <p class="estimate">

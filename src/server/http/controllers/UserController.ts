@@ -1,13 +1,13 @@
 import { Controller, Request, Response } from 'chen/web';
 import { injectable, Hash, _ } from 'chen/core';
-import { FavoriteService, SearchAlertsService, UserService, MandrillService, AuctionItemService } from 'app/services';
+import { FavoriteService, SearchAlertsService, UserService, MandrillService } from 'app/services';
 
 const moment = require('moment')
 
 @injectable
 export class UserController extends Controller {
 
-  constructor(private auctionItemService:AuctionItemService, private favoriteService: FavoriteService, private searchAlertService: SearchAlertsService, private userService: UserService, private mandrillService: MandrillService) {
+  constructor(private favoriteService: FavoriteService, private searchAlertService: SearchAlertsService, private userService: UserService, private mandrillService: MandrillService) {
 
     super();
   }
@@ -345,11 +345,29 @@ export class UserController extends Controller {
       });
       fav.forEach(async(data) => {
         let timeremaining = await this.getRemainingHours(String(data['auction_date']),data['id'])
-        if (data['days_remaining'] <= 0 && timeremaining <= 0) {
+        if (data['days_remaining'] < 0) {
           console.log('this should be removed from favorites', data['favId'])
+          let removefromfav = await this.favoriteService.destroy(parseInt(data['favId']))
+          if (removefromfav) {
+            console.log('this favitem is deleted', data['favId'])
+          }
         }
         data['timeremaining'] = timeremaining;
       });
+      //==================== get all the items again to but realized is removed ==================
+      // let fav2 = []
+      // let favorites2 = await this.favoriteService.viewFavorites(id, (favOffset - 1) * favLimit, favLimit);
+      // favorites2.forEach(item => {
+      //   let favoriteJsonItem = item.toJSON();
+      //   // console.log('this is my favorite', favoriteJsonItem);
+      //   fav2.push(favoriteJsonItem);
+      // });
+      // fav2.forEach(async(data) => {
+      //   let timeremaining = await this.getRemainingHours(String(data['auction_date']),data['id'])
+      //   data['timeremaining'] = timeremaining;
+      // });
+      //==========================================================================================
+
 
       let getUpdate = await this.userService.getUserUpdate(id);
       let info = [];

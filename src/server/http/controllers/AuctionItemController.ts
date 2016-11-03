@@ -292,13 +292,14 @@ export class AuctionItemController extends Controller {
     if (request.session.get('loggedUser')) {
       data.forEach(async (datas) => {
         let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
-        // console.log('this is the auction_date', String(datas.auction_date))
+        console.log('this is the auction_date', String(datas.auction_date))
         let timeremaining = await this.getRemainingHours(String(datas.auction_date), datas.id, datas.days_remaining)
-        let limitedDescription = String(datas.item_description).substring(0, 110)
+        let limitedDescription = String(datas.item_description).substring(0, 100)
+        let limitItemTitle = String(datas.item_title).substring(0, 50)
         console.log(limitedDescription)
         
         datas['new_item_description'] = limitedDescription + '...'
-        
+        datas['new_item_title'] = limitItemTitle + '...'
         datas['timeremaining'] = timeremaining;
         if (chkfav) {
           console.log('this is a favorite')
@@ -308,14 +309,16 @@ export class AuctionItemController extends Controller {
       });
     } else {
       data.forEach(async (datas) => {
+        console.log('normal not logged user')
         //let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
         // console.log('this is the auction_date', String(datas.auction_date))
         let timeremaining = await this.getRemainingHours(String(datas.auction_date), datas.id, datas.days_remaining)
-        let limitedDescription = String(datas.item_description).substring(0, 110)
+        let limitedDescription = String(datas.item_description).substring(0, 100)
+        let limitItemTitle = String(datas.item_title).substring(0, 50)
         console.log(limitedDescription)
         
         datas['new_item_description'] = limitedDescription + '...'
-        
+        datas['new_item_title'] = limitItemTitle + '...'
         datas['timeremaining'] = timeremaining;
         
         // console.log(datas.id)
@@ -432,10 +435,10 @@ export class AuctionItemController extends Controller {
     } else if (remaining < 0) {
       if (remdays <= 0) {
         console.log('this item should be in realized:', id)
-        let toRealized = await this.auctionItemService.updateToRealized(id);
-        if (toRealized) {
-          console.log('item updated to realized:', id)
-        }
+        // let toRealized = await this.auctionItemService.updateToRealized(id);
+        // if (toRealized) {
+        //   console.log('item updated to realized:', id)
+        // }
       }
       
       
