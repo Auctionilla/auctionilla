@@ -124,11 +124,22 @@ export class getCrawledData extends ArtisanCommand {
     let thejsondata = JSON.parse(jsondata.body)
     for(var attributename in thejsondata.results) {
       
-      let chkIfNotNull = thejsondata.results[attributename].content.itemData.itemSubtitle
+      let chkIfNotNull = thejsondata.results[attributename].content.itemData.title
       console.log(chkIfNotNull)
       if (chkIfNotNull) {
-        let chkIfExist = await this.auctionItemService.getOneBy('item_title', String(thejsondata.results[attributename].content.itemData.itemSubtitle))
+        let tocheck;
+        let checkIfNull = thejsondata.results[attributename].content.itemData.itemSubtitle
+        if (checkIfNull) {
+           console.log('subtitle present')
+           tocheck = thejsondata.results[attributename].content.itemData.itemSubtitle
+        } else {
+          console.log('not present subtitle')
+          tocheck = thejsondata.results[attributename].content.itemData.title
+        }
+        let chkIfExist = await this.auctionItemService.getOneBy('item_title', String(tocheck))
+        console.log('checking ', tocheck)
         if (!chkIfExist) {
+          
           let price;
           let chkIfSold = thejsondata.results[attributename].content.itemData.soldPrice
           let categoryId = await this.categoryService.getOneBy('category_name', thejsondata.results[attributename].content.itemData.category)
@@ -142,7 +153,7 @@ export class getCrawledData extends ArtisanCommand {
           }
           console.log('************ save this *****************')
           let tosave = {
-            item_title: String(thejsondata.results[attributename].content.itemData.itemSubtitle),
+            item_title: String(tocheck),
             item_description: String(thejsondata.results[attributename].content.itemData.itemDescription),
             auction_url: thejsondata.results[attributename].content.itemData.auctionUrl,
             item_image: thejsondata.results[attributename].content.itemData.itemImage,
