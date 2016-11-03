@@ -1,0 +1,424 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Antique Website</title>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Place favicon.ico in the root directory -->
+  <!-- build:css styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css css/main.css -->
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <!-- endbuild -->
+  <!-- build:js js/vendor/modernizr.js -->
+  <script src="/assets/lib/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+</head>
+
+<body>
+  <!--[if lt IE 10]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+      <![endif]-->
+  <header>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><img src="/assets/images/logo.png" alt="logo" /></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Browse objects</a></li>
+            <li><a href="#about">See realized prices</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li>
+            <li>
+                <div class="search">
+                  <div class="form-group ">
+                    <input type="text" class="form-control" id="inputValidation" placeholder="Quick Search">
+                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                  </div>
+                </div>
+            </li>
+          </ul>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+    </nav>
+  </header>
+
+<section class="objects-sections">
+  <div class="objects-banner-search">
+    <div class="col-md-9 col-sm-12 col-xs-12 search-bar">
+      <form class="navbar-form" role="search">
+        <div class="col-md-6 col-sm-6 search-section">
+          <input type="text" class="input form-control " placeholder="Search word, phrase or name of lot" />
+          <div class="col-md-6 col-sm-6 search-section">
+            <select data-placeholder="Select country" class="form-control sub-select select2me input">
+              <option></option>
+              <option>Lorem Ipsum</option>
+              <option>Lorem Ipsum</option>
+            </select>
+          </div>
+          <div class="col-md-6 col-sm-6 search-section">
+            <select data-placeholder="Select auction house" class="form-control sub-select  select2me input">
+              <option></option>
+              <option>Lorem Ipsum</option>
+              <option>Lorem Ipsum</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 search-section">
+          <select data-placeholder="All categories" class="form-control  main-select select2me input">
+            <option></option>
+            <option>Lorem Ipsum</option>
+            <option>Lorem Ipsum</option>
+          </select>
+          <button type="button" class="submit-search"><i class="fa fa-search"></i></button>
+          <div class="radio-buttons">
+            <div class="radio">
+              <input type="radio" name="objects">
+              <label for="radio1">
+                Objects
+              </label>
+            </div>
+            <div class="radio">
+              <input type="radio" name="realizeprices">
+              <label for="radio2">
+                Auctions
+              </label>
+            </div>
+            <div class="radio">
+              <input type="radio" name="realizeprices">
+              <label for="radio2">
+                Fixed price objects
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="notification">
+    <div class="container">
+      <span>
+        <i class="fa fa-bell"></i> <a href="#">Create search alert</a>. We'll email you when we got what you're looking for.
+      </span>
+    </div>
+  </div>
+  <div class="page-nav">
+    <div class="container">
+      <div class="row">
+        <ol class="breadcrumb">
+          <li><a href="#"><i class="fa fa-home"></i></a>
+          </li>
+          <li><a href="#">Arts and Graphics</a>
+          </li>
+        </ol>
+        <div class="search-results clearfix">
+          <div class="col-md-5 col-sm-12">
+            <h4>
+            Your search returned 19 403 results
+          </h4>
+            <ul class="hits">
+              <li>
+                <i class="fa fa-globe"></i> <span>45 314 hits in all countries</span>
+              </li>
+              <li>
+                <i class="fa fa-copy"></i> <span>273 636 hits in all categories</span>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4 col-sm-12 clearfix ">
+            <div class="col-md-6 col-sm-6 item">
+              <label>Sort By</label>
+              <select data-placeholder="Relevance" class="form-control sub-select  select2me input">
+                <option></option>
+                <option>Lorem Ipsum</option>
+                <option>Lorem Ipsum</option>
+              </select>
+            </div>
+            <div class="col-md-6 col-sm-6 item">
+              <label>Lots</label>
+              <select data-placeholder="Lots" class="form-control sub-select select2me input">
+                <option></option>
+                <option>Lorem Ipsum</option>
+                <option>Lorem Ipsum</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="object-item-list clearfix">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-9 col-sm-12 main-object-list">
+          <div class="object-item">
+            <div class="thumb-image">
+              <img src="img/objects/item-thumb-1.png" />
+            </div>
+            <div class="descriptions">
+              <div class="clearfix tag-timestamp">
+                <ul>
+                  <li>
+                    <i class="fa fa-map-marker" aria-hidden="true"></i> USA
+                  </li>
+                  <li>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i> 2d 9h
+                  </li>
+                </ul>
+              </div>
+              <div class="content">
+                <h4>
+                  CHARLTON HESTON BEN HUR PHOTOGRAPH ...
+                </h4>
+                <p>
+                  A large format color photograph of Charlton Heston in costume...
+                </p>
+                <p class="estimate">
+                  Low estimate: 400 USD <a href="#">Show Bid</a>
+                </p>
+              </div>
+              <div class="actions clearfix">
+                <ul>
+                  <li class="auction-emblem">
+                    <a href="#"><img src="img/objects/auction-emblem.png" /></a>
+                  </li>
+                  <li>
+                    <button class="btn btn"><i class="fa fa-heart-o"></i> <span>Save favorite</span></button>
+                  </li>
+                  <li>
+                    <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3  daily-tips">
+          <div class="widgets ">
+            <div class="widget-title">
+              <h4>Pick of the day</h4>
+            </div>
+            <div class="image">
+              <img src="img/objects/pick-1.png" alt="pick photo" />
+            </div>
+            <div class="content">
+              <a href="#">
+                  Peter Doig, Cloud Illusions/Recall
+                </a>
+              <p>
+                Fixed price: —
+              </p>
+            </div>
+          </div>
+          <div class="widgets ">
+            <div class="widget-title">
+              <h4>Latest news</h4>
+            </div>
+            <div class="per-item">
+              <div class="image">
+                <img src="img/objects/pick-1.png" alt="pick photo" />
+              </div>
+              <div class="content">
+                <a href="#">
+                  Peter Doig, Cloud Illusions/Recall
+                </a>
+              </div>
+            </div>
+            <div class="per-item">
+              <div class="image">
+                <img src="img/objects/pick-1.png" alt="pick photo" />
+              </div>
+              <div class="content">
+                <a href="#">
+                  Peter Doig, Cloud Illusions/Recall
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notification">
+    <div class="container">
+      <span>
+        <i class="fa fa-bell"></i> <a href="#">Create search alert</a>. We'll email you when we got what you're looking for.
+      </span>
+    </div>
+  </div>
+  <div class="object-pagination">
+    <div class="container">
+      <ul class="nav nav-justified">
+        <li>
+          <a href="#"> <i class="fa fa-angle-left" aria-hidden="true"></i> </a>
+        </li>
+        <li>
+          <a href="#"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a>
+        </li>
+        <li class="active">
+          <a href="#">1</a>
+        </li>
+        <li>
+          <a href="#">2</a>
+        </li>
+        <li>
+          <a href="#">3</a>
+        </li>
+        <li>
+          <a href="#">4</a>
+        </li>
+        <li>
+          <a href="#">5</a>
+        </li>
+        <li>
+          <a href="#">6</a>
+        </li>
+        <li>
+          <a href="#">7</a>
+        </li>
+        <li>
+          <a href="#">8</a>
+        </li>
+        <li>
+          <a href="#">9</a>
+        </li>
+        <li>
+          <a href="#">10</a>
+        </li>
+        <li>
+          <a href="#">11</a>
+        </li>
+        <li>
+          <a href="#">12</a>
+        </li>
+        <li>
+          <a href="#">13</a>
+        </li>
+        <li>
+          <a href="#">14</a>
+        </li>
+        <li>
+          <a href="#"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
+        </li>
+        <li>
+          <a href="#"> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="search-terms">
+    <div class="container">
+      <div class="item-content">
+        <h4>
+          Art, Painting and Graphics
+        </h4>
+        <p>
+          Art auctions, featuring paintings from ancient times to today, are gathered under this category. It includes everything from Old Master drawings and paintings to the cutting edge of contemporary graphic art.
+        </p>
+      </div>
+      <hr>
+      <div class="item-content">
+        <h4>
+          Popular searches
+        </h4>
+        <ul>
+          <li>
+            <a href="#">keywords</a>
+          </li>
+          <li>
+            <a href="#">keywords</a>
+          </li>
+          <li>
+            <a href="#">keywords</a>
+          </li>
+          <li>
+            <a href="#">keywords</a>
+          </li>
+          <li>
+            <a href="#">keywords</a>
+          </li>
+          <li>
+            <a href="#">keywords</a>
+          </li>
+          <li>
+            <a href="#">keywords</a>
+          </li>
+          <li>
+            <a href="#">keywords</a>
+          </li>
+          <li>
+            <a href="#">keywords</a>
+          </li>
+          <li>
+            <a href="#">keywords</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="clearfix">
+  <div class="container">
+    <div class="row">
+      <div class="text-left item col-sm-3 col-md-3">
+        <img src="img/logo.png" />
+      </div>
+      <div class="item col-sm-6 col-md-6">
+        <span>
+                © Antique.com 2016  | ALL RIGHTS RESERVED
+              </span>
+      </div>
+      <div class="item col-sm-3 col-md-3">
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-linkedin"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+</script>
+<!-- build:js js/vendor.js -->
+<!-- bower:js -->
+<script src="/assets/lib/modernizr/modernizr.js"></script>
+<script src="/assets/lib/jquery/dist/jquery.js"></script>
+<script src="/assets/lib/select2/dist/js/select2.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+<!-- build:js js/plugins.js -->
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/affix.js"></script>
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/alert.js"></script>
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/dropdown.js"></script>
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js"></script>
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/modal.js"></script>
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/transition.js"></script>
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/button.js"></script>
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/popover.js"></script>
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/carousel.js"></script>
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js"></script>
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/collapse.js"></script>
+<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>
+<!-- endbuild -->
+<!-- build:js js/main.js -->
+<script src="/assets/js/main.js"></script>
+<!-- endbuild -->
+</body>
+

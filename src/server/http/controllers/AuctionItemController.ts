@@ -14,9 +14,8 @@ export class AuctionItemController extends Controller {
   }
 
   public async index(request: Request, response: Response) {
-    let countries = await this.countryListService.getAllCountry();
-    console.log(countries);
-    return response.render('indexitem');
+
+    return response.render('objects');
   }
 
 

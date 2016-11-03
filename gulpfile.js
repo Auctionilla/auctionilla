@@ -16,6 +16,12 @@ gulp.task('sass', () => {
     .pipe(gulp.dest('public/css'));
 });
 
+// create js
+gulp.task('symlink-js', () => {
+  return gulp.src('resources/assets/js')
+    .pipe(symlink('public/js', { force: true }));
+});
+
 /**
  * Create image folder symlink
  */
@@ -35,7 +41,7 @@ gulp.task('symlink-fonts', () => {
 /**
  * Task for creating symlinks
  */
-gulp.task('symlink', ['symlink-images', 'symlink-fonts']);
+gulp.task('symlink', ['symlink-images', 'symlink-fonts','symlink-js']);
 
 gulp.task('default', ['sass', 'symlink']);
 gulp.task('watch', () => {

@@ -1,0 +1,46 @@
+$icon-font-path: "../fonts/";
+
+/*----- VENDORS-------
+----------------------*/
+
+// bower:scss
+@import "public/lib/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "public/lib/font-awesome/scss/font-awesome.scss";
+@import "public/lib/select2/src/scss/core.scss";
+
+// endbower
+
+/*----- FONTS-------
+----------------------*/
+@import "base/fonts";
+
+/*-----VARIABLES----
+-----------------------*/
+@import "base/variables";
+
+/*-----MIX-INS AND PLACEHOLDER -------
+-----------------------*/
+@import "base/mixins";
+@import "base/forms";
+
+/*-----SPRITES-------
+-----------------------*/
+@import "base/sprites";
+
+/*-----LAYOUTS-------
+-----------------------*/
+@import "layouts/header";
+@import "layouts/footer";
+@import "layouts/body";
+
+/*-----MODULES-------
+-----------------------*/
+
+/*-----GLOBALS--------
+--------------------------*/
+@import "base/globals";
+
+/*-----PAGES-------
+-----------------------*/
+@import "pages/home";
+@import "pages/objects";
