@@ -14,23 +14,19 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     super();
   }
 
-  searchAuction(searchItem = '', category, auction_house, offset?: number, itemPerPage?: number) {
+  searchAuction(searchItem = '', category, auction_house, offset?: number, itemPerPage?: number, relevance) {
     return this.query(query => {
 
       query.select('auction_items.*')
       query.select('c.category_name')
       query.select('h.site_name')
-      // query.distinct('f.user_id_fk')
       query.join('categories as c', function () {
           this.on('c.id', '=', 'auction_items.category_id_fk');
       });
       query.join('auction_site as h', function () {
           this.on('h.id', '=', 'auction_items.auction_site_fk');
       });
-      // query.leftJoin('favorites as f', function () {
-      //     this.on('f.item_id_fk', '=', 'auction_items.id');
 
-      // });
 
       if (auction_house) {
         query.where('site_name', auction_house);
@@ -39,6 +35,18 @@ export class AuctionItemService extends SQLService<AuctionItem> {
        query.where('category_name', category)
       }
       query.where('item_title', 'like',  `%${searchItem}%`);
+      if (relevance) {
+        if (relevance == 'latest') {
+          query.orderBy('auction_items.id', 'desc');
+        } else if (relevance == 'shortest-remaining') {
+          query.orderBy('converted_date', 'asc');
+        } else if (relevance == 'lowest-price') {
+          query.orderBy('price', 'asc');
+        } else if (relevance == 'highest-price') {
+          query.orderBy('price', 'desc')
+        }
+      }
+
       if (offset) {
        query.offset(offset)
       }
@@ -46,18 +54,10 @@ export class AuctionItemService extends SQLService<AuctionItem> {
         query.limit(itemPerPage)
       }
     }).get();
-
-    // .with('favorite', query => {
-    //   query.where('user_id_fk', 1)
-
-    // }).get();
   }
 
   getSearchItemCount(searchItem = '', category, auction_house, offset?: number, itemPerPage?: number){
-    // return this.query(query => {
-    //   query.count('item_title as total')
-    //   query.where('item_title','like', `%${searchItem}%`).,><
-    // }).getOne();
+
     return this.query(query => {
       query.count('auction_items.item_title as total')
       query.join('categories as c', function () {

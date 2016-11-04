@@ -122,7 +122,7 @@ export class AuctionItemController extends Controller {
       relevance = getRelevance;
     }
 
-    let items = await this.auctionItemService.searchAuction(search, category, auction_house, (offset - 1) * 10, page);
+    let items = await this.auctionItemService.searchAuction(search, category, auction_house, (offset - 1) * 10, page, relevance);
     let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, (offset - 1) * 10, page);
     let data = [];
 

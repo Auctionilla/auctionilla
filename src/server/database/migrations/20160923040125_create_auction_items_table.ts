@@ -16,7 +16,7 @@ export async function up(db: knex) {
     table.string('currency').notNullable();
     table.string('location').nullable();
     table.string('auction_date').nullable();
-    table.string('converted_date').nullable();
+    table.integer('converted_date').defaultTo(0);
     table.string('dealer_bid').nullable();
     table.integer('category_id_fk').unsigned().notNullable();
     table.integer('auction_site_fk').unsigned().notNullable();
