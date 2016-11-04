@@ -435,10 +435,10 @@ export class AuctionItemController extends Controller {
     } else if (remaining < 0) {
       if (remdays <= 0) {
         console.log('this item should be in realized:', id)
-        // let toRealized = await this.auctionItemService.updateToRealized(id);
-        // if (toRealized) {
-        //   console.log('item updated to realized:', id)
-        // }
+        let toRealized = await this.auctionItemService.updateToRealized(id);
+        if (toRealized) {
+          console.log('item updated to realized:', id)
+        }
       }
       
       

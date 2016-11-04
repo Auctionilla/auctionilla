@@ -201,11 +201,13 @@
                         </ul>
                       </div>
                       <div class="content">
-                        <h4>
-                         {{ fav.item_title }}
-                        </h4>
-                        <p>
-                          {{ fav.item_description }}
+                      <a style="text-decoration: none" target="_blank" href="{{ fav.auction_url }}">
+                      <h4 title="{{ fav.item_title }}">
+                        {{ fav.new_item_title }}
+                      </h4>
+                      </a>
+                        <p title="{{fav.new_item_description}}">
+                          {{ fav.new_item_description }}
                         </p>
                         <p class="estimate">
                           {{ fav.price_status }}: {{ fav.price }} {{ fav.currency }}
@@ -213,9 +215,9 @@
                       </div>
                       <div class="actions text-right clearfix">
                         <ul>
-                          <!-- <li class="auction-emblem">
-                              <a href="{{ item.site_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
-                            </li> -->
+                          <li class="auction-emblem">
+                              <a href="{{ item.site_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ fav.site_emblem }}" /></a>
+                            </li>
                           <li>
                             <form action="/removefav" method="post">
                               <input type="hidden" value="{{ fav.favId }}" name="favId"/>

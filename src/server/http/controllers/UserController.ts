@@ -1,13 +1,13 @@
 import { Controller, Request, Response } from 'chen/web';
 import { injectable, Hash, _ } from 'chen/core';
-import { FavoriteService, SearchAlertsService, UserService, MandrillService } from 'app/services';
+import { FavoriteService, SearchAlertsService, UserService, MandrillService, AuctionItemService } from 'app/services';
 
 const moment = require('moment')
 
 @injectable
 export class UserController extends Controller {
 
-  constructor(private favoriteService: FavoriteService, private searchAlertService: SearchAlertsService, private userService: UserService, private mandrillService: MandrillService) {
+  constructor(private favoriteService: FavoriteService, private searchAlertService: SearchAlertsService, private userService: UserService, private auctionItemService: AuctionItemService, private mandrillService: MandrillService) {
 
     super();
   }
@@ -111,6 +111,10 @@ export class UserController extends Controller {
 
     myfavorite.forEach(async(data) => {
       let timeremaining = await this.getRemainingHours(String(data['auction_date']), parseInt(data['id']))
+      let newItemDescription = String(data['item_description']).substring(0, 100)
+      let newItemTitle = String(data['item_title']).substring(0, 50)
+      data['new_item_title'] = newItemTitle + '...'
+      data['new_item_description'] = newItemDescription + '...'
       data['timeremaining'] = timeremaining;
     });
 
@@ -270,7 +274,10 @@ export class UserController extends Controller {
           if (checkPass) {
             console.log('User is registered, login ok!');
             loginstatus = 'Login success';
-
+            let getfin = this.removeWhenCountdownFin(userDetails.get('id'))
+            if (getfin) {
+              console.log('scanning fav')
+            }
             request.session.set('loggedUser',{'email': userDetails.get('email'), 'id': userDetails.get('id')});
             request.session.get('loggedUser');
 
@@ -345,13 +352,17 @@ export class UserController extends Controller {
       });
       fav.forEach(async(data) => {
         let timeremaining = await this.getRemainingHours(String(data['auction_date']),data['id'])
-        if (data['days_remaining'] < 0) {
-          console.log('this should be removed from favorites', data['favId'])
-          let removefromfav = await this.favoriteService.destroy(parseInt(data['favId']))
-          if (removefromfav) {
-            console.log('this favitem is deleted', data['favId'])
-          }
-        }
+        let newItemDescription = String(data['item_description']).substring(0, 100)
+        let newItemTitle = String(data['item_title']).substring(0, 50)
+        data['new_item_title'] = newItemTitle + '...'
+        data['new_item_description'] = newItemDescription + '...'
+        // if (data['days_remaining'] < 0) {
+        //   console.log('this should be removed from favorites', data['favId'])
+        //   let removefromfav = await this.favoriteService.destroy(parseInt(data['favId']))
+        //   if (removefromfav) {
+        //     console.log('this favitem is deleted', data['favId'])
+        //   }
+        // }
         data['timeremaining'] = timeremaining;
       });
       //==================== get all the items again to but realized is removed ==================
@@ -401,7 +412,35 @@ export class UserController extends Controller {
     } else {
       return response.redirect('/login');
     }
-   }
+  }
+
+  public async removeWhenCountdownFin(id) {
+    
+    let favorites = await this.favoriteService.viewAllMyFavorites(id)
+    let fav = []
+    favorites.forEach(item => {
+      let favoriteJsonItem = item.toJSON();
+      fav.push(favoriteJsonItem);
+    });
+    fav.forEach(async(data) => {
+      let timeremaining = await this.getRemainingHours(String(data['auction_date']),data['id'])
+      
+      if (data['days_remaining'] < 0) {
+        console.log('this should be removed from favorites', data['favId'], 'item id:', data['id'])
+        let removefromfav = await this.favoriteService.destroy(parseInt(data['favId']))
+        if (removefromfav) {
+          console.log('this favitem is deleted', data['favId'])
+        }
+        let decFavCount = await this.auctionItemService.decrementFavorite(data['id'])
+        if (decFavCount) {
+          console.log('decremented item fav count')
+        }
+      }
+      data['timeremaining'] = timeremaining;
+    });
+    console.log(fav)
+    return true;
+  }
 
   public async updateUserPost(request: Request, response: Response): Promise<any> {
     let alertuser;
@@ -509,6 +548,8 @@ export class UserController extends Controller {
     return response.redirect('/');
   }
 
+
+
   public async getRemainingHours(rawdate, id?: number) {
     let hrnow = new Date();
     let timenow = moment().format('HH')
@@ -526,7 +567,7 @@ export class UserController extends Controller {
     if (remaining > 0) {
       return remaining;
     } else if (remaining < 0) {
-      console.log('this item should be in realized:', id)
+      //console.log('this item should be in realized:', id)
       // let toRealized = await this.auctionItemService.updateToRealized(id);
 
       // if (toRealized) {
