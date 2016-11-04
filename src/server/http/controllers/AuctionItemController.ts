@@ -1,6 +1,6 @@
 import { Controller, Request, Response } from 'chen/web';
 import { injectable } from 'chen/core';
-import { AuctionItemService, CategoryService, AuctionSiteService, CountryListService } from 'app/services';
+import { AuctionItemService, CategoryService, AuctionSiteService, CountryListService, FavoriteService } from 'app/services';
 
 
 @injectable
@@ -9,7 +9,8 @@ export class AuctionItemController extends Controller {
   constructor(private auctionItemService: AuctionItemService,
               private categoryService: CategoryService,
               private auctionSiteService: AuctionSiteService,
-              private countryListService: CountryListService) {
+              private countryListService: CountryListService,
+              private favoriteService: FavoriteService) {
     super();
   }
 
@@ -124,11 +125,25 @@ export class AuctionItemController extends Controller {
     let items = await this.auctionItemService.searchAuction(search, category, auction_house, (offset - 1) * 10, page);
     let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, (offset - 1) * 10, page);
     let data = [];
+
+    //let tempDataholder = [];
     items.forEach(item => {
       let jsonItem = item.toJSON();
-      console.log(jsonItem);
+      // console.log(JSON.stringify(jsonItem));
+      // console.log(jsonItem)
       data.push(jsonItem);
     });
+    if (request.session.get('loggedUser')) {
+      data.forEach(async (datas) => {
+        let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
+        if (chkfav) {
+          console.log('favorite sya')
+          datas['isFavorite'] = 1;
+        }
+        console.log(datas.id)
+      });
+    }
+
     console.log('the offset')
     console.log(offset)
     console.log('the page')
@@ -152,6 +167,7 @@ export class AuctionItemController extends Controller {
     let categoryItems = [];
     categories.forEach(items => {
       let jsonItem = items.toJSON();
+
       categoryItems.push(jsonItem);
     });
 
@@ -161,8 +177,8 @@ export class AuctionItemController extends Controller {
       let jsonItem = items.toJSON();
       sites.push(jsonItem);
     });
-
-    return response.render('indexitem', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country });
+    console.log(data)
+    return response.render('indexitem', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: getCountry });
   }
 
 

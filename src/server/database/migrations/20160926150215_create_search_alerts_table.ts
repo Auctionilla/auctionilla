@@ -10,13 +10,12 @@ export async function up(db: knex) {
     table.string('search_item').notNullable();
     table.string('auction_house').nullable();
     table.string('category').nullable();
+    table.string('location').nullable();
     table.integer('user_id_fk').unsigned().notNullable();
-    table.integer('category_id_fk').unsigned().nullable();
 
     table.timestamp('created_at').notNullable().defaultTo(db.fn.now());
 
     table.foreign('user_id_fk').references('id').inTable('users');
-    table.foreign('category_id_fk').references('id').inTable('categories');
   });
 }
 

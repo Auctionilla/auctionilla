@@ -73,6 +73,28 @@
     }
 
 
+    function saveSearchAlert() {
+
+      var data = {
+        search_item: $('input#save-searchkey').val(),
+        category: $('input#save-category').val(),
+        auction_house: $('input#save-auctionhouse').val(),
+        location: $('input#save-location').val()
+      }
+      alert(data);
+      $.ajax({
+        method: 'POST',
+        url: '/create-searchalert',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(data)
+      }).done(function (resp) {
+        let data = resp.data;
+
+      });
+    }
+
+
    </script>
 
 
@@ -159,13 +181,16 @@
   </ul>
   </div>
 </div>
+{% if search %}
 <div id = "searchAlertContainer">
-<input type="text" name="save-searchkey">
-<input type="text" name="save-category">
-<input type="text" name="save-auctionhouse">
-<input type="text" name="save-location">
-
+<input type="hidden" value="{{ search }}" id="save-searchkey" name="save-searchkey">
+<input type="hidden" value = "{{ category }}" id="save-category" name="save-category">
+<input type="hidden" value = "{{ auction_house }}" id="save-auctionhouse" name="save-auctionhouse">
+<input type="hidden" value = "{{ country }}" id="save-location" name="save-location">
+<label onclick="saveSearchAlert()" style="color:red">create search alert for '{{ search }}'</label>
 </div>
+{% endif %}
+
 
 {% if data.length %}
 <table border="1">
@@ -188,7 +213,7 @@
     <td>{{ item.location }}</td>
     <td>{{ item.price }}</td>
     <td>{{ item.site_name }}</td>
-    <td>{{ item.favorite.ids }}</td>
+    <td>{{ item.isFavorite }}</td>
     <td>
       <!-- <a href="/addfavrite/{{ item.id }}">add favorite</a> -->
       <!-- <input type="inputId{{ item.id }}" name=""> -->

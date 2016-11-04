@@ -24,8 +24,11 @@ export class FavoriteService extends SQLService<Favorite> {
     return this.destroy(id)
   }
 
-  checkIfFavorite() {
-    return true;
+  checkIfFavorite(user_id, item_id) {
+    return this.query(query => {
+      query.where('user_id_fk', user_id)
+      query.where('item_id_fk', item_id)
+    }).getOne();
   }
 
 }

@@ -14,4 +14,16 @@ export class SearchAlertsService extends SQLService<SearchAlerts> {
     super();
   }
 
+  saveSearchAlert(data) {
+    return this.create({
+      search_item: data.searchItem,
+      category: data.category,
+      auction_house: data.auctionHouse,
+      location: data.location,
+      user_id_fk: data.user_id_fk
+    });
+  }
+
+
+
 }
