@@ -38,6 +38,8 @@ export class FavoriteController extends Controller {
   }
 
   public async checkFavorite(request: Request, response: Response) {
+    let item_id = request.input.get('itemid');
+    console.log(item_id)
 
   }
 

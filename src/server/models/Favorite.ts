@@ -1,5 +1,5 @@
 import { SQLModel } from 'chen/sql';
-import { User ,AuctionItem } from 'app/models';
+import { User } from 'app/models';
 
 export class Favorite extends SQLModel {
 
@@ -10,7 +10,5 @@ export class Favorite extends SQLModel {
     return this.belongsTo(User, 'user_id_fk')
   }
 
-  auctionItem(){
-    return this.belongsTo(AuctionItem, 'auction_id_fk');
-  }
+
 }

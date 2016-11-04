@@ -29,6 +29,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       });
       // query.leftJoin('favorites as f', function () {
       //     this.on('f.item_id_fk', '=', 'auction_items.id');
+      //      where ('f item_id_fk' user_id)
       // });
       if (auction_house) {
         query.where('site_name', auction_house);
@@ -43,7 +44,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       if (itemPerPage) {
         query.limit(itemPerPage)
       }
-    }).get();
+    }).with('favorite').get();
   }
 
   getSearchItemCount(searchItem = '', category, auction_house, offset?: number, itemPerPage?: number){

@@ -126,6 +126,7 @@ export class AuctionItemController extends Controller {
     let data = [];
     items.forEach(item => {
       let jsonItem = item.toJSON();
+      console.log(jsonItem);
       data.push(jsonItem);
     });
     console.log('the offset')
