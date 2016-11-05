@@ -124,6 +124,7 @@ export class UserController extends Controller {
             loginstatus = 'Login success';
 
             request.session.set('loggedUser',{'email': userDetails.get('email'), 'id': userDetails.get('id')});
+            request.session.get('loggedUser');
             response.redirect('/search')
           } else {
             console.log('user is not registered');

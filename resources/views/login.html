@@ -31,14 +31,14 @@
             let data = resp.data;
             console.log(resp.data.alert);
             var status = resp.data.alert;
-            if (status == 'login success') {
+            if (status == 'Login success') {
 
               console.log('registration success');
-              if ($('#staylogin').is(":checked")) {
-                document.cookie = "antique-email= " + $('input#login-email').val();
-                document.cookie = "antique-password="+ $('input#login-pass').val();
-                alert(document.cookie);
-              }
+              // if ($('#staylogin').is(":checked")) {
+              //   document.cookie = "antique-email= " + $('input#login-email').val();
+              //   document.cookie = "antique-password="+ $('input#login-pass').val();
+              //   alert(document.cookie);
+              // }
 
               $('#logalert').html(status);
               $('#logalert').attr('color:red');
