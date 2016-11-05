@@ -19,8 +19,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chen": "git://github.com/chen-framework/chen.git#compiled",
+    "chen": "^0.1.4",
     "connect-redis": "^3.0.2",
+    "country-list": "0.0.3",
+    "mandrill-api": "^1.0.45",
     "mysql": "^2.10.2"
   },
   "devDependencies": {

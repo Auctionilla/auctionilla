@@ -167,18 +167,18 @@
 
 <div>
   <div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Relevance
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-    <li {% if relevance == 'relevance' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance=relevance">relevance</a></li>
-    <li{% if relevance == "latest" %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&&page={{page}}&relevance=latest">latest</a></li>
-    <li {% if relevance == 'lowest-price' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance=lowest-price">lowest price</a></li>
-    <li{% if relevance == 'highest-price' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance=highest-price">highest price</a></li>
-    <li {% if relevance == 'shortest-remaining' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance=shortest-remaining">shortest remaining</a></li>
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      Relevance
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+      <li {% if relevance == 'relevance' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance=relevance">relevance</a></li>
+      <li{% if relevance == "latest" %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&&page={{page}}&relevance=latest">latest</a></li>
+      <li {% if relevance == 'lowest-price' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance=lowest-price">lowest price</a></li>
+      <li{% if relevance == 'highest-price' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance=highest-price">highest price</a></li>
+      <li {% if relevance == 'shortest-remaining' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance=shortest-remaining">shortest remaining</a></li>
 
-  </ul>
+    </ul>
   </div>
 </div>
 {% if search %}

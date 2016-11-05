@@ -20,6 +20,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       query.select('auction_items.*')
       query.select('c.category_name')
       query.select('h.site_name')
+      query.select('h.site_emblem')
       query.join('categories as c', function () {
           this.on('c.id', '=', 'auction_items.category_id_fk');
       });

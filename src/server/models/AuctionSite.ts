@@ -4,7 +4,7 @@ import { AuctionItem } from 'app/models';
 export class AuctionSite extends SQLModel {
 
   protected table: string = 'auction_site';
-  protected fillable:string[] = ['site_name', 'site_url', 'site_logo'];
+  protected fillable:string[] = ['site_name', 'site_url', 'site_emblem'];
 
 
   auctionItems() {

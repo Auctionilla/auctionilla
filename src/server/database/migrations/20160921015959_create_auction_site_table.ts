@@ -8,7 +8,7 @@ export async function up(db: knex) {
   return db.schema.createTable('auction_site', table => {
     table.increments('id');
     table.string('site_name').notNullable();
-    table.text('site_logo').notNullable();
+    table.text('site_emblem').notNullable();
     table.string('site_url').notNullable();
     table.timestamps();
   });
