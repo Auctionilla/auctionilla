@@ -1,0 +1,100 @@
+.big-logo {
+  @include centerer(true, true);
+
+  padding: 20px;
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+}
+
+.profile-container {
+  .profile-items {
+    width: 900px;
+
+    @media (min-width: 320px) and (max-width: 1199px) {
+      width: 100% !important;
+    }
+
+    .profile-item {
+      background-color: #fff;
+      margin-bottom: 15px;
+      margin-top: 15px;
+
+      .content {
+        padding: 25px;
+        color: $title-font-color;
+
+        h4 {
+          .fa-circle {
+            color: $site-red;
+          }
+        }
+
+        p {
+          color: $title-font-color;
+        }
+      }
+    }
+  }
+}
+
+.search-table {
+  width: 700px;
+
+  h5 {
+    border-top: #ebebeb thin solid;
+    border-bottom: #ebebeb thin solid;
+    padding-bottom: 15px;
+    padding-top: 15px;
+  }
+
+  margin-top: 15px;
+}
+
+.see-all {
+  padding: 15px;
+  text-align: right;
+
+  a {
+    color: $site-red;
+    font-size: 16px;
+  }
+}
+
+.favourite-auctions {
+  padding-top: 5px;
+
+  .main-object-list {
+    padding-top: 5px;
+  }
+
+  .content {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+  }
+}
+
+.edit-account-container {
+  .form-content {
+    label {
+      font-weight: normal;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    .form-control {
+      height: 36px;
+      border-radius: 0;
+    }
+
+    .btn-submit {
+      background-color: $site-red;
+      text-transform: uppercase;
+      color: #fff;
+      border: none;
+    }
+  }
+}

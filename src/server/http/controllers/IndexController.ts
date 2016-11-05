@@ -9,6 +9,6 @@ export class IndexController extends Controller {
   }
 
   public async index(request: Request, response: Response) {
-    return response.render('index');
+    return response.render('objects');
   }
 }

@@ -5,19 +5,12 @@
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Antique Website</title>
+  <title>Auctionilla</title>
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <!-- Place favicon.ico in the root directory -->
-  <!-- build:css styles/vendor.css -->
-  <!-- bower:css -->
-  <!-- endbower -->
-  <!-- endbuild -->
-  <!-- build:css css/main.css -->
+
   <link rel="stylesheet" href="/assets/css/main.css">
-  <!-- endbuild -->
-  <!-- build:js js/vendor/modernizr.js -->
-  <script src="/assets/lib/modernizr/modernizr.js"></script>
-  <!-- endbuild -->
+  <script src="/assets/js/vendor/modernizr.js"></script>
 </head>
 
 <body>
@@ -34,7 +27,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><img src="/assets/images/logo.png" alt="logo" /></a>
+          <a class="navbar-brand" href="index.html"><img src="/assets/images/logo.png" alt="logo" /></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -42,7 +35,15 @@
             <li><a href="#about">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li>
+            <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
+           <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">My Profile</a></li>
+              <li><a href="#">Log Out</a></li>
+
+            </ul>
+          </li>
             <li>
                 <div class="search">
                   <div class="form-group ">
@@ -64,31 +65,35 @@
       <form class="navbar-form" role="search">
         <div class="col-md-6 col-sm-6 search-section">
           <input type="text" class="input form-control " placeholder="Search word, phrase or name of lot" />
+
           <div class="col-md-6 col-sm-6 search-section">
             <select data-placeholder="Select country" class="form-control sub-select select2me input">
               <option></option>
-              <option>Lorem Ipsuma</option>
-              <option>Lorema Ipsum</option>
-              <option>s Ipsum</option>
-              <option>b Ipsum</option>
-              <option>hg Ipsum</option>
-              <option>gaga Ipsum</option>
-              <option>yaya Ipsum</option>
+              <option value="">all countries</option>>
+              <option value="america">united states of america</option>
+              {% for i in range(0, countries.length) %}
+                <option value="{{ countries[i] }}">{{ countries[i] }}</option>
+              {% endfor %}
             </select>
           </div>
+
           <div class="col-md-6 col-sm-6 search-section">
             <select data-placeholder="Select auction house" class="form-control sub-select  select2me input">
               <option></option>
-              <option>Loremus Ipsum</option>
-              <option>Loremas Ipsum</option>
+              <option value=""> all auction houses</option>
+              {% for site in sites %}
+                <option>{{ site.site_name }}</option>
+              {% endfor %}
             </select>
           </div>
         </div>
         <div class="col-md-6 col-sm-6 search-section">
           <select data-placeholder="All categories" class="form-control  main-select select2me input">
             <option></option>
-            <option>Lorembuda Ipsum</option>
-            <option>Lorem Ipsumada</option>
+            <option value="">all categories</option>
+            {% for category in categories %}
+              <option>{{ category.category_name }}</option>
+            {% endfor %}
           </select>
           <button type="button" class="submit-search"><i class="fa fa-search"></i></button>
           <div class="radio-buttons">
@@ -171,47 +176,54 @@
     <div class="container">
       <div class="row">
         <div class="col-md-9 col-sm-12 main-object-list">
-          <div class="object-item">
-            <div class="thumb-image">
-              <img src="/assets/images/item-thumb-1.png" />
+        {% if data.length %}
+          {% for item in data %}
+            <div class="object-item">
+              <div class="thumb-image image">
+                <img src="/assets/images/objects/item-thumb-1.png" />
+                  <div class="image-hover">
+                    <a href="#" class="btn" target="_blank">VIEW RESULTS</a>
+                  </div>
+              </div>
+                <div class="descriptions">
+                  <div class="clearfix tag-timestamp">
+                    <ul>
+                      <li>
+                        <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
+                      </li>
+                      <li>
+                        <i class="fa fa-clock-o" aria-hidden="true"></i> {{ items.auction_date}}
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="content">
+                    <h4>
+                      {{ item.item_title}}
+                    </h4>
+                    <p>
+                      {{ item.item_description }}
+                    </p>
+                    <p class="estimate">
+                      {{ item.price_status }}: {{ item.price}} {{item.currency}} <a href="#">Show Bid</a>
+                    </p>
+                  </div>
+                  <div class="actions clearfix">
+                    <ul>
+                      <li class="auction-emblem">
+                        <a href="#"><img src="/assets/images/objects/auction-emblem.png" /></a>
+                      </li>
+                      <li>
+                        <button class="btn btn"><i class="fa fa-heart-o red"></i> <span>{% if item.isFavorite == 1 %} Favorite {% else %} Save Favorite {% endif%}</span></button>
+                      </li>
+                      <li>
+                        <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
             </div>
-            <div class="descriptions">
-              <div class="clearfix tag-timestamp">
-                <ul>
-                  <li>
-                    <i class="fa fa-map-marker" aria-hidden="true"></i> USA
-                  </li>
-                  <li>
-                    <i class="fa fa-clock-o" aria-hidden="true"></i> 2d 9h
-                  </li>
-                </ul>
-              </div>
-              <div class="content">
-                <h4>
-                  CHARLTON HESTON BEN HUR PHOTOGRAPH ...
-                </h4>
-                <p>
-                  A large format color photograph of Charlton Heston in costume...
-                </p>
-                <p class="estimate">
-                  Low estimate: 400 USD <a href="#">Show Bid</a>
-                </p>
-              </div>
-              <div class="actions clearfix">
-                <ul>
-                  <li class="auction-emblem">
-                    <a href="#"><img src="/assets/images/auction-emblem.png" /></a>
-                  </li>
-                  <li>
-                    <button class="btn btn"><i class="fa fa-heart-o"></i> <span>Save favorite</span></button>
-                  </li>
-                  <li>
-                    <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i> <span>Go to Auction</span></button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
+        {% endif %}
         </div>
         <div class="col-md-3  daily-tips">
           <div class="widgets ">
@@ -219,7 +231,7 @@
               <h4>Pick of the day</h4>
             </div>
             <div class="image">
-              <img src="/assets/images/pick-1.png" alt="pick photo" />
+              <img src="/assets/images/objects/pick-1.png" alt="pick photo" />
             </div>
             <div class="content">
               <a href="#">
@@ -266,6 +278,7 @@
       </span>
     </div>
   </div>
+
   <div class="object-pagination">
     <div class="container">
       <ul class="nav nav-justified">
@@ -275,48 +288,11 @@
         <li>
           <a href="#"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a>
         </li>
-        <li class="active">
-          <a href="#">1</a>
+        {% for i in range(1, total + 1) %}
+        <li {% if offset == i %}class="active" {% endif %}>
+          <a href="#">{{ i }}</a>
         </li>
-        <li>
-          <a href="#">2</a>
-        </li>
-        <li>
-          <a href="#">3</a>
-        </li>
-        <li>
-          <a href="#">4</a>
-        </li>
-        <li>
-          <a href="#">5</a>
-        </li>
-        <li>
-          <a href="#">6</a>
-        </li>
-        <li>
-          <a href="#">7</a>
-        </li>
-        <li>
-          <a href="#">8</a>
-        </li>
-        <li>
-          <a href="#">9</a>
-        </li>
-        <li>
-          <a href="#">10</a>
-        </li>
-        <li>
-          <a href="#">11</a>
-        </li>
-        <li>
-          <a href="#">12</a>
-        </li>
-        <li>
-          <a href="#">13</a>
-        </li>
-        <li>
-          <a href="#">14</a>
-        </li>
+        {% endfor %}
         <li>
           <a href="#"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
         </li>
@@ -326,6 +302,7 @@
       </ul>
     </div>
   </div>
+
   <div class="search-terms">
     <div class="container">
       <div class="item-content">
@@ -377,18 +354,16 @@
     </div>
   </div>
 </section>
-
-
 <footer class="clearfix">
   <div class="container">
     <div class="row">
       <div class="text-left item col-sm-3 col-md-3">
-        <img src="/assets/images/logo.png" />
+        <a href="#"><img src="/assets/images/logo.png" /></a>
       </div>
       <div class="item col-sm-6 col-md-6">
         <span>
-                © Antique.com 2016  | ALL RIGHTS RESERVED
-              </span>
+          © Antique.com 2016  | ALL RIGHTS RESERVED
+        </span>
       </div>
       <div class="item col-sm-3 col-md-3">
         <a href="#"><i class="fa fa-facebook"></i></a>
@@ -401,29 +376,8 @@
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
 </script>
-<!-- build:js js/vendor.js -->
-<!-- bower:js -->
-<script src="/assets/lib/modernizr/modernizr.js"></script>
-<script src="/assets/lib/jquery/dist/jquery.js"></script>
-<script src="/assets/lib/select2/dist/js/select2.js"></script>
-<!-- endbower -->
-<!-- endbuild -->
-<!-- build:js js/plugins.js -->
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/affix.js"></script>
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/alert.js"></script>
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/dropdown.js"></script>
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js"></script>
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/modal.js"></script>
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/transition.js"></script>
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/button.js"></script>
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/popover.js"></script>
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/carousel.js"></script>
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js"></script>
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/collapse.js"></script>
-<script src="/assets/lib/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>
-<!-- endbuild -->
-<!-- build:js js/main.js -->
+<script src="/assets/js/vendor.js"></script>
+<script src="/assets/js/plugins.js"></script>
 <script src="/assets/js/main.js"></script>
-<!-- endbuild -->
 </body>
 

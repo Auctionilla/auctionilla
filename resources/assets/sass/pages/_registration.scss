@@ -1,0 +1,59 @@
+.login-banner {
+  @media (max-width: 767px) {
+    min-height: 150px;
+  }
+}
+
+.registration-content {
+  margin-bottom: 100px;
+
+  .content-items {
+    float: none;
+    margin: 0 auto;
+    color: $title-font-color;
+
+    @media (max-width: 767px) {
+      padding: 0;
+    }
+
+    .content-item {
+      padding: 10px;
+
+      .content {
+        background-color: #fff;
+        padding: 25px;
+        min-height: 385px;
+
+        .form-content {
+          label {
+            font-weight: normal;
+          }
+
+          .form-group {
+            margin-bottom: 25px;
+          }
+
+          .form-control {
+            height: 36px;
+            border-radius: 0;
+          }
+
+          .btn-submit {
+            background-color: $site-red;
+            text-transform: uppercase;
+            color: #fff;
+            border: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+.login-link {
+  margin-top: 40px;
+
+  a {
+    color: $site-red;
+  }
+}

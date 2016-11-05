@@ -11,76 +11,6 @@
 
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
-
-  <script type="text/javascript">
-    function login(data) {
-          if(!data){
-            data = {
-              email: $('input#login-email').val(),
-              password: $('input#login-pass').val()
-            }
-          }
-
-          $.ajax({
-            method: 'post',
-            url: '/login',
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(data)
-          }).done(function (resp) {
-            let data = resp.data;
-            console.log(resp.data.alert);
-            var status = resp.data.alert;
-            if (status == 'login success') {
-
-              console.log('registration success');
-              if ($('#staylogin').is(":checked")) {
-                document.cookie = "antique-email= " + $('input#login-email').val();
-                document.cookie = "antique-password="+ $('input#login-pass').val();
-                alert(document.cookie);
-              }
-
-              $('#logalert').html(status);
-              $('#logalert').attr('color:red')
-              window.location.href="http://localhost:3000/search";
-            } else {
-              $('#logalert').html(status);
-            }
-
-              // window.location.reload();
-          });
-        }
-
-        $(function() {
-          var cookieUserEmail = '';
-          var cookieUserPassword = '';
-          var thecookie = document.cookie;
-          var cookiedata = thecookie.split(';')
-          for (i = 0; i < cookiedata.length; i++) {
-            if (cookiedata[i].search('antique-email') > -1) {
-              cookieUserEmail = cookiedata[i];
-            } else if(cookiedata[i].search('antique-password') > -1) {
-              cookieUserPassword = cookiedata[i];
-            }
-          }
-
-          if (cookieUserEmail && cookieUserPassword) {
-            alert(cookieUserEmail.replace('antique-email=','') + '-' + cookieUserPassword.replace('antique-password=',''))
-            var data = {
-              email: cookieUserEmail.replace('antique-email=','').trim(),
-              password: cookieUserPassword.replace('antique-password=','').trim()
-            }
-            login(data);
-          }
-        });
-
-
-
-  </script>
-
-
-
-
 </head>
 
 <body>
@@ -142,33 +72,37 @@
         <div class="col-md-6 content-item">
           <div class="content">
             <h4>
-              Sign In
+              Register
             </h4>
             <div class="form-content">
-              <!-- <form> -->
+              <form>
                 <div class="form-group">
-                  <label>Email</label>
-                  <input type="email" class="form-control" id="login-email" placeholder="Email">
+                  <label>Your email</label>
+                  <input type="email" class="form-control" placeholder="Email">
                 </div>
                 <div class="form-group">
-                  <label>Password</label>
-                  <input type="password" class="form-control" id="login-pass" placeholder="Password">
+                  <label>Choose a password</label>
+                  <input type="password" class="form-control" placeholder="Password">
                 </div>
-                <button type="submit" onclick="login()" class="btn btn-block btn-submit btn-default">Login</button>
-              <!-- </form> -->
+                <div class="form-group">
+                  <label>Re-type Password</label>
+                  <input type="password" class="form-control" placeholder="Confirm Password">
+                </div>
+                <button type="submit" class="btn btn-block btn-submit btn-default">Register</button>
+              </form>
             </div>
           </div>
         </div>
         <div class="col-md-6 content-item">
           <div class="content">
-            <h4 id = "logalert">
+            <h4>
                 On My pages you're able to
-            </h4>
-            <p id= "logmessage">
+              </h4>
+            <p>
               Save your search, and we'll notify you when new lots arrive
             </p>
             <div class="login-link">
-              <a href="#">Register</a>
+              <a href="#">Log in</a>
             </div>
           </div>
         </div>

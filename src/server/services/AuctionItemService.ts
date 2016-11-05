@@ -14,7 +14,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     super();
   }
 
-  searchAuction(searchItem = '', category, auction_house, offset?: number, itemPerPage?: number, relevance) {
+  searchAuction(searchItem = '', category, auction_house, relevance, offset?: number, itemPerPage?: number) {
     return this.query(query => {
 
       query.select('auction_items.*')

@@ -10,19 +10,19 @@ Icon classes can be used entirely standalone. They are named after their origina
 ```
 */
 .icon-camera {
-  background-image: url(../img/sprites.png);
+  background-image: url(/assets/images/sprites.png);
   background-position: 0px 0px;
   width: 48px;
   height: 48px;
 }
 .icon-landscape {
-  background-image: url(../img/sprites.png);
+  background-image: url(/assets/images/sprites.png);
   background-position: 0px -48px;
   width: 24px;
   height: 24px;
 }
 .icon-picture {
-  background-image: url(../img/sprites.png);
+  background-image: url(/assets/images/sprites.png);
   background-position: -48px 0px;
   width: 32px;
   height: 32px;

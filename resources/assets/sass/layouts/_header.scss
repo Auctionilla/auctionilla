@@ -2,6 +2,28 @@
   background-color: $nav-bg-color;
   border: none;
 
+  .navbar-header {
+    z-index: 10;
+  }
+
+  .navbar-toggle {
+    border: none;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:focus {
+      border: none;
+      background-color: transparent;
+    }
+
+    .icon-bar {
+      background-color: $site-red;
+      height: 3px;
+    }
+  }
+
   .nav {
     li {
       a {

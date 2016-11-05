@@ -8,7 +8,13 @@ ul {
 }
 
 h4 {
-  color: #3b4448;
+  font-size: 20px;
+  color: $title-font-color;
+}
+
+h5 {
+  font-size: 16px;
+  color: $title-font-color;
 }
 
 .btn {
@@ -75,11 +81,6 @@ h4 {
 
   .widget-title {
     text-align: center;
-
-    h4 {
-      font-size: 20px;
-      color: #3b4448;
-    }
   }
 
   .image {
@@ -103,6 +104,10 @@ h4 {
       color: #3b4448;
     }
   }
+}
+
+.text-right {
+  text-align: right !important;
 }
 
 // * {

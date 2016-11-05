@@ -120,29 +120,29 @@ export class UserController extends Controller {
           let checkPass = await Hash.check(pass, userpass);
 
           if (checkPass) {
-            console.log('user is registered, login ok!');
-            loginstatus = 'login success';
+            console.log('User is registered, login ok!');
+            loginstatus = 'Login success';
 
             request.session.set('loggedUser',{'email': userDetails.get('email'), 'id': userDetails.get('id')});
             response.redirect('/search')
           } else {
             console.log('user is not registered');
-            loginstatus = 'password not match, login failed';
+            loginstatus = 'Password not match, login failed';
           }
         } else if (chkIfVerified == false) {
           console.log('user is not yet verified');
-          loginstatus = 'please verify your account first';
+          loginstatus = 'Please verify your account first';
         }
 
       } else {
         console.log('user details not found');
-        loginstatus = 'password incorrect';
+        loginstatus = 'Password not match';
       }
 
 
     } else {
       console.log('unknown email')
-      loginstatus = "user is not registered";
+      loginstatus = "User is not registered";
     }
     return response.json({data : {alert : loginstatus }});
 
