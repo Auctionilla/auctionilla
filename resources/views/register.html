@@ -11,6 +11,93 @@
 
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
+  <script type="text/javascript">
+    function register(data) {
+          if (!data) {
+              data = {
+                  email: $('input#email').val(),
+                  password: $('input#pass').val()
+              }
+          }
+
+          $.ajax({
+              method: 'post',
+              url: '/register',
+              contentType: 'application/json',
+              dataType: 'json',
+              data: JSON.stringify(data)
+          }).done(function (resp) {
+              let data = resp.data;
+              console.log(resp.data.status);
+              var status = resp.data.status;
+              if (status == 'success') {
+                console.log('registration success');
+                $('#registration-form').hide();
+                $('#registration-result').show();
+
+              }
+
+              // window.location.reload();
+          });
+        }
+
+
+
+    function checkpassword(){
+      var pass = document.getElementById('password').value;
+      var confpass = document.getElementById('pass2').value;
+      if (pass == "" && confpass == "") {
+        $('#pass2span').html("password empty");
+        return false;
+      } else {
+        if (pass == confpass) {
+          $('#pass2span').html("password match");
+          $('#pass2span').attr('class', 'text-info');
+          return true;
+        } else {
+          $('#pass2span').html("password not match");
+          return false;
+        }
+      }
+    }
+
+
+
+    // function checkpasslength() {
+    //   alert('go')
+    // }
+    function checkpasslength() {
+      var strength = document.getElementById('pass1span');
+      var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\W).*$", "g");
+      var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+      var enoughRegex = new RegExp("(?=.{6,}).*", "g");
+      var pwd = document.getElementById("pass").value();
+      if (pwd.value.length==0) {
+      strength.innerHTML = 'type password';
+      } else if (false == enoughRegex.test(pwd.value)) {
+      strength.innerHTML = 'enter more character';
+      } else if (strongRegex.test(pwd.value)) {
+      alert('strong')
+      } else if (mediumRegex.test(pwd.value)) {
+      alert('medium')
+      } else {
+      alert('weak')
+      }
+    }
+
+
+    function validate(){
+      if(checkPassword() == true ){
+        alert('registration success');
+        return true;
+      } else {
+        alert('registration failed');
+        return false;
+      }
+    }
+  </script>
+
+
 </head>
 
 <body>
@@ -35,7 +122,19 @@
             <li><a href="#about">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li>
+            <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
+            <ul class="dropdown-menu" style="background-color: gray ">
+              {% if user %}
+                <li><a href="/viewprofile">My Profile </a></li>
+                <li><a href="/logout">Log Out</a></li>
+              {% else %}
+                <li><a href="/registration">Register</a></li>
+                <li><a href="/login">Login</a></li>
+              {% endif %}
+            </ul>
+          </li>
             <li>
                 <div class="search">
                   <div class="form-group ">
@@ -60,7 +159,7 @@
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-home"></i></a>
           </li>
-          <li><a href="#">Register</a>
+          <li><a href="/registration">Register</a>
           </li>
         </ol>
       </div>
@@ -75,21 +174,23 @@
               Register
             </h4>
             <div class="form-content">
-              <form>
+              <!-- <form action="/register" method="post" onsubmit="return validate();"> -->
                 <div class="form-group">
                   <label>Your email</label>
-                  <input type="email" class="form-control" placeholder="Email">
+                  <input type="email" class="form-control" name="email" placeholder="Email">
                 </div>
                 <div class="form-group">
                   <label>Choose a password</label>
-                  <input type="password" class="form-control" placeholder="Password">
+                  <input type="password" onblur="checkpasslength()" name="pass" id="pass" class="form-control" placeholder="Password">
+                  <span id= "pass1span"></span>
                 </div>
                 <div class="form-group">
                   <label>Re-type Password</label>
-                  <input type="password" class="form-control" placeholder="Confirm Password">
+                  <input type="password" name="pass2" id="pass2" class="form-control" placeholder="Confirm Password" onblur="checkpassword();">
+                  <span class="text-danger" id="pass2span"></span>
                 </div>
                 <button type="submit" class="btn btn-block btn-submit btn-default">Register</button>
-              </form>
+              <!-- </form> -->
             </div>
           </div>
         </div>
@@ -102,7 +203,7 @@
               Save your search, and we'll notify you when new lots arrive
             </p>
             <div class="login-link">
-              <a href="#">Log in</a>
+              <a href="/login">Log in</a>
             </div>
           </div>
         </div>

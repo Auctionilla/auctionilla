@@ -12,11 +12,7 @@
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
 
-  <script type="text/javascript">
-    function adder(a, b) {
-      return a + b;
-    }
-  </script>
+
 </head>
 
 <body>
@@ -33,7 +29,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html"><img src="/assets/images/logo.png" alt="logo" /></a>
+          <a class="navbar-brand" href="/"><img src="/assets/images/logo.png" alt="logo" /></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -44,19 +40,25 @@
             <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
            <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">My Profile</a></li>
-              <li><a href="#">Log Out</a></li>
-
+            <ul class="dropdown-menu" style="background-color: gray ">
+              {% if user %}
+                <li><a href="/viewprofile">My Profile </a></li>
+                <li><a href="/logout">Log Out</a></li>
+              {% else %}
+                <li><a href="/registration">Register</a></li>
+                <li><a href="/login">Login</a></li>
+              {% endif %}
             </ul>
           </li>
             <li>
+                <form action="/search" method="get">
                 <div class="search">
                   <div class="form-group ">
-                    <input type="text" class="form-control" id="inputValidation" placeholder="Quick Search">
+                    <input type="text" name='searchItem' class="form-control" id="inputValidation" placeholder="Quick Search">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                   </div>
                 </div>
+                </form>
             </li>
           </ul>
         </div>
@@ -70,10 +72,10 @@
     <div class="col-md-9 col-sm-12 col-xs-12 search-bar">
       <form class="navbar-form" role="search">
         <div class="col-md-6 col-sm-6 search-section">
-          <input type="text" class="input form-control " placeholder="Search word, phrase or name of lot" />
+          <input name="searchItem" type="text" class="input form-control " value="{{ search }}" placeholder="Search word, phrase or name of lot" />
 
           <div class="col-md-6 col-sm-6 search-section">
-            <select data-placeholder="Select country" class="form-control sub-select select2me input">
+            <select id="country" name="countries" data-placeholder="Select country" class="form-control sub-select select2me input">
               <option></option>
               <option value="">all countries</option>
 
@@ -85,7 +87,7 @@
           </div>
 
           <div class="col-md-6 col-sm-6 search-section">
-            <select data-placeholder="Select auction house" class="form-control sub-select  select2me input">
+            <select id="auction-house" name="auction-house"  data-placeholder="Select auction house" class="form-control sub-select  select2me input">
               <option></option>
               <option value=""> all auction houses</option>
               {% for site in sites %}
@@ -95,7 +97,7 @@
           </div>
         </div>
         <div class="col-md-6 col-sm-6 search-section">
-          <select data-placeholder="All categories" class="form-control  main-select select2me input">
+          <select id="categories" name="category" data-placeholder="All categories" class="form-control  main-select select2me input">
             <option></option>
             <option value="">all categories</option>
             {% for category in categories %}
@@ -105,19 +107,19 @@
           <button type="button" class="submit-search"><i class="fa fa-search"></i></button>
           <div class="radio-buttons">
             <div class="radio">
-              <input type="radio" name="objects">
+              <input type="radio" value="objects" checked name="radiobuttonsearch">
               <label for="radio1">
                 Objects
               </label>
             </div>
             <div class="radio">
-              <input type="radio" name="realizeprices">
+              <input type="radio" value="auctions" name="radiobuttonsearch">
               <label for="radio2">
                 Auctions
               </label>
             </div>
             <div class="radio">
-              <input type="radio" name="realizeprices">
+              <input type="radio" value="fix-price" name="radiobuttonsearch">
               <label for="radio2">
                 Fixed price objects
               </label>
@@ -145,15 +147,16 @@
         </ol>
         <div class="search-results clearfix">
           <div class="col-md-5 col-sm-12">
+
             <h4>
-            Your search returned 19 403 results
-          </h4>
+            Your search returned {{ total * 10}} results
+            </h4>
             <ul class="hits">
               <li>
-                <i class="fa fa-globe"></i> <span>45 314 hits in all countries</span>
+                <i class="fa fa-globe"></i> <span>{{ total * page }} hits in all countries</span>
               </li>
               <li>
-                <i class="fa fa-copy"></i> <span>273 636 hits in all categories</span>
+                <i class="fa fa-copy"></i> <span>{{ total * page }} hits in all categories</span>
               </li>
             </ul>
           </div>
@@ -167,7 +170,7 @@
               </select> -->
               <label>Sort By</label>
               <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button style="width:150px;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   Relevance
                   <span class="caret"></span>
                 </button>
@@ -189,18 +192,18 @@
                 <option>Lorem Ipsum</option>
               </select> -->
               <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Lots
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li{% if page == 10 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{10}}&relevance={{ relevance }}">10</a></li>
-                <li {% if page == 20 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{20}}&relevance={{ relevance }}">20</a></li>
-                <li{% if page == 30 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{30}}&relevance={{ relevance }}">30</a></li>
-                <li {% if page == 40 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{40}}&relevance={{ relevance }}">40</a></li>
-                <li {% if page == 50 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{50}}&relevance={{ relevance }}">50</a></li>
-              </ul>
-              </div>
+                <button style="width:150px" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  Lots
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li{% if page == 10 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{10}}&relevance={{ relevance }}">10</a></li>
+                  <li {% if page == 20 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{20}}&relevance={{ relevance }}">20</a></li>
+                  <li{% if page == 30 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{30}}&relevance={{ relevance }}">30</a></li>
+                  <li {% if page == 40 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{40}}&relevance={{ relevance }}">40</a></li>
+                  <li {% if page == 50 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{50}}&relevance={{ relevance }}">50</a></li>
+                </ul>
+                </div>
             </div>
           </div>
         </div>
@@ -213,69 +216,71 @@
         <div class="col-md-9 col-sm-12 main-object-list">
         {% if data.length %}
           {% for item in data %}
-            <div class="object-item">
-              <div class="thumb-image image">
-                <img src="{{ item.item_image }}" />
-                  <div class="image-hover">
-                    <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
+            {% if item.price_status != 'Realized' %}
+              <div class="object-item">
+                <div class="thumb-image image">
+                  <img src="{{ item.item_image }}" />
+                    <div class="image-hover">
+                      <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
+                    </div>
+                </div>
+                  <div class="descriptions">
+                    <div class="clearfix tag-timestamp">
+                      <ul>
+                        <li>
+                          <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
+                        </li>
+                        <li>
+                          <i class="fa fa-clock-o" aria-hidden="true"></i> {{ (item.converted_date / 24) | round(0, 'floor') }}d {{ item.converted_date % 24 }}h
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="content">
+                      <h4>
+                        {{ item.item_title}}
+                      </h4>
+                      <p>
+                        {{ item.item_description }}
+                      </p>
+                      <p class="estimate">
+                        {{ item.price_status }}: {{ item.price}} {{item.currency}}
+                        {% if item.price_status == "Fix price" %}
+
+                        {% elif item.price_status == "Hammer Price" %}
+                          <a href="{{ item.auction_url }}">Show Bid</a>
+                        {% elif item.price_status == "Low estimate" %}
+                          <a href="{{ item.auction_url }}">Show Bid</a>
+                        {% endif %}
+
+                      </p>
+                    </div>
+                    <div class="actions clearfix">
+                      <ul>
+                        <li class="auction-emblem">
+                          <a href="#"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                        </li>
+                        <li>
+                          <button class="btn btn"><i class="fa fa-heart-o yellow"></i> <span>{% if item.isFavorite == 1 %} Favorite {% else %} Save Favorite {% endif%}</span></button>
+                        </li>
+                        <li>
+                          <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+                          <span>
+                          {% if item.price_status == "Fix price" %}
+                            Buy it now
+                          {% elif item.price_status == "Hammer Price" %}
+                            Show Bid
+                          {% elif item.price_status == "Low estimate" %}
+                            Show Bid
+
+                          {% endif %}
+                          </span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
               </div>
-                <div class="descriptions">
-                  <div class="clearfix tag-timestamp">
-                    <ul>
-                      <li>
-                        <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
-                      </li>
-                      <li>
-                        <i class="fa fa-clock-o" aria-hidden="true"></i> {{ (item.converted_date / 24) | round(0, 'floor') }}d {{ item.converted_date % 24 }}h
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="content">
-                    <h4>
-                      {{ item.item_title}}
-                    </h4>
-                    <p>
-                      {{ item.item_description }}
-                    </p>
-                    <p class="estimate">
-                      {{ item.price_status }}: {{ item.price}} {{item.currency}}
-                      {% if item.price_status == "Fix price" %}
-
-                      {% elif item.price_status == "Hammer Price" %}
-                        <a href="{{ item.auction_url }}">Show Bid</a>
-                      {% elif item.price_status == "Low estemate" %}
-                        <a href="{{ item.auction_url }}">Show Bid</a>
-                      {% endif %}
-
-                    </p>
-                  </div>
-                  <div class="actions clearfix">
-                    <ul>
-                      <li class="auction-emblem">
-                        <a href="#"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
-                      </li>
-                      <li>
-                        <button class="btn btn"><i class="fa fa-heart-o yellow"></i> <span>{% if item.isFavorite == 1 %} Favorite {% else %} Save Favorite {% endif%}</span></button>
-                      </li>
-                      <li>
-                        <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
-                        <span>
-                        {% if item.price_status == "Fix price" %}
-                          Buy it now
-                        {% elif item.price_status == "Hammer Price" %}
-                          Show Bid
-                        {% elif item.price_status == "Low estemate" %}
-                          Show Bid
-
-                        {% endif %}
-                        </span>
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-            </div>
+            {% endif %}
           {% endfor %}
         {% endif %}
         </div>
@@ -296,7 +301,7 @@
               </p>
             </div>
           </div>
-          <div class="widgets ">
+          <!-- <div class="widgets ">
             <div class="widget-title">
               <h4>Latest news</h4>
             </div>
@@ -320,7 +325,7 @@
                 </a>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

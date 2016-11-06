@@ -15,7 +15,20 @@ export class UserController extends Controller {
   }
 
   public async viewLogin(request: Request, response: Response ) {
-    return response.render('login');
+
+    let id = 0;
+    if (request.session.get('loggedUser')) {
+      id = request.session.get('loggedUser').id;
+    }
+    return response.render('login', { id });
+  }
+
+  public async registration(request: Request, response: Response) {
+    let id = 0;
+    if (request.session.get('loggedUser')) {
+      id = request.session.get('loggedUser').id;
+    }
+    return response.render('register', { id });
   }
 
 
@@ -40,6 +53,7 @@ export class UserController extends Controller {
     }
     if (checkIfexistEmail) {
       console.log('email already exist');
+      // return response.render('register', { alert: 'email exist' })
     } else {
       let registerUser = await this.userService.createUser(userDetails);
       if (registerUser) {
@@ -71,6 +85,7 @@ export class UserController extends Controller {
     }
     //return response.redirect('/');
     return response.json({ data: {status: 'success'} });
+
   }
 
 
@@ -152,7 +167,7 @@ export class UserController extends Controller {
 
   public async logout(request: Request, response: Response) {
     request.session.flash('loggedUser');
-    return response.redirect('/search');
+    return response.redirect('/');
   }
 
 

@@ -38,13 +38,15 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       query.where('item_title', 'like',  `%${searchItem}%`);
       if (relevance) {
         if (relevance == 'latest') {
-          query.orderBy('auction_items.id', 'desc');
+          query.orderBy('id', 'desc');
         } else if (relevance == 'shortest-remaining') {
-          query.orderBy('converted_date', 'asc');
+          query.orderBy('auction_items.converted_date', 'asc');
         } else if (relevance == 'lowest-price') {
-          query.orderBy('price', 'asc');
+          query.orderBy('auction_items.price', 'asc');
         } else if (relevance == 'highest-price') {
-          query.orderBy('price', 'desc')
+          query.orderBy('auction_items.price', 'desc');
+        } else if (relevance == 'relevance') {
+          query.orderBy('auction_items.id', 'asc');
         }
       }
 

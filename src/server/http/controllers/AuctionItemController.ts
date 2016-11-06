@@ -16,15 +16,15 @@ export class AuctionItemController extends Controller {
 
   public async index(request: Request, response: Response) {
 
-    return response.render('objects');
+    return response.render('index');
   }
 
 
   public async listItems(request: Request, response: Response) {
     let countries = await this.countryListService.getAllCountry();
     console.log('the session');
-    console.log(request.session.get('loggedUser'))
-    if (request.session.get('loggedUser').id) {
+    let user = request.session.get('loggedUser');
+    if (request.session.get('loggedUser')) {
       let loggedUserId = request.session.get('loggedUser').id;
       console.log('this is the logged user id');
       console.log(loggedUserId);
@@ -122,15 +122,15 @@ export class AuctionItemController extends Controller {
       sites.push(jsonItem);
     });
     console.log(data)
-    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: getCountry, relevance });
+    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: getCountry, relevance, user });
 
   }
 
   public async searchItem(request: Request, response: Response) {
     let countries = await this.countryListService.getAllCountry();
     console.log('the session');
-    console.log(request.session.get('loggedUser'))
-    if (request.session.get('loggedUser').id) {
+    let user = request.session.get('loggedUser');
+    if (request.session.get('loggedUser')) {
       let loggedUserId = request.session.get('loggedUser').id;
       console.log('this is the logged user id');
       console.log(loggedUserId);
@@ -172,7 +172,7 @@ export class AuctionItemController extends Controller {
       relevance = getRelevance;
     }
 
-    let items = await this.auctionItemService.searchAuction(search, category, relevance, auction_house, (offset - 1) * 10, page);
+    let items = await this.auctionItemService.searchAuction(search, category, auction_house, relevance, (offset - 1) * 10, page);
     let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, (offset - 1) * 10, page);
     let data = [];
 
@@ -227,8 +227,8 @@ export class AuctionItemController extends Controller {
       let jsonItem = items.toJSON();
       sites.push(jsonItem);
     });
-    console.log(data)
-    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: getCountry, relevance });
+    //console.log(data)
+    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: getCountry, relevance, user });
   }
 
 
