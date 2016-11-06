@@ -23,11 +23,12 @@ export class AuctionItemController extends Controller {
   public async listItems(request: Request, response: Response) {
     let countries = await this.countryListService.getAllCountry();
     console.log('the session');
-    let user = request.session.get('loggedUser');
+    let user = "";
     if (request.session.get('loggedUser')) {
       let loggedUserId = request.session.get('loggedUser').id;
       console.log('this is the logged user id');
       console.log(loggedUserId);
+      user = loggedUserId;
     }
     let search = '';
     let category = '';
@@ -65,9 +66,13 @@ export class AuctionItemController extends Controller {
     if (getRelevance) {
       relevance = getRelevance;
     }
+    let itemFilter = request.input.get('radiobuttonsearch');
+    console.log('the item Filter');
+    console.log(itemFilter);
 
-    let items = await this.auctionItemService.searchAuction(search, category, relevance, auction_house, (offset - 1) * 10, page);
-    let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, (offset - 1) * 10, page);
+
+    let items = await this.auctionItemService.searchAuction(search, category, auction_house, relevance, itemFilter, (offset - 1) * 10, page);
+    let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, itemFilter);
     let data = [];
 
     //let tempDataholder = [];
@@ -81,7 +86,7 @@ export class AuctionItemController extends Controller {
       data.forEach(async (datas) => {
         let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
         if (chkfav) {
-          console.log('favorite sya')
+          console.log('this is a favorite')
           datas['isFavorite'] = 1;
         }
         console.log(datas.id)
@@ -122,18 +127,18 @@ export class AuctionItemController extends Controller {
       sites.push(jsonItem);
     });
     console.log(data)
-    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: getCountry, relevance, user });
-
+    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: getCountry, relevance, itemFilter, user });
   }
 
   public async searchItem(request: Request, response: Response) {
     let countries = await this.countryListService.getAllCountry();
     console.log('the session');
-    let user = request.session.get('loggedUser');
+    let user = "";
     if (request.session.get('loggedUser')) {
       let loggedUserId = request.session.get('loggedUser').id;
       console.log('this is the logged user id');
       console.log(loggedUserId);
+      user = loggedUserId;
     }
     let search = '';
     let category = '';
@@ -171,9 +176,13 @@ export class AuctionItemController extends Controller {
     if (getRelevance) {
       relevance = getRelevance;
     }
+    let itemFilter = request.input.get('radiobuttonsearch');
+    console.log('the item Filter');
+    console.log(itemFilter);
 
-    let items = await this.auctionItemService.searchAuction(search, category, auction_house, relevance, (offset - 1) * 10, page);
-    let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, (offset - 1) * 10, page);
+
+    let items = await this.auctionItemService.searchAuction(search, category, auction_house, relevance, itemFilter, (offset - 1) * 10, page);
+    let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, itemFilter);
     let data = [];
 
     //let tempDataholder = [];
@@ -187,8 +196,8 @@ export class AuctionItemController extends Controller {
       data.forEach(async (datas) => {
         let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
         if (chkfav) {
-          console.log('favorite sya')
-          datas['isFavorite'] = 1;
+          console.log('this is a favorite')
+          datas['isFavorite'] = chkfav.get('id');
         }
         console.log(datas.id)
       });
@@ -227,8 +236,8 @@ export class AuctionItemController extends Controller {
       let jsonItem = items.toJSON();
       sites.push(jsonItem);
     });
-    //console.log(data)
-    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: getCountry, relevance, user });
+    console.log(data)
+    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country: getCountry, relevance, itemFilter, user });
   }
 
 

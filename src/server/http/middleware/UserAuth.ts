@@ -6,14 +6,18 @@ export class UserAuth extends HttpMiddleware {
 
   public async handle(request: Request, response: Response, next: Function) {
 
-    let user = request.session.get('loggedUser');
-    console.log(request.session);
-    if (!user) {
-      console.log('user is not logged in');
-      return response.redirect('/');
-    } else {
-      console.log('user logged in');
+    if (request.session.get('loggedUser')) {
+      let user = request.session.get('loggedUser').id;
+      if (!user) {
+        console.log('user is not logged in');
+        console.log(user);
+        return response.redirect('/login');
+      } else {
+        console.log('user logged in');
+        console.log(user);
+      }
     }
+
     next();
   }
 }

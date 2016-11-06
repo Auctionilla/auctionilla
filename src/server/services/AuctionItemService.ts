@@ -14,13 +14,14 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     super();
   }
 
-  searchAuction(searchItem = '', category, auction_house, relevance, offset?: number, itemPerPage?: number) {
+  searchAuction(searchItem = '', category, auction_house, relevance, item_filter, offset?: number, itemPerPage?: number) {
     return this.query(query => {
 
       query.select('auction_items.*')
       query.select('c.category_name')
       query.select('h.site_name')
       query.select('h.site_emblem')
+      query.select('h.site_url')
       query.join('categories as c', function () {
           this.on('c.id', '=', 'auction_items.category_id_fk');
       });
@@ -50,6 +51,14 @@ export class AuctionItemService extends SQLService<AuctionItem> {
         }
       }
 
+      if (item_filter) {
+        if (item_filter == 'auctions') {
+          query.whereIn('price_status', ['Hammer price', 'Low estimate']);
+        } else if (item_filter == 'fix-price') {
+          query.where('price_status', 'Fix price')
+        }
+      }
+
       if (offset) {
        query.offset(offset)
       }
@@ -59,7 +68,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     }).get();
   }
 
-  getSearchItemCount(searchItem = '', category, auction_house, offset?: number, itemPerPage?: number){
+  getSearchItemCount(searchItem = '', category, auction_house, item_filter){
 
     return this.query(query => {
       query.count('auction_items.item_title as total')
@@ -74,6 +83,14 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       }
       if (category) {
        query.where('category_name', category);
+      }
+
+      if (item_filter) {
+        if (item_filter == 'auctions') {
+          query.whereIn('price_status', ['Hammer price', 'Low estimate']);
+        } else if (item_filter == 'fix-price') {
+          query.where('price_status', 'Fix price')
+        }
       }
       query.where('item_title', 'like',  `%${searchItem}%`);
       // if (offset) {

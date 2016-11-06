@@ -15,11 +15,18 @@ export class FavoriteController extends Controller {
 
 
   public async addFavorite(request: Request, response: Response ) {
+    let user = 0;
+    if (request.session.get('loggedUser')) {
+      let loggedUserId = request.session.get('loggedUser').id;
+      console.log('this is the logged user id');
+      console.log(loggedUserId);
+      user = loggedUserId;
+    }
     let id = request.input.get('item_id');
     console.log('this is the item id');
     console.log(id);
     let data = {
-      user_id: 1,
+      user_id: user,
       item_id: id
     }
     console.log(data)

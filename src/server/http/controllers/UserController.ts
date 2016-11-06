@@ -37,8 +37,8 @@ export class UserController extends Controller {
     // let email = await Hash.make('cedrickbuan@gmail.com');
     // console.log(email);
     // let password = await Hash.check('cedrickbuan@gmail.com', await email);
-
-    let hashedpass = await Hash.make(request.input.get('password'));
+    let alert = '';
+    let hashedpass = await Hash.make(request.input.get('pass'));
     console.log(hashedpass);
     let hashedemail = await Hash.make(request.input.get('email'));
     let email = request.input.get('email');
@@ -53,6 +53,7 @@ export class UserController extends Controller {
     }
     if (checkIfexistEmail) {
       console.log('email already exist');
+      alert = 'email exist';
       // return response.render('register', { alert: 'email exist' })
     } else {
       let registerUser = await this.userService.createUser(userDetails);
@@ -67,7 +68,7 @@ export class UserController extends Controller {
         console.log('saved!')
         let msg = `
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <h1> Thank You for registering to www.ANTIQUE-site.com <h1>
+        <h1> Thank You for registering to www.auctionilla.com <h1>
         <h3>Please click here to verify account </h3>
           <tr>
             <td>
@@ -81,10 +82,12 @@ export class UserController extends Controller {
         </table>`;
 
         this.mandrillService.send('Verify Email', msg, [{ email: email }], '');
+        alert= "email sent";
       }
     }
     //return response.redirect('/');
-    return response.json({ data: {status: 'success'} });
+    // return response.json({ data: {status: 'success'} });
+    return response.render('register', { alert })
 
   }
 
@@ -109,6 +112,8 @@ export class UserController extends Controller {
       let verifiy = await this.userService.verifyUser(registrationId);
       if (verifiy) {
         console.log('user verified');
+        request.session.set('loggedUser',{'email': getEmail.get('email'), 'id': getEmail.get('id')});
+        request.session.get('loggedUser');
       }
     }
     return response.redirect('/');
@@ -140,7 +145,7 @@ export class UserController extends Controller {
 
             request.session.set('loggedUser',{'email': userDetails.get('email'), 'id': userDetails.get('id')});
             request.session.get('loggedUser');
-            response.redirect('/search')
+            //response.redirect('/search')
           } else {
             console.log('user is not registered');
             loginstatus = 'Password not match, login failed';
