@@ -16,19 +16,20 @@ export class UserController extends Controller {
 
   public async viewLogin(request: Request, response: Response ) {
 
-    let id = 0;
+    let user = 0;
     if (request.session.get('loggedUser')) {
-      id = request.session.get('loggedUser').id;
+      user = request.session.get('loggedUser').id;
+
     }
-    return response.render('login', { id });
+    return response.render('login', { user });
   }
 
   public async registration(request: Request, response: Response) {
-    let id = 0;
+    let user = 0;
     if (request.session.get('loggedUser')) {
-      id = request.session.get('loggedUser').id;
+      user = request.session.get('loggedUser').id;
     }
-    return response.render('register', { id });
+    return response.render('register', { user });
   }
 
 

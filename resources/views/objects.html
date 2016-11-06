@@ -65,13 +65,13 @@
 
     function saveSearchAlert() {
 
-      var data = {
+      let data = {
         search_item: $('input#save-searchkey').val(),
         category: $('input#save-category').val(),
         auction_house: $('input#save-auctionhouse').val(),
         location: $('input#save-location').val()
       }
-      alert(data);
+
       $.ajax({
         method: 'POST',
         url: '/create-searchalert',
@@ -79,8 +79,7 @@
         dataType: 'json',
         data: JSON.stringify(data)
       }).done(function (resp) {
-        let data = resp.data;
-
+        $('#saveSearchContainerDone').show();
       });
     }
 
@@ -209,15 +208,42 @@
       <input type="hidden" value="{{ category }}" id="save-category" name="save-category">
       <input type="hidden" value="{{ auction_house }}" id="save-auctionhouse" name="save-auctionhouse">
       <input type="hidden" value="{{ country }}" id="save-location" name="save-location">
+      <div id = "saveSearchContainer">
       <span>
         <i class="fa fa-bell"></i>
+        {% if user %}
         <label style="text-decoration: underline;" onclick="saveSearchAlert()">
         Create search alert
         {% if search %}
           for {{ search }}
         {% endif %}
         </label>. We'll email you when we got what you're looking for.
+        {% else %}
+        <label style="text-decoration: underline;" onclick="gotologin()">
+        Create search alert
+        {% if search %}
+          for '{{ search }}''
+        {% endif %}
+        </label>. We'll email you when we got what you're looking for.
+        {% endif %}
       </span>
+      </div>
+      <div id = "saveSearchContainerDone" style="display:none">
+      <span class="glyphicon glyphicon-ok"></span> You've now saved the search word '{{ search }}''
+      <h5><small style="color:white">
+      {% if category %}
+        <strong>category: </strong> {{category}}
+      {% endif %}
+
+      {% if auction_house %}
+        <strong>auction house: </strong> {{ auction_house }}
+      {% endif %}
+
+      {% if country %}
+        <strong>country: </strong> {{ country }}
+      {% endif %}
+      </small></h5>
+      </div>
     </div>
   </div>
   <div class="page-nav">
@@ -226,7 +252,7 @@
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-home"></i></a>
           </li>
-          <li><a href="#">Arts and Graphics</a>
+          <li><a href="#">{{ category if category else "All Categories" }}</a>
           </li>
         </ol>
         <div class="search-results clearfix">
@@ -429,8 +455,27 @@
   </div>
   <div class="notification">
     <div class="container">
+      <input type="hidden" value="{{ search }}" id="save-searchkey" name="save-searchkey">
+      <input type="hidden" value="{{ category }}" id="save-category" name="save-category">
+      <input type="hidden" value="{{ auction_house }}" id="save-auctionhouse" name="save-auctionhouse">
+      <input type="hidden" value="{{ country }}" id="save-location" name="save-location">
       <span>
-        <i class="fa fa-bell"></i> <a href="#">Create search alert</a>. We'll email you when we got what you're looking for.
+        <i class="fa fa-bell"></i>
+        {% if user %}
+        <label style="text-decoration: underline;" onclick="saveSearchAlert()">
+        Create search alert
+        {% if search %}
+          for {{ search }}
+        {% endif %}
+        </label>. We'll email you when we got what you're looking for.
+        {% else %}
+        <label style="text-decoration: underline;" onclick="gotologin()">
+        Create search alert
+        {% if search %}
+          for {{ search }}
+        {% endif %}
+        </label>. We'll email you when we got what you're looking for.
+        {% endif %}
       </span>
     </div>
   </div>

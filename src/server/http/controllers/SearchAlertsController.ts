@@ -30,6 +30,6 @@ export class SearchAlertsController extends Controller {
     }
 
     console.log(data);
-    return response.json({data: 'search slert created'});
+    return response.json({data: {alert: 'created'} });
   }
 }
