@@ -1,20 +1,30 @@
-import { injectable, Service } from 'chen/core';
+import { injectable, ValidationRules } from 'chen/core';
+import { SQLService } from 'chen/sql';
+import { CountryList } from 'app/models';
 
-const countryList = require('country-list');
 
 @injectable
-export class CountryListService extends Service {
-private countrylist = new countryList;
+export class CountryListService extends SQLService<CountryList> {
 
-  getAllCountry() {
-    return this.countrylist.getNames();
+  protected modelClass = CountryList;
+
+  protected validationRules: ValidationRules = {};
+
+  constructor() {
+    super();
   }
 
-  getCountryCode(country) {
-    return this.countrylist.getCode(country);
+  addCountry(country_name, country_code) {
+  	return this.create({
+  		country_name: country_name,
+  		country_code: country_code
+  	})
   }
 
-  getName(country) {
-    return this.countrylist.getName(country);
+  getCountryCode(name) {
+  	return this.query(query => {
+  		query.where('country_name', name)
+  	}).get();
   }
+
 }

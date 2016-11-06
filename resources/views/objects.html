@@ -168,8 +168,11 @@
 
 
 
-              {% for i in range(0, countries.length) %}
+              <!-- {% for i in range(0, countries.length) %}
                 <option value="{{ countries[i] }}">{{ countries[i] }}</option>
+              {% endfor %} -->
+              {% for newcountry in countries %}
+                <option value="{{ newcountry.country_name }}">{{ newcountry.country_name }}</option>
               {% endfor %}
 
             </select>
