@@ -390,8 +390,11 @@ export class AuctionItemController extends Controller {
       let jsonItem = items.toJSON()
       allcountry.push(jsonItem)
     });
-
-
+    
+    let getHits = await this.auctionItemService.getHits(search)
+    console.log('this is the country hits:', getHits.get('totalHits'))
+    let totalHits = getHits.get('totalHits')
+    
     // console.log(data)
     // search return
     let catdesc;
@@ -400,16 +403,16 @@ export class AuctionItemController extends Controller {
       catdesc = cat.get('description')
     }
 
-    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries: allcountry, country, relevance, itemFilter, user, browsing, thePick, popularSearches, catdesc });
+    return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries: allcountry, country, relevance, itemFilter, user, browsing, thePick, popularSearches, catdesc, totalHits });
 
   }
 
 
-  public async locationHits(request: Request, response: Response) {
-    let hits = true;
-    console.log(hits);
-    return true;
-  }
+  // public async locationHits(request: Request, response: Response) {
+  //   let hits = true;
+  //   console.log(hits);
+  //   return true;
+  // }
 
 
   public async createAuctionItem(request: Request, response: Response) {

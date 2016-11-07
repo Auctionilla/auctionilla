@@ -93,7 +93,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
         query.where('location', country)
       }
       if (category && category != 'all categories') {
-       query.where('category_name', category)
+        query.where('category_name', category)
       }
 
       if (relevance) {
@@ -136,11 +136,12 @@ export class AuctionItemService extends SQLService<AuctionItem> {
   }
 
 
-  getCountryHits(item) {
+  getHits(item) {
     return this.query(query => {
-      query.count('location')
+      query.count('location as totalHits')
       query.where('item_title', 'like' , `%${item}%`)
-    });
+      query.whereIn('price_status', ['Low estimate', 'Fix price']);
+    }).getOne();
   }
 
   decreaseDate(id , date) {
@@ -262,5 +263,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       price_status: 'Realized'
     })
   }
+
+
 
 }
