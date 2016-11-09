@@ -1,5 +1,5 @@
 
-import { AuctionSite, Category, PickOfTheDay, CountryList } from 'app/models';
+import { AuctionSite, Category, CountryList } from 'app/models';
 
 
 
@@ -118,11 +118,11 @@ export async function seed() {
 
   
 
-  let pick = {
-    item_id_fk: 1
-  }
-  let picoftheday = await PickOfTheDay.connection().create(pick)
-  console.log('pic seeded', picoftheday);
+  // let pick = {
+  //   item_id_fk: 1
+  // }
+  // let picoftheday = await PickOfTheDay.connection().create(pick)
+  // console.log('pic seeded', picoftheday);
   console.log('seeder done')
 
 }
