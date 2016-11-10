@@ -1,7 +1,7 @@
 import { ArtisanCommand } from 'chen/console';
 import { injectable, _ } from 'chen/core';
 import { HttpClient} from 'chen/web'; //, HttpClientOptions
-import { AuctionSiteService, CategoryService, AuctionItemService } from 'app/services'
+import { AuctionSiteService, CategoryService, AuctionItemService, CountryListService } from 'app/services'
 // const json2csv = require('json2csv');
 
 
@@ -10,7 +10,8 @@ export class getCrawledData extends ArtisanCommand {
   constructor(private httpCLIENT: HttpClient, 
     private auctionSiteService: AuctionSiteService, 
     private auctionItemService: AuctionItemService,
-    private categoryService: CategoryService) {//, private httpClientOptions: HttpClientOptions
+    private categoryService: CategoryService,
+    private countryListService: CountryListService) {//, private httpClientOptions: HttpClientOptions
     super();
   }
   async getdataFromChristies () {
@@ -36,8 +37,16 @@ export class getCrawledData extends ArtisanCommand {
         } else {
           theprice = 0;
         }
-        console.log('this is the id of the site:', getAuctionSiteId.get('id'))
-        console.log('this is the id of the category:', thejsondata.results[attributename].content.theItemDetails.category, categoryId.get('id'))
+        let theLocation = thejsondata.results[attributename].content.theItemDetails.location;
+        let getLocation = await this.countryListService.getOneBy('country_name', theLocation)
+        if (!getLocation) {
+          console.log('location none, save')
+          let addcountry = await this.countryListService.addCountry(theLocation, '')
+          if (addcountry) {
+            console.log('added new location:', theLocation)
+          }
+        }
+       
         tosave = {
           item_title: theitemtitle,
           item_description: thejsondata.results[attributename].content.theItemDetails.item_description,
@@ -92,6 +101,16 @@ export class getCrawledData extends ArtisanCommand {
          if (chkCurrency != 'undefined') {
            currency = chkCurrency
          }
+
+        let theLocation = thejsondata.results[attributename].content.itemData.location;
+        let getLocation = await this.countryListService.getOneBy('country_name', theLocation)
+        if (!getLocation) {
+          console.log('location none, save')
+          let addcountry = await this.countryListService.addCountry(theLocation, '')
+          if (addcountry) {
+            console.log('added new location:', theLocation)
+          }
+        }
 
         let tosave = {
           item_title: String(thejsondata.results[attributename].content.itemData.itemTitle),
@@ -151,7 +170,19 @@ export class getCrawledData extends ArtisanCommand {
           } else {
             price = _.replaceAll(String(thejsondata.results[attributename].content.itemData.price), ',', '')
           }
+          let theLocation = thejsondata.results[attributename].content.itemData.location;
+          let getLocation = await this.countryListService.getOneBy('country_name', theLocation)
+          if (!getLocation) {
+            console.log('location none, save')
+            let addcountry = await this.countryListService.addCountry(theLocation, '')
+            if (addcountry) {
+              console.log('added new location:', theLocation)
+            }
+          }
           console.log('************ save this *****************')
+
+
+
           let tosave = {
             item_title: String(tocheck),
             item_description: String(thejsondata.results[attributename].content.itemData.itemDescription),
@@ -192,6 +223,9 @@ export class getCrawledData extends ArtisanCommand {
       await this.getDataFromHeritage()
       await this.getDataFromSothebys();
     }
+
+    // ` npm run start:watch -- --port=9000;`
+    // `http://localhost:9000/api/crawlers/1/data
     
   }
 }

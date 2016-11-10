@@ -259,6 +259,7 @@ export class AuctionItemController extends Controller {
     let getAuction_house = request.input.get('auction-house');
     if (getAuction_house) {
       auction_house = String(getAuction_house).trim();
+      console.log('this is the auction house:', auction_house)
     }
     let getCountry = request.input.get('countries');
     if (getCountry) {
@@ -395,7 +396,7 @@ export class AuctionItemController extends Controller {
     console.log('this is the country hits:', getHits.get('totalHits'))
     let totalHits = getHits.get('totalHits')
     
-    // console.log(data)
+    console.log(data)
     // search return
     let catdesc;
     let cat = await this.categoryService.getOneBy('category_name', category)

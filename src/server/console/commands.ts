@@ -9,6 +9,10 @@ export const COMMANDS: CommandMapping = {
   'get-crawled': {
   	class: 'getCrawledData',
   	arguments:['auctionsite']
+  },
+  'get-barnebys-data': {
+  	class: 'getBarnebysCrawledData',
+  	arguments:[]
   }
 
 

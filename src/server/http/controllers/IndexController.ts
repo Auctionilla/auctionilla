@@ -16,8 +16,8 @@ export class IndexController extends Controller {
     if (request.session.get('updateAlert')) {
       request.session.flash('updateAlert');
     }
-    let randomnum = _.sample([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-    console.log('this is a ramdom number', randomnum)
+    // let randomnum = _.sample([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    // console.log('this is a ramdom number', randomnum)
 
 
     let fav = await this.favoriteService.getFavorite();
@@ -30,6 +30,16 @@ export class IndexController extends Controller {
        newpicid = fav.get('item');
     } else {
       newpicid = 1;
+      console.log('no pick of the day yet . default to 1')
+      let data = {
+        item_id_fk: 1
+      }
+      let setPic = await this.pickOfTheDayService.create(data);
+      if (setPic) {
+        console.log('pick set!')
+      }else {
+        console.log('set pick error')
+      }
     }
 
     if (pic) {
@@ -47,6 +57,12 @@ export class IndexController extends Controller {
     if (thepicdate.indexOf(today) == -1) {
       console.log('not match date')
       let viewcurrent = await this.pickOfTheDayService.getOneBy('id', 1)
+      if (!viewcurrent) {
+        if (viewcurrent.get('id')) {
+          console.log('pick emtpty')
+        }
+        
+      }
       console.log('current favorite', viewcurrent.get('item_id_fk'))
       if (newpicid == viewcurrent.get('item_id_fk')) {
         console.log('still the same item')
@@ -58,6 +74,8 @@ export class IndexController extends Controller {
         // console.log('the pick of the day', fav.get('user_id_fk'), theitemid)
         console.log('pick set!')
       }
+    } else {
+      console.log('date matched')
     }
 
     // fav.forEach(items => {
