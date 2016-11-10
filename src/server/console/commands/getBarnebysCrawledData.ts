@@ -17,7 +17,7 @@ export class getBarnebysCrawledData extends ArtisanCommand {
   async getdataFromBarnebys () {
 
     //this.getArgument('spider')
-    let jsondata = await this.httpCLIENT.get('http://localhost:9000/api/crawlers/5/data')
+    let jsondata = await this.httpCLIENT.get('http://localhost:9000/api/crawlers/1/data')
     let thejsondata = JSON.parse(jsondata.body)
     let tosave = {}
     // console.log(thejsondata)
@@ -81,7 +81,7 @@ export class getBarnebysCrawledData extends ArtisanCommand {
         //   }
         // }
 
-       
+
        
         tosave = {
           item_title: theitemtitle,
@@ -121,28 +121,7 @@ export class getBarnebysCrawledData extends ArtisanCommand {
 
 
   public async execute() {
-    // let arg = this.getArgument('auctionsite')
-    // console.log('spiders', arg)
-
-    // await new Promise((resolve) => {
-	      // setTimeout(this.msg(),// });
-
- //    setTimeout(function () {
-	//   console.log('boo')
-	// }, 100)
-	// let page = true;
-	// while(page == true) {
-		function g() {
-			console.log('go go go go go ============================')
-		}
-		setTimeout(function(){
-		  g();
-		}, 2000);
-		// await new Promise((resolve) => {
-	 //      setTimeout(g, 2000);
-	 //    });
-	// }
-	
+    
     await this.getdataFromBarnebys()
     
     

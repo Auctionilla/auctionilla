@@ -34,12 +34,16 @@ export class IndexController extends Controller {
       let data = {
         item_id_fk: 1
       }
-      let setPic = await this.pickOfTheDayService.create(data);
-      if (setPic) {
-        console.log('pick set!')
-      }else {
-        console.log('set pick error')
+      let checkIfItemExist = await this.auctionItemService.getOneBy('id', 1)
+      if (checkIfItemExist) {
+        let setPic = await this.pickOfTheDayService.create(data);
+        if (setPic) {
+          console.log('pick set!')
+        }else {
+          console.log('set pick error')
+        }
       }
+      
     }
 
     if (pic) {
