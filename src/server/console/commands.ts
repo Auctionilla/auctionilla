@@ -12,7 +12,11 @@ export const COMMANDS: CommandMapping = {
   },
   'get-barnebys-data': {
   	class: 'getBarnebysCrawledData',
-  	arguments:[]
+  	arguments: []
+  },
+  'update-category': {
+  	class: 'updateCategoryDescription',
+  	arguments: []
   }
 
 
