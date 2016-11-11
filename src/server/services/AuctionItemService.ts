@@ -35,7 +35,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
         query.where('site_name', auction_house);
       }
       if (country && country != 'All Countries') {
-        query.where('location', country)
+        query.where('location','like', `${country}%`)
       }
       if (category && category != 'all categories') {
        query.where('category_name', category)
@@ -59,9 +59,9 @@ export class AuctionItemService extends SQLService<AuctionItem> {
 
       if (item_filter) {
         if (item_filter == 'objects') {
-          query.whereIn('price_status', ['Low estimate', 'Fix price']);
+          query.whereIn('price_status', ['Low estimate', 'Fixed price']);
         } else if (item_filter == 'fix-price') {
-          query.where('price_status', 'Fix price')
+          query.where('price_status', 'Fixed price')
         } else if (item_filter == 'realized') {
           query.whereIn('price_status', ['Hammer price', 'Realized'] )
         }
@@ -104,9 +104,9 @@ export class AuctionItemService extends SQLService<AuctionItem> {
       }
       if (item_filter) {
         if (item_filter == 'objects') {
-          query.whereIn('price_status', ['Low estimate', 'Fix price']);
+          query.whereIn('price_status', ['Low estimate', 'Fixed price']);
         } else if (item_filter == 'fix-price') {
-          query.where('price_status', 'Fix price')
+          query.where('price_status', 'Fixed price')
         } else if (item_filter == 'realized') {
           query.whereIn('price_status', ['Hammer price', 'Realized'] )
         }
@@ -140,7 +140,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     return this.query(query => {
       query.count('location as totalHits')
       query.where('item_title', 'like' , `%${item}%`)
-      query.whereIn('price_status', ['Low estimate', 'Fix price']);
+      query.whereIn('price_status', ['Low estimate', 'Fixed price']);
     }).getOne();
   }
 

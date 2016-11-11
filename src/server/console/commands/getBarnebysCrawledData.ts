@@ -17,7 +17,7 @@ export class getBarnebysCrawledData extends ArtisanCommand {
   async getdataFromBarnebys () {
 
     //this.getArgument('spider')
-    let jsondata = await this.httpCLIENT.get('http://localhost:9000/api/crawlers/1/data')
+    let jsondata = await this.httpCLIENT.get('http://localhost:9000/api/crawlers/5/data')
     let thejsondata = JSON.parse(jsondata.body)
     let tosave = {}
     // console.log(thejsondata)

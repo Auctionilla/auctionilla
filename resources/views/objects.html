@@ -154,7 +154,7 @@
     <div class="col-md-9 col-sm-12 col-xs-12 search-bar">
       <form class="navbar-form" role="search">
         <div class="col-md-6 col-sm-6 search-section">
-          <input name="searchItem" type="text" class="input form-control " value="{{ search }}" placeholder="Search word, phrase or name of lot {{ country }}" />
+          <input name="searchItem" type="text" class="input form-control " value="{{ search }}" placeholder="Search word, phrase or name of lot " />
           <input type="hidden" name="browsing-auction" value="{{ browsing }}">
 
           <div class="col-md-6 col-sm-6 search-section">
@@ -401,7 +401,7 @@
                         {{ item.price_status }}
 
                         : {{ item.price}} {{item.currency}}
-                        {% if item.price_status == "Fix price" %}
+                        {% if item.price_status == "Fixed price" %}
                         -
                         {% elif item.price_status == "Hammer price" %}
                           <a href="{{ item.auction_url }}">Show Bid</a>
@@ -416,7 +416,7 @@
                     <div class="actions clearfix">
                       <ul>
                         <li class="auction-emblem">
-                          <a href="{{ item.site_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                          <a href="{{ item.auction_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
                         </li>
                         <li>
                           {% if item.price_status != "Realized" %}
@@ -434,11 +434,11 @@
                           {% endif %}
                         </li>
                         <li>
-
-                          <button onclick="gotoSite('{{ item.auction_url }}')" class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+                          <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                          <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
 
                           <span>
-                          {% if item.price_status == "Fix price" %}
+                          {% if item.price_status == "Fixed price" %}
                             Buy it now
                           {% elif item.price_status == "Hammer price" %}
                             To the auction house
@@ -449,6 +449,7 @@
                           {% endif %}
                           </span>
                           </button>
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -498,12 +499,12 @@
 
                         : {{ item.price}} {{item.currency}}
 
-                        {% if item.price_status == "Fix price" %}
+                        {% if item.price_status == "Fixed price" %}
                         -
                         {% elif item.price_status == "Hammer price" %}
-                          <a href="{{ item.auction_url }}">Show Bid</a>
+                          <a href="{{ item.auction_url }}" target="_blank">Show Bid</a>
                         {% elif item.price_status == "Low estimate" %}
-                          <a href="{{ item.auction_url }}">Show Bid</a>
+                          <a href="{{ item.auction_url }}" target="_blank">Show Bid</a>
 
                         {% endif %}
 
@@ -530,9 +531,10 @@
                           {% endif %}
                         </li>
                         <li>
-                          <button onclick="gotoSite('{{ item.auction_url }}')" class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+                          <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                          <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
                           <span>
-                          {% if item.price_status == "Fix price" %}
+                          {% if item.price_status == "Fixed price" %}
                             Buy it now
                           {% elif item.price_status == "Hammer price" %}
                             To the auction house
@@ -543,6 +545,7 @@
                           {% endif %}
                           </span>
                           </button>
+                          </a>
                         </li>
                       </ul>
                     </div>

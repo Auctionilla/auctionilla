@@ -267,7 +267,7 @@ export class AuctionItemController extends Controller {
         let getcountrycode = await this.countryListService.getOneBy('country_name', getCountry);
 
         if (getcountrycode) {
-          country = getcountrycode.get('country_name')
+          country = getcountrycode.get('country_code')
           console.log('this is the new country name: ', country)
           //convertedCountryName = await this.countryListService.getOneBy('country_name', country);
         } else {
@@ -299,7 +299,14 @@ export class AuctionItemController extends Controller {
       data.forEach(async (datas) => {
         let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
         console.log('this is the auction_date', String(datas.auction_date))
-        let timeremaining = await this.getRemainingHours(String(datas.auction_date), datas.id, datas.days_remaining)
+       let timeremaining;
+        if (datas.auction_date) {
+          console.log('===============auction date exist==================')
+          timeremaining = await this.getRemainingHours(String(datas.auction_date), datas.id, datas.days_remaining)
+        } else {
+          timeremaining = 0;
+        }
+        // let timeremaining = await this.getRemainingHours(String(datas.auction_date), datas.id, datas.days_remaining)
         let limitedDescription = String(datas.item_description).substring(0, 100)
         let limitItemTitle = String(datas.item_title).substring(0, 50)
         console.log(limitedDescription)
@@ -318,7 +325,14 @@ export class AuctionItemController extends Controller {
         console.log('normal not logged user')
         //let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
         // console.log('this is the auction_date', String(datas.auction_date))
-        let timeremaining = await this.getRemainingHours(String(datas.auction_date), datas.id, datas.days_remaining)
+        let timeremaining;
+        if (datas.auction_date) {
+          console.log('===============auction date exist==================')
+          timeremaining = await this.getRemainingHours(String(datas.auction_date), datas.id, datas.days_remaining)
+        } else {
+          timeremaining = 0;
+        }
+        //let timeremaining = await this.getRemainingHours(String(datas.auction_date), datas.id, datas.days_remaining)
         let limitedDescription = String(datas.item_description).substring(0, 100)
         let limitItemTitle = String(datas.item_title).substring(0, 50)
         console.log(limitedDescription)
@@ -402,6 +416,13 @@ export class AuctionItemController extends Controller {
     let cat = await this.categoryService.getOneBy('category_name', category)
     if (cat) {
       catdesc = cat.get('description')
+    }
+
+    if (category) {
+      let getcountryname = await this.countryListService.getOneBy('country_code', country)
+      if (getcountryname) {
+        country = getcountryname.get('country_name')
+      }
     }
 
     return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries: allcountry, country, relevance, itemFilter, user, browsing, thePick, popularSearches, catdesc, totalHits });

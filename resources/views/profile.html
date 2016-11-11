@@ -227,7 +227,9 @@
                             </form>
                           </li>
                           <li>
-                            <button onclick="gotoSite('{{ fav.auction_url }}')" class="btn red btn" ><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button>
+                            <a style="text-decoration: none" target="_blank" href="{{ fav.auction_url }}">
+                            <button class="btn red btn" ><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button>
+                            </a>
                           </li>
                         </ul>
                       </div>
