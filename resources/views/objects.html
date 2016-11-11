@@ -361,7 +361,7 @@
             {% if (item.price_status == "Realized") or (item.price_status == "Hammer price") %}
               <div class="object-item">
                 <div class="thumb-image image">
-                  <img src="{{ item.item_image }}" />
+                  <img style="background-color: white" src="{{ item.item_image }}" />
                     <div class="image-hover">
                       <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
                     </div>
@@ -458,7 +458,7 @@
             {% else %}
               <div class="object-item">
                 <div class="thumb-image image">
-                  <img src="{{ item.item_image }}" />
+                  <img style="background-color: white" src="{{ item.item_image }}" />
                     <div class="image-hover">
                       <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
                     </div>
@@ -651,7 +651,7 @@
     <div class="container">
       <ul class="nav nav-justified">
         <li class = "{{ 'disabled' if offset <= 1 }}">
-          <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=1&page={{page}}&relevance={{ relevance }}"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a>
+          <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=1&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a>
         </li>
         <li class = "{{ 'disabled' if offset <= 1 }}">
           <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset - 1 if offset > 1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-left" aria-hidden="true"></i> </a>
@@ -662,31 +662,31 @@
         {% if offset < 15 %}
           {% if ( total / page ) < 15 %}
             {% for i in range(1, (total / page) + 1)  %}
-              <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}">{{i}}</a>
+              <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i}}</a>
               </li>
             {% endfor %}
             {% if (total % page) > page and ((total / page) > 1) %}
-              <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ ((total / page) + 1) | round }}&page={{page}}&relevance={{ relevance }}">{{ ((total / page) + 1) | round }}</a>
+              <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ ((total / page) + 1) | round }}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{ ((total / page) + 1) | round }}</a>
               </li>
             {% endif %}
           {% else %}
             {% for i in range(1, 16)  %}
-              <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}">{{i}}</a>
+              <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i}}</a>
               </li>
             {% endfor %}
           {% endif %}
         {% elif offset >= 15 and offset < (total / page) - 15 %}
           {% for i in range(offset - 7, offset + 7)  %}
-            <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}">{{i  | round }}</a>
+            <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i  | round }}</a>
             </li>
           {% endfor %}
         {% elif (offset > (total / page) - 15) and (offset <= (total / page)) %}
           {% for i in range((total / page) - 15, (total / page) + 1 )   %}
-            <li class="page-item {% if offset == i  | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}">{{i  | round }}</a>
+            <li class="page-item {% if offset == i  | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i  | round }}</a>
             </li>
           {% endfor %}
           {% if (total % page) > page and ((total / page)  > 1)  %}
-            <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ (total / page) | round + 1 }}&page={{page}}&relevance={{ relevance }}">{{ ((total / page) + 1) | round }}</a>
+            <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ (total / page) | round + 1 }}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{ ((total / page) + 1) | round }}</a>
             </li>
           {% endif %}
         {% elif (offset > (total / page)) %}
@@ -694,10 +694,10 @@
 
         {% endif %}
         <li class=" {{'disabled' if (offset >= (total / page))}}">
-          <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset + 1 if (offset < (total / page)) else offset}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
+          <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset + 1 if (offset < (total / page)) else offset}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
         </li>
         <li class=" {{'disabled' if (offset >= (total / page))}}">
-          <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ total / page }}&page={{page}}&relevance={{ relevance }}"> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+          <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ total / page }}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
         </li>
       </ul>
     </div>

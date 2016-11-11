@@ -90,7 +90,7 @@ export class AuctionItemService extends SQLService<AuctionItem> {
         query.where('site_name', auction_house);
       }
       if (country && country != 'All Countries') {
-        query.where('location', country)
+        query.where('location','like', `${country}%`)
       }
       if (category && category != 'all categories') {
         query.where('category_name', category)
