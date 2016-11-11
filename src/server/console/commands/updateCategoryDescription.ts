@@ -1,11 +1,11 @@
 import { ArtisanCommand } from 'chen/console';
 import { injectable } from 'chen/core';
-import { CategoryService } from 'app/services'
+import { CategoryService, AuctionSiteService } from 'app/services'
 
 
 @injectable
 export class updateCategoryDescription extends ArtisanCommand {
-  constructor(private categoryService: CategoryService) {//, private httpClientOptions: HttpClientOptions
+  constructor(private categoryService: CategoryService, private auctionSiteService: AuctionSiteService) {//, private httpClientOptions: HttpClientOptions
     super();
   }
   async updateCategories () {
@@ -153,28 +153,28 @@ export class updateCategoryDescription extends ArtisanCommand {
     }
 
 
-    //remove unused category from categories
-    // let checkifexist = await this.categoryService.getOneBy('category_name','Jewels and Gems')
-    // if (checkifexist) {
-    //   let removethis = await this.categoryService.destroy(parseInt(checkifexist.get('id')))
-    //   if (removethis) {
-    //     console.log('removed item')
-    //   }
-    // }
-    // let checkifexist2 = await this.categoryService.getOneBy('category_name','Furnitures')
-    // if (checkifexist2) {
-    //   let removethis = await this.categoryService.destroy(parseInt(checkifexist2.get('id')))
-    //   if (removethis) {
-    //     console.log('removed item')
-    //   }
-    // }
-    // let checkifexist3 = await this.categoryService.getOneBy('category_name','others')
-    // if (checkifexist3) {
-    //   let removethis = await this.categoryService.destroy(parseInt(checkifexist3.get('id')))
-    //   if (removethis) {
-    //     console.log('removed item')
-    //   }
-    // }
+    //remove old auction site from database
+    let checkifexist = await this.auctionSiteService.getOneBy('site_name','sothebys')
+    if (checkifexist) {
+      let removethis = await this.auctionSiteService.destroy(parseInt(checkifexist.get('id')))
+      if (removethis) {
+        console.log('removed site')
+      }
+    }
+    let checkifexist2 = await this.auctionSiteService.getOneBy('site_name','heritage auction')
+    if (checkifexist2) {
+      let removethis = await this.auctionSiteService.destroy(parseInt(checkifexist2.get('id')))
+      if (removethis) {
+        console.log('removed site')
+      }
+    }let checkifexist3 = await this.auctionSiteService.getOneBy('site_name','Christies')
+    if (checkifexist3) {
+      let removethis = await this.auctionSiteService.destroy(parseInt(checkifexist3.get('id')))
+      if (removethis) {
+        console.log('removed site')
+      }
+    }
+    //end removing unsused auction site
 
     return categories
   }

@@ -181,10 +181,11 @@
           <div class="col-md-6 col-sm-6 search-section">
             <select id="auction-house" name="auction-house"  data-placeholder="Select auction house" class="form-control sub-select  select2me input">
               {% if auction_house %}
-              <option selected value = "{{ auction_house }}"> {{ auction_house }} </option>
+                <option selected value = "{{ auction_house }}"> {{ auction_house }} </option>
               {% endif %}
-              <option> all auction houses </option>
-
+              {% if auction_house != 'all auction houses' %}
+                <option> all auction houses </option>
+              {% endif %}
               {% for site in sites %}
               <option value = "{{ site.site_name }}">{{ site.site_name }}</option>
               {% endfor %}
@@ -513,7 +514,7 @@
                     <div class="actions clearfix">
                       <ul>
                         <li class="auction-emblem">
-                          <a href="{{ item.site_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                          <a href="{{ item.auction_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
                         </li>
                         <li>
                           {% if item.price_status != "Realized" %}

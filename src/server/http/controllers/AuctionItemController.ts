@@ -282,7 +282,7 @@ export class AuctionItemController extends Controller {
       relevance = getRelevance;
     }
 
-
+    console.log('item filter :', itemFilter)
 
     let items = await this.auctionItemService.searchAuction(search, category, auction_house, country, relevance, itemFilter, (offset - 1) * page, page);
     let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, country, relevance, itemFilter);

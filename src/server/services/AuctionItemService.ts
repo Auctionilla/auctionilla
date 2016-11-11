@@ -62,6 +62,8 @@ export class AuctionItemService extends SQLService<AuctionItem> {
           query.whereIn('price_status', ['Low estimate', 'Fixed price']);
         } else if (item_filter == 'fix-price') {
           query.where('price_status', 'Fixed price')
+        } else if (item_filter == 'auctions') {
+          query.where('price_status', 'Low estimate')
         } else if (item_filter == 'realized') {
           query.whereIn('price_status', ['Hammer price', 'Realized'] )
         }
@@ -107,6 +109,8 @@ export class AuctionItemService extends SQLService<AuctionItem> {
           query.whereIn('price_status', ['Low estimate', 'Fixed price']);
         } else if (item_filter == 'fix-price') {
           query.where('price_status', 'Fixed price')
+        } else if (item_filter == 'auctions') {
+          query.where('price_status', 'Low estimate')
         } else if (item_filter == 'realized') {
           query.whereIn('price_status', ['Hammer price', 'Realized'] )
         }
