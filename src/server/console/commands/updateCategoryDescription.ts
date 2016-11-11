@@ -77,7 +77,60 @@ export class updateCategoryDescription extends ArtisanCommand {
       category17: {
         category_name: 'Postcards and Stamps',
         description: 'Postcards, stamps, handwritten letters and stamp albums.'
+      },
+      category18: {
+        category_name: 'Photographs',
+        description: 'Photographs and prints, from early photographs and historical images to iconic shoots, portraits, and contemporary photographic art.'
+      },
+      category19: {
+        category_name: 'Sports and Leisure',
+        description: 'Antique and vintage sporting equipment, including golf clubs, cricket bats, autographed footballs and soccer balls, team jerseys, fishing poles, parlor games, riding accessories, and skis.'
+      },
+      category20: {
+        category_name: 'Vehicles',
+        description: 'Includes vehicles in every price range, where you have the chance to find cars from different eras, as well as historically valuable antique cars and vehicles at car auctions around the world. '
+      },
+      category21: {
+        category_name: 'Works of art',
+        description: `Auctions featuring objets d’art, small sculptures and busts`
+      },
+      category22: {
+        category_name: 'Music and Musical Instruments',
+        description: 'Antique musical instruments, gramophones and exclusive turntables.'
+      },
+      category23: {
+        category_name: 'Rugs and Textiles',
+        description: 'Features rugs and carpets from around the world, from traditional Oriental rugs to modern interior design pieces. '
+      },
+      category24: {
+        category_name: 'Ethnographic',
+        description: 'Masks from Africa, artefacts from Australasia, South American carving, totem poles, textiles, and dolls made by indigenous peoples around the world.'
+      },
+      category25: {
+        category_name: 'Folk Art',
+        description: 'Refers to the rustic or naive style, and objects were often created by untrained painters and local and travelling craftsmen. Motifs and color schemes vary depending on the province and region from which the objects originate.'
+      },
+      category26: {
+        category_name: 'Lighting',
+        description: 'Auctions with lighting objects, such as candlesticks, lamps, chandeliers and lanterns.'
+      },
+      category27: {
+        category_name: 'Ancient Art',
+        description: 'auctions with objects from ancient cultures, including Roman glass, Egyptian crafts and artifacts, Greek sculptures, and jewelry dating back centuries or millennia.'
+      },
+      category28: {
+        category_name: 'Arts And Graphics',
+        description: 'Modern, Post-War, Contemporary art, Old Masters and more'
+      },
+      category29: {
+        category_name: 'Sculptures',
+        description: 'Includes large and freestanding sculptures for sale at auctions. The materials vary widely and may include marble, bronze, plaster, plastic and various metals. Small sculptures and, in some cases, busts can be found under the category Works of Art.'
+      },
+      category30: {
+        category_name: 'Silver and Gold',
+        description: 'Gold and silver items (not including jewellery), as well as objects in gilt or silver plate, such as flatware and tableware, candlesticks, boxes and small sculptures.'
       }
+
       
      
 
@@ -91,32 +144,37 @@ export class updateCategoryDescription extends ArtisanCommand {
        if (updatecateg) {
          console.log('category:',categories[item].description, 'id:', checkifexist.get('id'))
        }
+     } else {
+       let addcateg = await this.categoryService.createCategory(categories[item])
+       if (addcateg) {
+         console.log('category added')
+       }
      }
     }
 
 
     //remove unused category from categories
-    let checkifexist = await this.categoryService.getOneBy('category_name','Jewels and Gems')
-    if (checkifexist) {
-      let removethis = await this.categoryService.destroy(parseInt(checkifexist.get('id')))
-      if (removethis) {
-        console.log('removed item')
-      }
-    }
-    let checkifexist2 = await this.categoryService.getOneBy('category_name','Furnitures')
-    if (checkifexist2) {
-      let removethis = await this.categoryService.destroy(parseInt(checkifexist2.get('id')))
-      if (removethis) {
-        console.log('removed item')
-      }
-    }
-    let checkifexist3 = await this.categoryService.getOneBy('category_name','others')
-    if (checkifexist3) {
-      let removethis = await this.categoryService.destroy(parseInt(checkifexist3.get('id')))
-      if (removethis) {
-        console.log('removed item')
-      }
-    }
+    // let checkifexist = await this.categoryService.getOneBy('category_name','Jewels and Gems')
+    // if (checkifexist) {
+    //   let removethis = await this.categoryService.destroy(parseInt(checkifexist.get('id')))
+    //   if (removethis) {
+    //     console.log('removed item')
+    //   }
+    // }
+    // let checkifexist2 = await this.categoryService.getOneBy('category_name','Furnitures')
+    // if (checkifexist2) {
+    //   let removethis = await this.categoryService.destroy(parseInt(checkifexist2.get('id')))
+    //   if (removethis) {
+    //     console.log('removed item')
+    //   }
+    // }
+    // let checkifexist3 = await this.categoryService.getOneBy('category_name','others')
+    // if (checkifexist3) {
+    //   let removethis = await this.categoryService.destroy(parseInt(checkifexist3.get('id')))
+    //   if (removethis) {
+    //     console.log('removed item')
+    //   }
+    // }
 
     return categories
   }
