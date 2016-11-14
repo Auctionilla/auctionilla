@@ -122,24 +122,24 @@ export class IndexController extends Controller {
     });
     popularRealized.forEach( async(real) => {
       let getMostPopularItem = await this.auctionItemService.getMostPopularByCategory(real['category'], 'realized')
-      let thepo = getMostPopularItem.get('item_image')
+      let thepo = await getMostPopularItem.get('item_image')
       if (getMostPopularItem) {
-         real['mostPopularItemImage'] = thepo
+         real['mostPopularItemImage'] = await thepo
       }
       let t = await this.auctionItemService.getItemCountByCategory(real['category'], 'realized')
-      let thetotal = t.get('total')
+      let thetotal = await t.get('total')
       if (t) {
-        real['itemcount'] = thetotal
+        real['itemcount'] = await thetotal
       }
       let mostexp = await this.auctionItemService.getMostExpensive(real['category'], 'realized')
       if (mostexp) {
-        real['mostExpensive'] = mostexp.get('price')
-        real['currency'] = mostexp.get('currency')
+        real['mostExpensive'] = await mostexp.get('price')
+        real['currency'] = await mostexp.get('currency')
       }
       let categoryDetails = await this.categoryService.getOneBy('id', real['category'])
       if (categoryDetails) {
-        real['categoryName'] = categoryDetails.get('category_name')
-        real['description'] = categoryDetails.get('description')
+        real['categoryName'] = await categoryDetails.get('category_name')
+        real['description'] = await categoryDetails.get('description')
       }
     });
 
@@ -152,24 +152,26 @@ export class IndexController extends Controller {
 
     popularCateg.forEach( async(datas) => {
       let getMostPopularItem = await this.auctionItemService.getMostPopularByCategory(datas['category'])
-      let thepo = getMostPopularItem.get('item_image')
+      let thepo = await getMostPopularItem.get('item_image')
       if (getMostPopularItem) {
-         datas['mostPopularItemImage'] = thepo
+         datas['mostPopularItemImage'] = await thepo
       }
       let t = await this.auctionItemService.getItemCountByCategory(datas['category'])
-      let thetotal = t.get('total')
+      let thetotal = await t.get('total')
       if (t) {
-        datas['itemcount'] = thetotal
+        datas['itemcount'] = await thetotal
       }
       let mostexp = await this.auctionItemService.getMostExpensive(datas['category'])
       if (mostexp) {
         datas['mostExpensive'] = mostexp.get('price')
-        datas['currency'] = mostexp.get('currency')
+        datas['currency'] = await mostexp.get('currency')
       }
       let categoryDetails = await this.categoryService.getOneBy('id', datas['category'])
       if (categoryDetails) {
-        datas['categoryName'] = categoryDetails.get('category_name')
-        datas['description'] = categoryDetails.get('description')
+        datas['categoryName'] = await categoryDetails.get('category_name')
+        datas['description'] = await categoryDetails.get('description')
+      } else {
+        console.log(categoryDetails)
       }
     });
 
@@ -183,10 +185,20 @@ export class IndexController extends Controller {
     await this.auctionItemService.getMostExpensive(1)
     await this.categoryService.getOneBy('id', 1)
     await this.auctionItemService.getMostPopularByCategory(1);
+    await this.auctionItemService.getItemCountByCategory(1);
+    await this.auctionItemService.getMostExpensive(1)
+    await this.categoryService.getOneBy('id', 1)
+    await this.auctionItemService.getMostPopularByCategory(1);
+    await this.auctionItemService.getItemCountByCategory(1);
+    await this.auctionItemService.getMostExpensive(1)
+    await this.categoryService.getOneBy('id', 1)
+    await this.auctionItemService.getMostPopularByCategory(1);
 
     // console.log('item count: ', o.get('total'))
     console.log('this is the new data array:')
     console.log(popularRealized)
+    console.log('=======================realized ^^^ objects vvvvv  ====================================')
+    console.log(popularCateg)
     return response.render('index', { user, popularCateg, popularRealized });
   }
 
