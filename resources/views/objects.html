@@ -96,7 +96,6 @@
   }
 
   function saveSearchAlert() {
-    alert('saving this search alert')
     let data = {
       search_item: $('input#save-searchkey').val(),
       category: $('input#save-category').val(),
@@ -111,7 +110,6 @@
       dataType: 'json',
       data: JSON.stringify(data)
     }).done(function(resp) {
-      alert(resp)
       $('#saveSearchContainer').hide();
       $('#saveSearchContainerDone').show();
     });
