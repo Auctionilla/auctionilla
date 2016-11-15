@@ -10,7 +10,22 @@
     .input-group {
       width: 100%;
 
-      &.main-search {}
+      &.main-search {
+        display: inline-block !important;
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+        h2 {
+          margin: 0;
+        }
+
+        .input-group-btn {
+          position: absolute;
+          right: 0;
+          z-index: 99;
+          outline: none;
+        }
+      }
 
       input,
       button {

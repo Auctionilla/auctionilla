@@ -46,8 +46,12 @@
 }
 
 .notification {
-  padding: 9px 0;
+  height: 40px;
   background-color: $site-red;
+
+  span {
+    line-height: 40px;
+  }
 
   a {
     color: #fff;
