@@ -106,7 +106,7 @@
             {% for items in popularCateg %}
             <div class="col-md-4 col-sm-6 item">
               <div class="image">
-                <img class="img-responsive" src="{{ items.mostPopularItemImage }}" alt="object item" />
+                <img class="img-responsive" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3"/>
                 <div class="image-hover">
                   <a href="/search?searchItem=&browsing-auction=auction&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn">VIEW RESULTS</a>
                 </div>
@@ -141,7 +141,7 @@
             {% for items in popularRealized %}
             <div class="col-md-4 col-sm-6 item">
               <div class="image">
-                <img class="img-responsive" src="{{ items.mostPopularItemImage }}" alt="object item" />
+                <img class="img-responsive" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3"/>
                 <div class="image-hover">
                   <a href="/search?searchItem=&browsing-auction=realized&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn">VIEW RESULTS</a>
                 </div>

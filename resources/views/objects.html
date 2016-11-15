@@ -362,7 +362,7 @@
             {% if (item.price_status == "Realized") or (item.price_status == "Hammer price") %}
               <div class="object-item">
                 <div class="thumb-image image">
-                  <img src="{{ item.item_image }}" />
+                  <img src="{{ item.item_image }}" style="background-color: #e3e3e3" />
                     <div class="image-hover">
                       <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
                     </div>
@@ -459,7 +459,7 @@
             {% else %}
               <div class="object-item">
                 <div class="thumb-image image">
-                  <img src="{{ item.item_image }}" />
+                  <img src="{{ item.item_image }}" style="background-color: #e3e3e3" />
                     <div class="image-hover">
                       <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
                     </div>
