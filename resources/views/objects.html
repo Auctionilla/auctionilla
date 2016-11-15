@@ -58,6 +58,37 @@
       }
     }
 
+    function changeRelevance() {
+      var val = document.getElementById('relevance').value;
+      if (val == "relevance") {
+        window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=relevance";
+      } else if (val == "latest") {
+        window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=latest";
+      } else if (val == "highest") {
+        window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=highest-price";
+      } else if (val == "lowest") {
+        window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=lowest-price";
+      } else if (val == "shortest-remaining") {
+        window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=shortest-remaining";
+      }
+    }
+
+    function changeLot() {
+      var val = document.getElementById('lots').value;
+
+      if (val == "10") {
+        window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{10}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}";
+      } else if (val == "20") {
+        window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{20}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}";
+      } else if (val == "30") {
+        window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{30}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}";
+      } else if (val == "40") {
+        window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{40}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}";
+      } else if (val == "50") {
+        window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{50}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}";
+      }
+    }
+
 
     function gotologin() {
       window.location.href = '/login';
@@ -313,6 +344,23 @@
 
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 
+          <div class="col-md-4 col-sm-12 clearfix " style="width: 400px">
+            <div class="col-md-6 col-sm-6 item">
+
+              {% if total > 0 %}
+              <label>Sort By</label>
+              <select data-placeholder="{{ relevance if relevance else 'Relevance' }}" id="relevance" onchange="changeRelevance()" class="form-control sub-select  select2me input">
+                <option></option>
+                <option value="relevance" >relevance</option>
+                <option value="latest" >latest</option>
+                <option value="lowest" >lowest price</option>
+                <option value="highest" >highest price</option>
+                <option value="shortest-remaining" >shortest remaining</option>
+              </select>
+              <!-- <label>Sort By</label>
+              <div class="dropdown">
+                <button style="width:180px;overflow: hidden;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+>>>>>>> a35cd6fa3c473dd85fa2f36d63e69eb6dd86a96a
                   {{relevance if relevance else 'Relevance'}}
                   <span class="caret"></span>
                 </button>
@@ -324,7 +372,7 @@
                   <li {% if relevance == 'shortest-remaining' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=shortest-remaining">shortest remaining</a></li>
 
                 </ul>
-              </div>
+              </div> -->
               {% endif %}
             </div>
             <div class="col-md-5 col-sm-5 item">
@@ -335,7 +383,17 @@
                 <option>Lorem Ipsum</option>
               </select> -->
               {% if total > 0%}
-              <label>Lots</label>
+              <label>Lots {{page}}</label>
+              <select data-placeholder=" {{ page if page else 'Lots' }}" id="lots" onchange="changeLot()" class="form-control sub-select select2me input">
+                <option></option>
+                <option value="10" >10</option>
+                <option value="20" >20</option>
+                <option value="30" >30</option>
+                <option value="40" >40</option>
+                <option value="50" >50</option>
+              </select>
+
+              <!-- <label>Lots</label>
               <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   {{page if page else 'Lots'}}
@@ -348,7 +406,7 @@
                   <li {% if page == 40 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{40}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">40</a></li>
                   <li {% if page == 50 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{50}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">50</a></li>
                 </ul>
-              </div>
+              </div> -->
               {% endif %}
             </div>
           </div>
