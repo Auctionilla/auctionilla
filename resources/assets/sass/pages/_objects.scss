@@ -6,7 +6,7 @@
   }
 
   width: 100%;
-  background-image: url("/assets/images/heroshot.jpg");
+  background-image: url('../img/heroshot.jpg');
   position: relative;
   background-color: rgba(56, 54, 43, 0.9);
   background-blend-mode: multiply;
@@ -196,8 +196,12 @@
 
   ul {
     margin: 0;
+    display: inline-block;
+    float: none;
 
     li {
+      margin: 0 5px;
+
       @media (max-width: 767px) {
         display: inline-block;
       }

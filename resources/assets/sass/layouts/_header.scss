@@ -24,6 +24,20 @@
     }
   }
 
+  .dropdown-menu {
+    background-color: #262626;
+
+    li {
+      a {
+        color: $title-font-color;
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
   .nav {
     li {
       a {
