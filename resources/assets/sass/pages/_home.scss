@@ -10,6 +10,8 @@
     .input-group {
       width: 100%;
 
+      &.main-search {}
+
       input,
       button {
         height: 43px;
