@@ -110,7 +110,14 @@ export class UserController extends Controller {
     });
 
     myfavorite.forEach(async(data) => {
-      let timeremaining = await this.getRemainingHours(String(data['auction_date']), parseInt(data['id']))
+      let timeremaining;
+      if (data['auction_date']) {
+        console.log('===============auction date exist==================')
+        timeremaining = await this.getRemainingHours(String(data['auction_date']), parseInt(data['id']))
+      } else {
+        timeremaining = 0;
+      }
+      //let timeremaining = await this.getRemainingHours(String(data['auction_date']), parseInt(data['id']))
       let newItemDescription = String(data['item_description']).substring(0, 100)
       let newItemTitle = String(data['item_title']).substring(0, 50)
       data['new_item_title'] = newItemTitle + '...'
@@ -351,18 +358,19 @@ export class UserController extends Controller {
         fav.push(favoriteJsonItem);
       });
       fav.forEach(async(data) => {
-        let timeremaining = await this.getRemainingHours(String(data['auction_date']),data['id'])
+        let timeremaining;
+        if (data['auction_date']) {
+          console.log('===============auction date exist==================')
+          timeremaining = await this.getRemainingHours(String(data['auction_date']),data['id'])
+        } else {
+          timeremaining = 0;
+        }
+        //let timeremaining = await this.getRemainingHours(String(data['auction_date']),data['id'])
         let newItemDescription = String(data['item_description']).substring(0, 100)
         let newItemTitle = String(data['item_title']).substring(0, 50)
         data['new_item_title'] = newItemTitle + '...'
         data['new_item_description'] = newItemDescription + '...'
-        // if (data['days_remaining'] < 0) {
-        //   console.log('this should be removed from favorites', data['favId'])
-        //   let removefromfav = await this.favoriteService.destroy(parseInt(data['favId']))
-        //   if (removefromfav) {
-        //     console.log('this favitem is deleted', data['favId'])
-        //   }
-        // }
+        
         data['timeremaining'] = timeremaining;
       });
       //==================== get all the items again to but realized is removed ==================

@@ -96,7 +96,7 @@
   }
 
   function saveSearchAlert() {
-
+    alert('saving this search alert')
     let data = {
       search_item: $('input#save-searchkey').val(),
       category: $('input#save-category').val(),
@@ -111,6 +111,8 @@
       dataType: 'json',
       data: JSON.stringify(data)
     }).done(function(resp) {
+      alert(resp)
+      $('#saveSearchContainer').hide();
       $('#saveSearchContainerDone').show();
     });
   }
@@ -141,7 +143,7 @@
           <ul class="nav navbar-nav navbar-right">
             <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ 'red' if user else 'white' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ '#FF7D00' if user else 'white' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 {% if user %}
                 <li><a href="/viewprofile">My Profile </a></li>
@@ -248,41 +250,43 @@
         <input type="hidden" value="{{ category }}" id="save-category" name="save-category">
         <input type="hidden" value="{{ auction_house }}" id="save-auctionhouse" name="save-auctionhouse">
         <input type="hidden" value="{{ country }}" id="save-location" name="save-location">
+        
         <div id="saveSearchContainer">
           <span>
-        <i class="fa fa-bell"></i>
-        {% if user %}
-          <label style="text-decoration: underline;cursor: pointer;" onclick="saveSearchAlert()">
-          Create search alert
-          {% if search %}
-            for <b>' {{ search }} '</b>
-          {% endif %}
-          </label>. We'll email you when we got what you're looking for.
-        {% else %}
-        <label style="text-decoration: underline;" onclick="gotologin()">
-        Create search alert
-        {% if search %}
-            for <b> '{{ search if search != '' else ' all new item' }} ' </b>
-        {% endif %}
-        </label>. We'll email you when we got what you're looking for.
-        {% endif %}
-      </span>
+            <i class="fa fa-bell"></i>
+            {% if user %}
+              <label style="text-decoration: underline;cursor: pointer;" onclick="saveSearchAlert()">
+              Create search alert
+              {% if search %}
+                for <b>' {{ search }} '</b>
+              {% endif %}
+              </label>. We'll email you when we got what you're looking for.
+            {% else %}
+            <label style="text-decoration: underline;" onclick="gotologin()">
+            Create search alert
+            {% if search %}
+                for <b> '{{ search if search != '' else ' all new item' }} ' </b>
+            {% endif %}
+            </label>. We'll email you when we got what you're looking for.
+            {% endif %}
+          </span>
         </div>
+
         <div id="saveSearchContainerDone" style="display:none">
           <span class="glyphicon glyphicon-ok"></span> You've now saved the search word '{{ search if search != '' else ' all new item'}}'
           <h5><small style="color:white">
-      {% if category %}
-        <strong>category: </strong> {{category}}
-      {% endif %}
+          {% if category %}
+            <strong>category: </strong> {{category}}
+          {% endif %}
 
-      {% if auction_house %}
-        <strong>auction house: </strong> {{ auction_house }}
-      {% endif %}
+          {% if auction_house %}
+            <strong>auction house: </strong> {{ auction_house }}
+          {% endif %}
 
-      {% if country %}
-        <strong>country: </strong> {{ country }}
-      {% endif %}
-      </small></h5>
+          {% if country %}
+            <strong>country: </strong> {{ country }}
+          {% endif %}
+          </small></h5>
         </div>
       </div>
     </div>
