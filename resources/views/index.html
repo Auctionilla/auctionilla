@@ -38,7 +38,7 @@
             <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
              <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ 'red' if user else 'white' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
-            <ul class="dropdown-menu" style="background-color: white; ">
+            <ul class="dropdown-menu">
               {% if user %}
                 <li><a style="color:black;" href="/viewprofile">My Profile </a></li>
                 <li><a style="color:black;" href="/logout">Log Out</a></li>
@@ -67,8 +67,11 @@
 
 <section class="home">
   <div class="home-banner-search">
-    <div class="col-md-6 col-xs-11 search-bar">
+    <div class="clearfix col-md-6 col-xs-11 search-bar">
       <form class="navbar-form" role="search" method="get" action="/search">
+      <p>
+            Search and find everything in auctions, antiques and collectibles from all over the world.
+      </p>
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Search" name = "searchItem" id="srch-term">
           <div class="input-group-btn">
@@ -138,7 +141,7 @@
             {% for items in popularRealized %}
             <div class="col-md-4 col-sm-6 item">
               <div class="image">
-                <img class="img-responsive" style="height:250px;width: 350px" src="{{ items.mostPopularItemImage }}" alt="object item" />
+                <img class="img-responsive" src="{{ items.mostPopularItemImage }}" alt="object item" />
                 <div class="image-hover">
                   <a href="/search?searchItem=&browsing-auction=realized&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn">VIEW RESULTS</a>
                 </div>

@@ -309,7 +309,7 @@
               {% if total > 0 %}
               <label>Sort By</label>
               <div class="dropdown">
-                <button style="width:158px;overflow: hidden;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button style="width:160px;overflow: hidden;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   {{relevance if relevance else 'Relevance'}}
                   <span class="caret"></span>
                 </button>
@@ -650,7 +650,8 @@
 
   <div class="object-pagination">
     <div class="container">
-      <ul class="nav nav-justified">
+    
+      <ul class="nav navbar-nav">
         <li class = "{{ 'disabled' if offset <= 1 }}">
           <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=1&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a>
         </li>

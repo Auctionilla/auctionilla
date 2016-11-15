@@ -7,6 +7,14 @@ ul {
   padding: 0;
 }
 
+h2 {
+  font-size: 22px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
 h4 {
   font-size: 20px;
   color: $title-font-color;
@@ -52,7 +60,7 @@ h5 {
 
   & > li + li:before {
     color: #3f3f3f;
-    content: "\003E\00a0";
+    content: '\003E\00a0';
   }
 
   li {
