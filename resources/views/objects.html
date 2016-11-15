@@ -570,7 +570,7 @@
                 <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset - 1 if offset > 1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-left" aria-hidden="true"></i> </a>
               </li>
               {% if total == 0%}
-              <li>0</li>
+              <li><a href="#" >0 </a></li>
               {% endif %} {% if offset
               < 15 %} {% if ( total / page ) < 15 %} {% for i in range(1, (total / page) + 1) %} <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i}}</a>
                 </li>
@@ -590,7 +590,7 @@
                     <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ (total / page) | round + 1 }}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{ ((total / page) + 1) | round }}</a>
                     </li>
                     {% endif %} {% elif (offset > (total / page)) %}
-                    <li>last item</li>
+                    <li><a href="#" >last item </a></li>
                     {% endif %}
                     <li class=" {{'disabled' if (offset >= (total / page))}}">
                       <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset + 1 if (offset < (total / page)) else offset}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
