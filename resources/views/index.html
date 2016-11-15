@@ -10,14 +10,17 @@
   <!-- Place favicon.ico in the root directory -->
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
+  <script src="/assets/lib/jquery/dist/jquery.js"></script>
+  
 
-  <script type="text/javascript">
-    // $('img').error(function(){
-    //     $(this).attr('src', 'http://placehold.it/350x350');
-    //     onError="this.onerror=null;this.src='http://www.hindwarehomes.com/notfound.jpg';"
-    // });
-
-  </script>
+  <style type="text/css">
+    .popular-item-image {
+      background: url('/assets/images/please-wait.gif') no-repeat;
+      background-size: 100% 100%;
+      height: 350px;
+      width: 350px;
+    }
+  </style>
 </head>
 
 <body>
@@ -122,7 +125,7 @@
               {% for items in popularCateg %}
               <div class="col-md-4 col-sm-6 item">
                 <div class="image">
-                  <img class="img-responsive" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://placehold.it/350x350';"/>
+                  <img class="img-responsive popular-item-image" id="theid{{items.categoryName}}" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://placehold.it/350x350';"/>
                   <div class="image-hover">
                     <a href="/search?searchItem=&browsing-auction=auction&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn">VIEW RESULTS</a>
                   </div>
@@ -154,7 +157,7 @@
               {% for items in popularRealized %}
               <div class="col-md-4 col-sm-6 item">
                 <div class="image">
-                  <img class="img-responsive" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://placehold.it/350x350';"/>
+                  <img class="img-responsive popular-item-image" id="theid{{items.categoryName}}" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://placehold.it/350x350';"/>
                   <div class="image-hover">
                     <a href="/search?searchItem=&browsing-auction=realized&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn">VIEW RESULTS</a>
                   </div>
@@ -212,4 +215,31 @@
   <script src="/assets/js/vendor.js"></script>
   <script src="/assets/js/plugins.js"></script>
   <script src="/assets/js/main.js"></script>
+  <script type="text/javascript">
+    
+    var counter = 0;
+    $(document).ready(function() {
+      $('.popular-item-image').each(function(){
+          var img = new Image();
+          img.onload = function() {
+              console.log($(this).attr('src') + ' - done!');
+              //console.log($(this).find('class'))
+
+              counter = counter + 1;
+              if (counter > 11) {
+                console.log('all is done!')
+                $('.popular-item-image').css('background','none');
+              }
+              console.log(counter)
+          }
+          img.src = $(this).attr('src');
+
+
+      });
+      
+
+    });
+    
+
+  </script>
 </body>
