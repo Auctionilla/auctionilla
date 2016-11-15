@@ -301,7 +301,7 @@
                     <div class="col-md-5 col-sm-12">
                       <h4>
                             Your search
-                            <b>{{ search }}</b> returned {{ total if total > 0 else 0}} results
+                            <b>{{ search }}</b> returned {{ total if total > 0 else 0}} results {{ 9329 / page }}
                         </h4>
                       <ul class="hits">
                         <li>
@@ -349,7 +349,7 @@
                         {% if data.length %} {% for item in data %} {% if (item.price_status == "Realized") or (item.price_status == "Hammer price") %}
                         <div class="object-item">
                           <div class="thumb-image image">
-                            <img src="{{ item.item_image }}" alt="image" />
+                            <img src="{{ item.item_image }}" alt="image" onError="this.onerror=null;this.src='http://www.hindwarehomes.com/notfound.jpg';"/>
                             <div class="image-hover">
                               <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
                             </div>
@@ -422,7 +422,7 @@
                         {% else %}
                         <div class="object-item">
                           <div class="thumb-image image">
-                            <img src="{{ item.item_image }}" style="background-color: #e3e3e3" />
+                            <img src="{{ item.item_image }}" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://www.hindwarehomes.com/notfound.jpg';"/>
                             <div class="image-hover">
                               <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
                             </div>
@@ -584,22 +584,22 @@
                 </li>
                 {% endfor %} {% endif %} {% elif offset >= 15 and offset
                 < (total / page) - 15 %} {% for i in range(offset - 7, offset + 7) %} <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i  | round }}</a>
-                  </li>
-                  {% endfor %} {% elif (offset > (total / page) - 15) and (offset
-                  <=( total / page)) %} {% for i in range((total / page) - 15, (total / page) + 1 ) %} <li class="page-item {% if offset == i  | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i  | round }}</a>
-                    </li>
-                    {% endfor %} {% if (total % page) > page and ((total / page) > 1) %}
-                    <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ (total / page) | round + 1 }}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{ ((total / page) + 1) | round }}</a>
-                    </li>
-                    {% endif %} {% elif (offset > (total / page)) %}
-                    <li><a href="#" >last item </a></li>
-                    {% endif %}
-                    <li class=" {{'disabled' if (offset >= (total / page))}}">
-                      <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset + 1 if (offset < (total / page)) else offset}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
-                    </li>
-                    <li class=" {{'disabled' if (offset >= (total / page))}}">
-                      <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ total / page }}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
-                    </li>
+                </li>
+                {% endfor %} {% elif (offset > (total / page) - 15) and (offset
+                <=( total / page)) %} {% for i in range((total / page) - 15, (total / page) + 1 ) %} <li class="page-item {% if offset == i  | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i  | round }}</a>
+                </li>
+                {% endfor %} {% if (total % page) > page and ((total / page) > 1) %}
+                <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ (total / page) | round + 1 }}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{ ((total / page) + 1) | round }}</a>
+                </li>
+                {% endif %} {% elif (offset > (total / page)) %}
+                <li><a href="#" >last item </a></li>
+                {% endif %}
+                <li class=" {{'disabled' if (offset >= (total / page))}}">
+                  <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset + 1 if (offset < (total / page)) else offset}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
+                </li>
+                <li class=" {{'disabled' if (offset >= (total / page))}}">
+                  <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ total / page }}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+                </li>
             </ul>
           </div>
         </div>
