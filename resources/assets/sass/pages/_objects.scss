@@ -1,5 +1,5 @@
 .objects-banner-search {
-  min-height: 200px;
+  min-height: 150px;
 
   @media (max-width: 767px) {
     min-height: 450px;
@@ -51,6 +51,7 @@
 
   span {
     line-height: 40px;
+    color: #fff;
   }
 
   a {
@@ -73,14 +74,6 @@
 
   .item {
     padding: 0;
-    position: relative;
-
-    .btn {
-      width: 100%;
-      outline: none;
-      text-align: left;
-      padding: 8px;
-    }
   }
 }
 
