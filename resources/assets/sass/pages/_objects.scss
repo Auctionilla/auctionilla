@@ -74,6 +74,10 @@
 
   .item {
     padding: 0;
+
+    &:not(:last-child) {
+      select {}
+    }
   }
 }
 

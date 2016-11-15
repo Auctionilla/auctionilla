@@ -288,257 +288,233 @@
     </div>
     <div class="page-nav">
       <div class="container">
-        <div class="row">
-          <ol class="breadcrumb">
-            <li><a href="/"><i class="fa fa-home"></i></a>
-            </li>
-            <li><a href="#">{{ category if category else "All Categories" }}</a>
-            </li>
-          </ol>
-          <div class="search-results clearfix">
-            <div class="col-md-5 col-sm-12">
-              <h4>
-                    Your search
-                    <b>{{ search }}</b> returned {{ total if total > 0 else 0}} results
-                </h4>
-              <ul class="hits">
-                <li>
-                  <i class="fa fa-globe"></i> <span>{{ totalHits }} hits in all countries</span>
-                </li>
-                <li>
-                  <i class="fa fa-copy"></i> <span>{{ totalHits }} hits in all categories</span>
-                </li>
-              </ul>
-            </div>
-            <div class="col-md-4 col-sm-12 clearfix ">
-              <div class="col-md-7 col-sm-6 item">
-               {% if total > 0 %}
-                <label>Sort By</label>
+                <div class="row">
+                  <ol class="breadcrumb">
+                    <li><a href="/"><i class="fa fa-home"></i></a>
+                    </li>
+                    <li><a href="#">{{ category if category else "All Categories" }}</a>
+                    </li>
+                  </ol>
+                  <div class="search-results clearfix">
+                    <div class="col-md-5 col-sm-12">
+                      <h4>
+                            Your search
+                            <b>{{ search }}</b> returned {{ total if total > 0 else 0}} results
+                        </h4>
+                      <ul class="hits">
+                        <li>
+                          <i class="fa fa-globe"></i> <span>{{ totalHits }} hits in all countries</span>
+                        </li>
+                        <li>
+                          <i class="fa fa-copy"></i> <span>{{ totalHits }} hits in all categories</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="col-md-4 col-sm-12 clearfix ">
+                      <div class="col-md-7 col-sm-6 item">
+                        {% if total > 0 %}
+                        <label>Sort By</label>
+                        <select data-placeholder="{{ relevance if relevance else 'Relevance' }}" id="relevance" onchange="changeRelevance()" class="form-control sub-select   select2me input">
+                          <option></option>
+                          <option value="relevance">relevance</option>
+                          <option value="latest">latest</option>
+                          <option value="lowest">lowest price</option>
+                          <option value="highest">highest price</option>
+                          <option value="shortest-remaining">shortest remaining</option>
+                        </select>
+                        {% endif %}
+                      </div>
+                      <div class="col-md-5 col-sm-5 item">
+                        {% if total > 0%}
+                        <label>Lots {{page}}</label>
+                        <select data-placeholder=" {{ page if page else 'Lots' }}" id="lots" onchange="changeLot()" class="select2me form-control sub-select  input">
+                          <option></option>
+                          <option value="10">10</option>
+                          <option value="20">20</option>
+                          <option value="30">30</option>
+                          <option value="40">40</option>
+                          <option value="50">50</option>
+                        </select>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="object-item-list clearfix">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-9 col-sm-12 main-object-list">
+                        {% if data.length %} {% for item in data %} {% if (item.price_status == "Realized") or (item.price_status == "Hammer price") %}
+                        <div class="object-item">
+                          <div class="thumb-image image">
+                            <img src="{{ item.item_image }}" alt="image" />
+                            <div class="image-hover">
+                              <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
+                            </div>
+                          </div>
+                          <div class="descriptions">
+                            <div class="clearfix tag-timestamp">
+                              <ul>
+                                <li>
+                                  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
+                                </li>
+                                <li>
+                                  {% if item.dealer_bid != 'dealer' %}
+                                  <i class="fa fa-clock-o" aria-hidden="true"></i> {% if item.days_remaining > 0 %} {{ item.days_remaining }}d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% else %} 0d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% endif %} {% else %}
+                                  <i class="fa fa-flag" aria-hidden="true"></i> dealer {% endif %}
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="content">
+                              <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                                <h4 title="{{item.item_title}}">
+                                {{ item.new_item_title }}
+                              </h4>
+                              </a>
+                              <p title="{{item.item_description}}">
+                                {{ item.new_item_description }}
+                              </p>
+                              <p class="estimate">
+                                {{ item.price_status }} : {{ item.price}} {{item.currency}} {% if item.price_status == "Fixed price" %} - {% elif item.price_status == "Hammer price" %}
+                                <a href="{{ item.auction_url }}">Show Bid</a> {% elif item.price_status == "Low estimate" %}
+                                <a href="{{ item.auction_url }}">Show Bid</a> {% endif %}
+                              </p>
+                            </div>
+                            <div class="actions clearfix">
+                              <ul>
+                                <li class="auction-emblem">
+                                  <a href="{{ item.auction_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                                </li>
+                                <li>
+                                  {% if item.price_status != "Realized" %} {% if item.price_status != "Hammer price" %} {% if user %}
+                                  <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                                    <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
+                                  </button>
+                                  {% else %}
+                                  <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                                    <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
+                                  </button>
+                                  {% endif %} {% endif %} {% endif %}
+                                </li>
+                                <li>
+                                  <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                                    <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+                                      <span>
+                                  {% if item.price_status == "Fixed price" %}
+                                    Buy it now
+                                  {% elif item.price_status == "Hammer price" %}
+                                    To the auction house
+                                  {% elif item.price_status == "Low estimate" %}
+                                    Show Bid
+                                  {% elif item.price_status == "Realized" %}
+                                    To the auction house
+                                  {% endif %}
+                                  </span>
+                                    </button>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        {% else %}
+                        <div class="object-item">
+                          <div class="thumb-image image">
+                            <img src="{{ item.item_image }}" style="background-color: #e3e3e3" />
+                            <div class="image-hover">
+                              <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
+                            </div>
+                          </div>
+                          <div class="descriptions">
+                            <div class="clearfix tag-timestamp">
+                              <ul>
+                                <li>
+                                  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
+                                </li>
+                                <li>
+                                  {% if item.dealer_bid != 'dealer' %}
+                                  <i class="fa fa-clock-o" aria-hidden="true"></i> {% if item.days_remaining > 0 %} {{ item.days_remaining }}d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% else %} 0d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% endif %} {% else %}
+                                  <i class="fa fa-flag" aria-hidden="true"></i> dealer {% endif %}
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="content">
+                              <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                                <h4 title="{{item.item_title}}">
+                                {{ item.new_item_title }}
+                              </h4>
+                              </a>
+                              <p title="{{item.item_description}}">
+                                {{ item.new_item_description }}
+                              </p>
+                              <p class="estimate">
+                                {{ item.price_status }} : {{ item.price}} {{item.currency}} {% if item.price_status == "Fixed price" %} - {% elif item.price_status == "Hammer price" %}
+                                <a href="{{ item.auction_url }}" target="_blank">Show Bid</a> {% elif item.price_status == "Low estimate" %}
+                                <a href="{{ item.auction_url }}" target="_blank">Show Bid</a> {% endif %}
+                              </p>
+                            </div>
+                            <div class="actions clearfix">
+                              <ul>
+                                <li class="auction-emblem">
+                                  <a href="{{ item.auction_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                                </li>
+                                <li>
+                                  {% if item.price_status != "Realized" %} {% if item.price_status != "Hammer price" %} {% if user %}
+                                  <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                                    <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
+                                  </button>
+                                  {% else %}
+                                  <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                                    <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
+                                  </button>
+                                  {% endif %} {% endif %} {% endif %}
+                                </li>
+                                <li>
+                                  <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                                    <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+                                      <span>
+                                  {% if item.price_status == "Fixed price" %}
+                                    Buy it now
+                                  {% elif item.price_status == "Hammer price" %}
+                                    To the auction house
+                                  {% elif item.price_status == "Low estimate" %}
+                                    Show Bid
+                                  {% elif item.price_status == "Realized" %}
+                                    To the auction house
+                                  {% endif %}
+                                  </span>
+                                    </button>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        {% endif %} {% endfor %} {% endif %}
+                      </div>
+                      <div class="col-md-3  daily-tips">
+                        <div class="widgets ">
+                          <div class="widget-title">
+                            <h4>Pick of the day</h4>
+                          </div>
+                          <div class="image">
+                            <img src="{{ thePick.item_image }}" alt="pick photo" />
+                          </div>
+                          <div class="content">
+                            <a href="{{ thePick.auction_url }}">
 
-                <select data-placeholder="{{ relevance if relevance else 'Relevance' }}" id="relevance" onchange="changeRelevance()" class="form-control sub-select   select2me input">
-                  <option></option>
-                  <option value="relevance">relevance</option>
-                  <option value="latest">latest</option>
-                  <option value="lowest">lowest price</option>
-                  <option value="highest">highest price</option>
-                  <option value="shortest-remaining">shortest remaining</option>
-                </select>
-                {% endif %}
-              </div>
-              <div class="col-md-5 col-sm-5 item">
-                {% if total > 0%}
-                <label>Lots {{page}}</label>
-                <select data-placeholder=" {{ page if page else 'Lots' }}" id="lots" onchange="changeLot()" class="select2me form-control sub-select  input">
-                  <option></option>
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="30">30</option>
-                  <option value="40">40</option>
-                  <option value="50">50</option>
-                </select>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="object-item-list clearfix">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-9 col-sm-12 main-object-list">
-                {% if data.length %} {% for item in data %} {% if (item.price_status == "Realized") or (item.price_status == "Hammer price") %}
-                <div class="object-item">
-                  <div class="thumb-image image">
-                    <img src="{{ item.item_image }}" alt="image" />
-                    <div class="image-hover">
-                      <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
-                    </div>
-                  </div>
-                  <div class="descriptions">
-                    <div class="clearfix tag-timestamp">
-                      <ul>
-                        <li>
-                          <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
-                        </li>
-                        <li>
-                          {% if item.dealer_bid != 'dealer' %}
-                          <i class="fa fa-clock-o" aria-hidden="true"></i> {% if item.days_remaining > 0 %} {{ item.days_remaining }}d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% else %} 0d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% endif %} {% else %}
-                          <i class="fa fa-flag" aria-hidden="true"></i> dealer {% endif %}
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="content">
-                      <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
-                        <h4 title="{{item.item_title}}">
-                        {{ item.new_item_title }}
-                      </h4>
-                      </a>
-                      <p title="{{item.item_description}}">
-                        {{ item.new_item_description }}
-                      </p>
-                      <p class="estimate">
-                        {{ item.price_status }} : {{ item.price}} {{item.currency}} {% if item.price_status == "Fixed price" %} - {% elif item.price_status == "Hammer price" %}
-                        <a href="{{ item.auction_url }}">Show Bid</a> {% elif item.price_status == "Low estimate" %}
-                        <a href="{{ item.auction_url }}">Show Bid</a> {% endif %}
-                      </p>
-                    </div>
-                    <div class="actions clearfix">
-                      <ul>
-                        <li class="auction-emblem">
-                          <a href="{{ item.auction_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
-                        </li>
-                        <li>
-                          {% if item.price_status != "Realized" %} {% if item.price_status != "Hammer price" %} {% if user %}
-                          <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
-                            <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
-                          </button>
-                          {% else %}
-                          <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
-                            <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
-                          </button>
-                          {% endif %} {% endif %} {% endif %}
-                        </li>
-                        <li>
-                          <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
-                            <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
-                              <span>
-                          {% if item.price_status == "Fixed price" %}
-                            Buy it now
-                          {% elif item.price_status == "Hammer price" %}
-                            To the auction house
-                          {% elif item.price_status == "Low estimate" %}
-                            Show Bid
-                          {% elif item.price_status == "Realized" %}
-                            To the auction house
-                          {% endif %}
-                          </span>
-                            </button>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                {% else %}
-                <div class="object-item">
-                  <div class="thumb-image image">
-                    <img src="{{ item.item_image }}" style="background-color: #e3e3e3" />
-                    <div class="image-hover">
-                      <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
-                    </div>
-                  </div>
-                  <div class="descriptions">
-                    <div class="clearfix tag-timestamp">
-                      <ul>
-                        <li>
-                          <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
-                        </li>
-                        <li>
-                          {% if item.dealer_bid != 'dealer' %}
-                          <i class="fa fa-clock-o" aria-hidden="true"></i> {% if item.days_remaining > 0 %} {{ item.days_remaining }}d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% else %} 0d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% endif %} {% else %}
-                          <i class="fa fa-flag" aria-hidden="true"></i> dealer {% endif %}
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="content">
-                      <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
-                        <h4 title="{{item.item_title}}">
-                        {{ item.new_item_title }}
-                      </h4>
-                      </a>
-                      <p title="{{item.item_description}}">
-                        {{ item.new_item_description }}
-                      </p>
-                      <p class="estimate">
-                        {{ item.price_status }} : {{ item.price}} {{item.currency}} {% if item.price_status == "Fixed price" %} - {% elif item.price_status == "Hammer price" %}
-                        <a href="{{ item.auction_url }}" target="_blank">Show Bid</a> {% elif item.price_status == "Low estimate" %}
-                        <a href="{{ item.auction_url }}" target="_blank">Show Bid</a> {% endif %}
-                      </p>
-                    </div>
-                    <div class="actions clearfix">
-                      <ul>
-                        <li class="auction-emblem">
-                          <a href="{{ item.auction_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
-                        </li>
-                        <li>
-                          {% if item.price_status != "Realized" %} {% if item.price_status != "Hammer price" %} {% if user %}
-                          <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
-                            <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
-                          </button>
-                          {% else %}
-                          <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
-                            <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
-                          </button>
-                          {% endif %} {% endif %} {% endif %}
-                        </li>
-                        <li>
-                          <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
-                            <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
-                              <span>
-                          {% if item.price_status == "Fixed price" %}
-                            Buy it now
-                          {% elif item.price_status == "Hammer price" %}
-                            To the auction house
-                          {% elif item.price_status == "Low estimate" %}
-                            Show Bid
-                          {% elif item.price_status == "Realized" %}
-                            To the auction house
-                          {% endif %}
-                          </span>
-                            </button>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                {% endif %} {% endfor %} {% endif %}
-              </div>
-              <div class="col-md-3  daily-tips">
-                <div class="widgets ">
-                  <div class="widget-title">
-                    <h4>Pick of the day</h4>
-                  </div>
-                  <div class="image">
-                    <img src="{{ thePick.item_image }}" alt="pick photo" />
-                  </div>
-                  <div class="content">
-                    <a href="{{ thePick.auction_url }}">
+                          {{thePick.item_title}}
+                        </a>
+                            <p>
+                              {{ thePick.price_status }} : {{ thePick.price }} {{thePick.currency}}
+                            </p>
+                          </div>
+                        </div>
 
-                  {{thePick.item_title}}
-                </a>
-                    <p>
-                      {{ thePick.price_status }} : {{ thePick.price }} {{thePick.currency}}
-                    </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <!-- <div class="widgets ">
-            <div class="widget-title">
-              <h4>Latest news</h4>
-            </div>
-            <div class="per-item">
-              <div class="image">
-                <img src="/assets/images/objects/pick-1.png" alt="pick photo" />
-              </div>
-              <div class="content">
-                <a href="#">
-                  Peter Doig, Cloud Illusions/Recall
-                </a>
-              </div>
-            </div>
-            <div class="per-item">
-              <div class="image">
-                <img src="/assets/images/objects/pick-1.png" alt="pick photo" />
-              </div>
-              <div class="content">
-                <a href="#">
-                  Peter Doig, Cloud Illusions/Recall
-                </a>
-              </div>
-            </div>
-          </div> -->
-              </div>
-            </div>
-          </div>
         </div>
         <div class="notification">
           <div class="container">
@@ -548,39 +524,39 @@
             <input type="hidden" value="{{ country }}" id="save-location" name="save-location">
             <div id="saveSearchContainer2">
               <span>
-        <i class="fa fa-bell"></i>
-        {% if user %}
-        <label style="text-decoration: underline;" onclick="saveSearchAlert()">
-        Create search alert
-        {% if search %}
-          for <b>' {{ search }} '</b>
-        {% endif %}
-        </label>. We'll email you when we got what you're looking for.
-        {% else %}
-        <label style="text-decoration: underline;" onclick="gotologin()">
-        Create search alert
-        {% if search %}
-          for <b> '{{ search }}' </b>
-        {% endif %}
-        </label>. We'll email you when we got what you're looking for.
-        {% endif %}
-      </span>
+              <i class="fa fa-bell"></i>
+              {% if user %}
+              <label style="text-decoration: underline;" onclick="saveSearchAlert()">
+              Create search alert
+              {% if search %}
+                for <b>' {{ search }} '</b>
+              {% endif %}
+              </label>. We'll email you when we got what you're looking for.
+              {% else %}
+              <label style="text-decoration: underline;" onclick="gotologin()">
+              Create search alert
+              {% if search %}
+                for <b> '{{ search }}' </b>
+              {% endif %}
+              </label>. We'll email you when we got what you're looking for.
+              {% endif %}
+            </span>
             </div>
             <div id="saveSearchContainerDone2" style="display:none">
               <span class="glyphicon glyphicon-ok"></span> You've now saved the search word '{{ search }}''
               <h5><small style="color:white">
-      {% if category %}
-        <strong>category: </strong> {{category}}
-      {% endif %}
+            {% if category %}
+              <strong>category: </strong> {{category}}
+            {% endif %}
 
-      {% if auction_house %}
-        <strong>auction house: </strong> {{ auction_house }}
-      {% endif %}
+            {% if auction_house %}
+              <strong>auction house: </strong> {{ auction_house }}
+            {% endif %}
 
-      {% if country %}
-        <strong>country: </strong> {{ country }}
-      {% endif %}
-      </small></h5>
+            {% if country %}
+              <strong>country: </strong> {{ country }}
+            {% endif %}
+            </small></h5>
             </div>
           </div>
         </div>
@@ -629,18 +605,17 @@
           <div class="container">
             <div class="item-content">
               <h4>
-          {{category}}
-        </h4>
+                {{category}}
+              </h4>
               <p>
-                <!-- Art auctions, featuring paintings from ancient times to today, are gathered under this category. It includes everything from Old Master drawings and paintings to the cutting edge of contemporary graphic art.
-        </p> -->
                 {{ catdesc }}
+              </p>
             </div>
             <hr>
             <div class="item-content">
               <h4>
-          Popular searches
-        </h4>
+                Popular searches
+              </h4>
               <ul>
                 {% for searches in popularSearches %}
                 <li>
