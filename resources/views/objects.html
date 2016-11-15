@@ -299,7 +299,7 @@
             </ul>
           </div>
           <div class="col-md-4 col-sm-12 clearfix ">
-            <div class="col-md-6 col-sm-6 item">
+            <div class="col-md-7 col-sm-7 item">
               <!-- <label>Sort By</label>
               <select data-placeholder="Relevance" class="form-control sub-select  select2me input">
                 <option></option>
@@ -309,7 +309,7 @@
               {% if total > 0 %}
               <label>Sort By</label>
               <div class="dropdown">
-                <button style="width:160px;overflow: hidden;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   {{relevance if relevance else 'Relevance'}}
                   <span class="caret"></span>
                 </button>
@@ -324,7 +324,7 @@
               </div>
               {% endif %}
             </div>
-            <div class="col-md-6 col-sm-6 item">
+            <div class="col-md-5 col-sm-5 item">
 
              <!--  <select data-placeholder="Lots" class="form-control sub-select select2me input">
                 <option></option>
@@ -334,7 +334,7 @@
               {% if total > 0%}
               <label>Lots</label>
               <div class="dropdown">
-                <button style="width:100px" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   {{page if page else 'Lots'}}
                   <span class="caret"></span>
                 </button>
@@ -362,7 +362,7 @@
             {% if (item.price_status == "Realized") or (item.price_status == "Hammer price") %}
               <div class="object-item">
                 <div class="thumb-image image">
-                  <img src="{{ item.item_image }}" style="background-color: #e3e3e3" />
+                  <img src="{{ item.item_image }}" alt="image" />
                     <div class="image-hover">
                       <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
                     </div>
@@ -650,7 +650,7 @@
 
   <div class="object-pagination">
     <div class="container">
-    
+
       <ul class="nav navbar-nav">
         <li class = "{{ 'disabled' if offset <= 1 }}">
           <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=1&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a>
