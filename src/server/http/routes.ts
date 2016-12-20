@@ -18,6 +18,7 @@ export default function (router: Router, config: Config) {
   router.group({middleware: ['AlreadyLogged']}, route => {
     router.route('GET', '/login', 'UserController@viewLogin');
     router.route('POST', '/login', 'UserController@login');
+    router.route('POST', 'facebook-login', 'UserController@facebookLogin')
   });
 
   router.group({middleware: ['UserAuth']}, route => {

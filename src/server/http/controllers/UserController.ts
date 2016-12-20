@@ -605,4 +605,49 @@ export class UserController extends Controller {
 
     return response.redirect('/login');
   }
+
+  public async facebookLogin(request: Request, response: Response) {
+     let facebook_id = request.input.get('id');
+     let email = request.input.get('email');
+     let fullname = request.input.get('name');
+     let fname;
+     let lname;
+     let password = await Hash.make(request.input.get('id'))
+     if (fullname.indexOf(' ')) {
+       fname = fullname.split(' ')[0]
+       lname = fullname.split(' ')[1]
+       console.log(fname,'-', lname);
+     }
+     let data = {
+       email: email,
+       facebook_id: facebook_id,
+       first_name: fname,
+       last_name: lname,
+       password: password
+     }
+     let checkIfRegistered = await this.userService.checkFacebookId(email, facebook_id);
+     if(checkIfRegistered) {
+       console.log('aleready registed facebook');
+       request.session.set('loggedUser',{'email': checkIfRegistered.get('email'), 'id': checkIfRegistered.get('id')});
+       request.session.get('loggedUser');
+     } else {
+       let chkEmail = await this.userService.checkEmail(email);
+       if (chkEmail) {
+         return response.json({alert:'Email is already registered.'});
+       }
+       console.log('not yet registered facebook');
+       let register = await this.userService.registerUsingFacebook(data);
+       if (register) {
+         console.log('register success', register.get('id'));
+         request.session.set('loggedUser',{'email': register.get('email'), 'id': register.get('id')});
+         request.session.get('loggedUser');
+       } else {
+         return response.json({alert: 'Facebook registration failed.'})
+       }
+     }
+     console.log(JSON.stringify(data));
+     return response.json({alert: 'success'});
+  }
+
+
 }

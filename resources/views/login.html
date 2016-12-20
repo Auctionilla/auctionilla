@@ -14,71 +14,166 @@
 
   <script type="text/javascript">
     function login(data) {
-          if(!data){
-            data = {
-              email: $('input#login-email').val(),
-              password: $('input#login-pass').val()
-            }
-          }
+      if(!data){
+        data = {
+          email: $('input#login-email').val(),
+          password: $('input#login-pass').val()
+        }
+      }
 
-          $.ajax({
-            method: 'post',
-            url: '/login',
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(data)
-          }).done(function (resp) {
-            let data = resp.data;
-            console.log(resp.data.alert);
-            var status = resp.data.alert;
-            if (status == 'Login success') {
+      $.ajax({
+        method: 'post',
+        url: '/login',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(data)
+      }).done(function (resp) {
+        let data = resp.data;
+        console.log(resp.data.alert);
+        var status = resp.data.alert;
+        if (status == 'Login success') {
 
-              console.log('registration success');
-              // if ($('#staylogin').is(":checked")) {
-              //   document.cookie = "antique-email= " + $('input#login-email').val();
-              //   document.cookie = "antique-password="+ $('input#login-pass').val();
-              //   alert(document.cookie);
-              // }
-              $('#log-alert').hide();
-              $('#alertlabel').html(status);
-              window.location.href="/viewprofile";
-            } else {
-              $('#log-alert').show();
-              $('#alertlabel').html(status);
-            }
-
-              // window.location.reload();
-          });
+          console.log('registration success');
+          // if ($('#staylogin').is(":checked")) {
+          //   document.cookie = "antique-email= " + $('input#login-email').val();
+          //   document.cookie = "antique-password="+ $('input#login-pass').val();
+          //   alert(document.cookie);
+          // }
+          $('#log-alert').hide();
+          $('#alertlabel').html(status);
+          window.location.href="/viewprofile";
+        } else {
+          $('#log-alert').show();
+          $('#alertlabel').html(status);
         }
 
-        $(function() {
-          var cookieUserEmail = '';
-          var cookieUserPassword = '';
-          var thecookie = document.cookie;
-          var cookiedata = thecookie.split(';')
-          for (i = 0; i < cookiedata.length; i++) {
-            if (cookiedata[i].search('antique-email') > -1) {
-              cookieUserEmail = cookiedata[i];
-            } else if(cookiedata[i].search('antique-password') > -1) {
-              cookieUserPassword = cookiedata[i];
-            }
-          }
+          // window.location.reload();
+      });
+    }
 
-          if (cookieUserEmail && cookieUserPassword) {
-            alert(cookieUserEmail.replace('antique-email=','') + '-' + cookieUserPassword.replace('antique-password=',''))
-            var data = {
-              email: cookieUserEmail.replace('antique-email=','').trim(),
-              password: cookieUserPassword.replace('antique-password=','').trim()
-            }
-            login(data);
-          }
-        });
+        // $(function() {
+        //   var cookieUserEmail = '';
+        //   var cookieUserPassword = '';
+        //   var thecookie = document.cookie;
+        //   var cookiedata = thecookie.split(';')
+        //   for (i = 0; i < cookiedata.length; i++) {
+        //     if (cookiedata[i].search('antique-email') > -1) {
+        //       cookieUserEmail = cookiedata[i];
+        //     } else if(cookiedata[i].search('antique-password') > -1) {
+        //       cookieUserPassword = cookiedata[i];
+        //     }
+        //   }
+
+        //   if (cookieUserEmail && cookieUserPassword) {
+        //     alert(cookieUserEmail.replace('antique-email=','') + '-' + cookieUserPassword.replace('antique-password=',''))
+        //     var data = {
+        //       email: cookieUserEmail.replace('antique-email=','').trim(),
+        //       password: cookieUserPassword.replace('antique-password=','').trim()
+        //     }
+        //     login(data);
+        //   }
+        // });
 
 
+         // This is called with the results from from FB.getLoginStatus().
+  
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      document.getElementById('status').innerHTML = 'login ' +' into this app.';
+    } else {
+      // The person is not logged into Facebook, so we're not sure if
+      // they are logged into this app or not.
+      document.getElementById('status').innerHTML = 'Login ' + 'using Facebook.';
+    }
+  }
 
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function checkLoginState() {
+    console.log('login using facebook');
+    FB.api('/me?fields=email,name', function(response) {
+      console.log(JSON.stringify(response));
+      facebookLogin(response)
+    });
+
+  }
+
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '1826638157575381',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.8' // use graph api version 2.8
+  });
+
+  // Now that we've initialized the JavaScript SDK, we call 
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
+
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Successful login for: ' + response.name);
+      document.getElementById('status').innerHTML =
+        'Login as ' + response.name + '.';
+    });
+  }
+
+  function facebookLogin(data) {
+    $.ajax({
+      method: 'post',
+      url: '/facebook-login',
+      contentType: 'application/json',
+      dataType: 'json',
+      data: JSON.stringify(data)
+    }).done(function (resp) {
+      console.log(resp);
+      if (resp.alert == 'success') {
+        window.location.href="/viewprofile";
+      } else {
+        $('#alertlabel').html(resp.alert);
+      }
+    });
+  }
   </script>
-
-
+  
 
 
 </head>
@@ -144,7 +239,7 @@
         <ol class="breadcrumb">
           <li><a href="/"><i class="fa fa-home"></i></a>
           </li>
-          <li><a href="#">Register</a>
+          <li><a href="#">Login</a>
           </li>
         </ol>
       </div>
@@ -172,6 +267,18 @@
                   <input type="password" class="form-control" id="login-pass" placeholder="Password" required>
                 </div>
                 <button type="submit" onclick="login()" class="btn btn-block btn-submit btn-default">Login</button>
+                <h5><small><span>social login</span></small></h5>
+                <!-- <button type="submit" style = "background-color:#3b5998;color:white" scope="public_profile,email" onclick="checkLoginState();" class="btn btn-block ">Login with Facebook</button> -->
+                <fb:login-button size="large" scope="public_profile,email" onlogin="checkLoginState();">
+                </fb:login-button>
+                <!-- <div
+                  class="fb-like"
+                  data-share="true"
+                  data-width="450"
+                  data-show-faces="true">
+                </div> -->
+                <div id="status">
+                </div>
               <!-- </form> -->
             </div>
           </div>
@@ -214,7 +321,10 @@
 </footer>
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
+ 
 </script>
+
+
 <script src="/assets/js/vendor.js"></script>
 <script src="/assets/js/plugins.js"></script>
 <script src="/assets/js/main.js"></script>

@@ -76,6 +76,23 @@ export class UserService extends SQLService<User> {
     return this.destroy(id)
   }
 
+  checkFacebookId (email, id) {
+    return this.query(query => {
+      query.where('facebook_id', id);
+      query.where('email', email);
+    }).getOne();
+  }
 
+  registerUsingFacebook(data) {
+    return this.create({
+      email: data.email,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      password: data.password,
+      facebook_id: data.facebook_id,
+      is_active: 1,
+      email_confirmed: 1
+    });
+  }
 
 }
