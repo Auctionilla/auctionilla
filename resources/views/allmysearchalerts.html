@@ -131,7 +131,7 @@
                         <td> {{ allAlerts.auction_house if allAlerts.auction_house else '( all auction house )' }} </td>
                         <td>
                           <a href="/search?searchItem={{ alert.search_item }}&browsing-auction=auction&category={{alert.category}}&countries={{alert.location}}&auction-house={{alert.auction_house}}&offset=&page=&radiobuttonsearch=&relevance=" class="btn btn-red">View</a>
-                          <a href="/remove-alert-all/{{allAlerts.alertId}}" class="btn-default btn"><i class="fa fa-times"></i></a>
+                          <a href="/remove-alert-all/{{allAlerts.alertId}}" class="btn-default btn"><i class="glyphicon glyphicon-remove"></i></a>
                         </td>
                       </tr>
                       </tr>

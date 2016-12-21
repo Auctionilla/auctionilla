@@ -171,7 +171,7 @@
                             <li>
                             <form action="/removeFavAll" method="post">
                               <input type="hidden" name="removeFav" value="{{ item.favId }}">
-                              <button type="submit" class="btn btn"><i class="fa fa-heart-o"></i> <span>Remove</span></button>
+                              <button type="submit" class="btn btn"><i class="glyphicon glyphicon-remove"></i> <span>Remove</span></button>
                             </form>
                             </li>
                             <li>
@@ -184,8 +184,8 @@
                   </div>
                 {% endfor %}
               </div>
-              <div class="object-pagination">
-              <div class="fav-pagination">
+              <div class="object-pagination" style="position:static">
+              <div class="fav-pagination" style="position:static">
                 <div class="">
                   <ul class="nav navbar-nav">
                     <li class="page-item {{ 'disabled' if offset <= 1 }}">

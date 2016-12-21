@@ -612,6 +612,10 @@ export class UserController extends Controller {
      let fullname = request.input.get('name');
      let fname;
      let lname;
+     if(!email) {
+       console.log('email is required');
+       return response.json({alert: 'Please use a valid email address or verify your facebook email first.'});
+     }
      let password = await Hash.make(request.input.get('id'))
      if (fullname.indexOf(' ')) {
        fname = fullname.split(' ')[0]
@@ -633,7 +637,7 @@ export class UserController extends Controller {
      } else {
        let chkEmail = await this.userService.checkEmail(email);
        if (chkEmail) {
-         return response.json({alert:'Email is already registered.'});
+         return response.json({alert:'This email is already in use. Please try another one.'});
        }
        console.log('not yet registered facebook');
        let register = await this.userService.registerUsingFacebook(data);
