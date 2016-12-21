@@ -1,5 +1,5 @@
 import { Controller, Request, Response } from 'chen/web';
-import { injectable } from 'chen/core';
+import { injectable, _ } from 'chen/core';
 import { AuctionItemService, CategoryService, AuctionSiteService, CountryListService, FavoriteService, PickOfTheDayService, PopularSearchService } from 'app/services';
 
 const moment = require('moment')
@@ -26,167 +26,6 @@ export class AuctionItemController extends Controller {
     });
     return response.render('index');
   }
-
-
-  // public async listItems(request: Request, response: Response) {
-  //   let countries = await this.countryListService.getAllCountry();
-  //   console.log('the session');
-  //   let user = "";
-  //   if (request.session.get('loggedUser')) {
-  //     let loggedUserId = request.session.get('loggedUser').id;
-  //     console.log('this is the logged user id');
-  //     console.log(loggedUserId);
-  //     user = loggedUserId;
-  //   }
-  //   let search = '';
-  //   let category = '';
-  //   let offset = 1;
-  //   let page = 10;
-  //   let auction_house = '';
-  //   let country = '';
-  //   let relevance = '';
-  //   let browsing = 'auction';
-  //   let itemFilter = 'objects';
-  //   let getBrowsing = request.input.get('browsing-auction')
-  //   if (getBrowsing) {
-  //     if (getBrowsing == 'realized') {
-  //       console.log('dont use radio button filter')
-  //       browsing = getBrowsing;
-  //       itemFilter = getBrowsing;
-  //     } else if(getBrowsing == 'auction') {
-  //       console.log('browsing auction ')
-  //       browsing = 'auction';
-  //       let getitemFilter = request.input.get('radiobuttonsearch');
-  //       if (getitemFilter) {
-  //         console.log('the filter is' + getitemFilter);
-  //         itemFilter = getitemFilter;
-
-  //       }
-  //     }
-  //   }
-  //   console.log('the item filter');
-  //   console.log(itemFilter)
-  //   console.log('browsing')
-  //   console.log(browsing)
-
-  //   let getsearch = request.input.get('searchItem');
-  //   if (getsearch) {
-  //     search = getsearch;
-
-  //   }
-  //   let getcategory = request.input.get('category');
-  //   if (getcategory) {
-  //     category = String(getcategory).trim();
-  //   }
-  //   let getoffset = request.input.get('offset');
-  //   if (getoffset) {
-  //     console.log('meron offset')
-  //     offset = parseInt(getoffset);
-  //   }
-  //   let getpage = request.input.get('page');
-  //   if (getpage) {
-  //     page = parseInt(getpage);
-  //   }
-  //   let getAuction_house = request.input.get('auction-house');
-  //   if (getAuction_house) {
-  //     auction_house = String(getAuction_house).trim();
-  //   }
-    
-
-  //   let getCountry = request.input.get('countries');
-  //   if (getCountry) {
-  //     if (getCountry != "All Countries") {
-  //       let getcountrycode = this.countryListService.getCountryCode(getCountry);
-  //       if (getcountrycode) {
-  //         country = getcountrycode
-  //       } else {
-  //         country = getCountry
-  //       }
-  //     } else {
-  //       country = 'All Countries';
-  //     }
-  //   }
-
-
-  //   let getRelevance = request.input.get('relevance');
-  //   if (getRelevance) {
-  //     relevance = getRelevance;
-  //   }
-
-
-
-  //   let items = await this.auctionItemService.searchAuction(search, category, auction_house, country, relevance, itemFilter, (offset - 1) * page, page);
-  //   let itemcount = await this.auctionItemService.getSearchItemCount(search, category, auction_house, country, relevance, itemFilter);
-  //   let data = [];
-
-  //   //let tempDataholder = [];
-  //   items.forEach(item => {
-  //     let jsonItem = item.toJSON();
-  //     // console.log(JSON.stringify(jsonItem));
-  //     // console.log(jsonItem)
-  //     data.push(jsonItem);
-  //   });
-  //   if (request.session.get('loggedUser')) {
-  //     data.forEach(async (datas) => {
-  //       let chkfav = await this.favoriteService.checkIfFavorite(request.session.get('loggedUser').id, datas.id);
-  //       if (chkfav) {
-  //         console.log('this is a favorite')
-  //         datas['isFavorite'] = chkfav.get('id');
-  //       }
-  //       // console.log(datas.id)
-  //     });
-  //   }
-
-  //   console.log('the offset')
-  //   console.log(offset)
-  //   console.log('the page')
-  //   console.log(page)
-  //   console.log('the category');
-  //   console.log(category)
-  //   console.log('this is the new search Item');
-  //   console.log(search);
-  //   console.log('the auction house');
-  //   console.log(auction_house);
-  //   console.log('the country code');
-  //   console.log(country);
-  //   console.log('this is the relevance');
-  //   console.log(relevance)
-
-  //   let total = parseInt(itemcount.get('total'));
-  //   console.log('total items');
-  //   console.log(total);
-
-  //   let categories = await this.categoryService.getAllCategories();
-  //   let categoryItems = [];
-  //   categories.forEach(items => {
-  //     let jsonItem = items.toJSON();
-
-  //     categoryItems.push(jsonItem);
-  //   });
-
-  //   let sitesItem = await this.auctionSiteService.getAll();
-  //   let sites = [];
-  //   sitesItem.forEach(items => {
-  //     let jsonItem = items.toJSON();
-  //     sites.push(jsonItem);
-  //   });
-  //   // console.log(data)
-  //   let thePick = {}
-  //   let getPick = await this.pickOfTheDayService.getOneBy('id', 1);
-  //   if (getPick) {
-  //     let viewPick = await this.auctionItemService.getPickOfTheDayItem(getPick.get('item_id_fk'));
-  //     // console.log('pick of the day')
-  //     // console.log(viewPick)
-  //     thePick = viewPick.toJSON()
-  //     // console.log(thePick)
-  //   } else {
-  //     console.log('erro getting pick')
-  //   }
-  //   //console.log(data)
-  //   // index return
-  //   return response.render('objects', { data, categories: categoryItems, sites, page, search, category, auction_house, offset, total, countries, country, relevance, itemFilter, user, browsing, thePick });
-
-  // }
 
   public async searchItem(request: Request, response: Response) {
 
@@ -489,4 +328,88 @@ export class AuctionItemController extends Controller {
     }
 
   }
+// itemTitle: 'Santander, verano 1951',
+//        description: '"SANTANDER, VERANO 1951".- Sin datos de edición. 8º alarg., cub. ilustradas. Fotografías en negro, programa oficial de fiestas.',
+//        priceStatus: 'Low estimate',
+//        price: '50 ',
+//        currency: 'USD',
+//        category: 'Books, Maps & Manuscripts',
+//        itemImage: 'https://d2uc85rh1o1pjw.cloudfront.net/auctions/0/435961930.jpg',
+//        location: 'ESP',
+//        dealerBid: '',
+//        auctionDate: '2016-12-22 00:45:41',
+//        auctionUrl: 'http://clk.tradedoubler.com/click?p=261256&a=2515909&g=22540338&epi=subasta-diciembre-2016&epi2=santander-verano-1951&url=http%3A%2F%2Fwww.duran-subastas.com%2Fcatalog%2Fproduct%2Fview%2Fid%2F50638%3Futm_source%3Dauctions%26utm_medium%3Dwww.barnebys.com%26utm_content%3Dsubasta-diciembre-2016%26utm_campaign%3Dbarnebys',
+//        auctionSite: 'Duran Subastas',
+//        auctionSiteLogo: 'https://d16tpmyokmwdws.cloudfront.net/logo.php?src=https%3A%2F%2Fd16tpmyokmwdws.cloudfront.net%2Fah%2F764%2Flogo_small.jpg&bg=FFFFFF' },
+//     createdAt: '2016-12-21T08:45:41.723Z',
+  public async saveItem(request: Request, response: Response) {
+    let item = request.input.get('data')[0].content;
+    let categoryId;
+    let checkIfCategoryExist = await this.categoryService.getOneBy('category_name', _.replaceAll(item.category, '&', 'and'))
+    if (checkIfCategoryExist) {
+      console.log('categor exist', _.replaceAll(String(item.itemTitle), '&', 'and'))
+      categoryId = await this.categoryService.getOneBy('category_name', _.replaceAll(item.category, '&', 'and'))
+    } else {
+      let data = {
+        category_name: _.replaceAll(String(item.category), '&', 'and'),
+        description: ""
+      }
+      let createCateg = await this.categoryService.createCategory(data)
+      if (createCateg) {
+        console.log('============category created. ' +item.category+'=============')
+        categoryId = await this.categoryService.getOneBy('category_name', _.replaceAll(String(item.category), '&', 'and'))
+      }
+    }
+
+    let siteId;
+    let checkIfSiteExist = await this.auctionSiteService.getOneBy('site_name', item.auctionSite)
+    if (checkIfSiteExist) {
+      console.log('auctionsite already exist', item.auctionSite);
+      siteId = checkIfSiteExist.get('id')
+    } else {
+      console.log('item not exist')
+      let data = {
+        site_name: item.auctionSite,
+        site_url: '',
+        site_emblem: item.auctionSiteLogo
+      }
+      let addSite = await this.auctionSiteService.create(data);
+      let getSiteId = await this.auctionSiteService.getOneBy('site_name', item.auctionSite)
+      siteId = getSiteId.get('id')
+      console.log('this is the new site id:', siteId);
+      if (addSite) {
+        console.log('site is added', data);
+      }
+    }
+
+    let data = {
+      item_title: item.itemTitle,
+      item_description: item.description,
+      auction_url: item.auctionUrl,
+      item_image: item.itemImage,
+      price_status: item.priceStatus,
+      price: item.price,
+      currency: item.currency,
+      location: item.location,
+      auction_date: item.auctionDate,
+      category_id_fk: parseInt(categoryId.get('id')),
+      auction_site_fk: siteId
+    }
+
+    let checkIfExistTitle = await this.auctionItemService.getOneBy('item_title', item.itemTitle);
+
+    if (!checkIfExistTitle) {
+      console.log('going to save this!');
+      let savethis = await this.auctionItemService.create(data);
+      if (savethis) {
+        console.log('************saved!*********:', data);
+      }
+    
+    } else {
+      console.log('not going to save this item', data);
+    }
+    
+  }
+
+
 }
