@@ -114,7 +114,7 @@
     }
   }  
   
-  function login() {
+  function FBlogin() {
     FB.login(function(response) {
        // handle the response
        if(response.status==='connected') {
@@ -234,17 +234,8 @@
                 </div>
                 <button type="submit" onclick="login()" class="btn btn-block btn-submit btn-default">Login</button>
                 <h5><small><span>social login</span></small></h5>
-                <button style = "background-color:#3b5998;color:white" id="loginBtn" class="btn btn-block " onclick="login();">Login with Facebook</button>
-                <!-- <button id="loginBtn">Facebook Login</button> -->
-                <!-- <div id="response"></div> -->
-                <!-- <fb:login-button size="large" scope="public_profile,email" onlogin="checkLoginState();">
-                </fb:login-button> -->
-                <!-- <div
-                  class="fb-like"
-                  data-share="true"
-                  data-width="450"
-                  data-show-faces="true">
-                </div> -->
+                <button style = "background-color:#3b5998;color:white" id="loginBtn" class="btn btn-block " onclick="FBlogin();">Login with Facebook</button>
+               
                 <div id="status">
                 </div>
               <!-- </form> -->
