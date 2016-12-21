@@ -613,7 +613,6 @@ export class UserController extends Controller {
      let fname;
      let lname;
      if(!email) {
-       console.log('email is required');
        return response.json({alert: 'Please use a valid email address or verify your facebook email first.'});
      }
      let password = await Hash.make(request.input.get('id'))
@@ -631,7 +630,6 @@ export class UserController extends Controller {
      }
      let checkIfRegistered = await this.userService.checkFacebookId(email, facebook_id);
      if(checkIfRegistered) {
-       console.log('aleready registed facebook');
        request.session.set('loggedUser',{'email': checkIfRegistered.get('email'), 'id': checkIfRegistered.get('id')});
        request.session.get('loggedUser');
      } else {
@@ -649,7 +647,6 @@ export class UserController extends Controller {
          return response.json({alert: 'Facebook registration failed.'})
        }
      }
-     console.log(JSON.stringify(data));
      return response.json({alert: 'success'});
   }
 

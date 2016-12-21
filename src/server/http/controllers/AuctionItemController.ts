@@ -347,7 +347,6 @@ export class AuctionItemController extends Controller {
     let categoryId;
     let checkIfCategoryExist = await this.categoryService.getOneBy('category_name', _.replaceAll(item.category, '&', 'and'))
     if (checkIfCategoryExist) {
-      console.log('categor exist', _.replaceAll(String(item.itemTitle), '&', 'and'))
       categoryId = await this.categoryService.getOneBy('category_name', _.replaceAll(item.category, '&', 'and'))
     } else {
       let data = {
@@ -356,7 +355,6 @@ export class AuctionItemController extends Controller {
       }
       let createCateg = await this.categoryService.createCategory(data)
       if (createCateg) {
-        console.log('============category created. ' +item.category+'=============')
         categoryId = await this.categoryService.getOneBy('category_name', _.replaceAll(String(item.category), '&', 'and'))
       }
     }
@@ -364,10 +362,8 @@ export class AuctionItemController extends Controller {
     let siteId;
     let checkIfSiteExist = await this.auctionSiteService.getOneBy('site_name', item.auctionSite)
     if (checkIfSiteExist) {
-      console.log('auctionsite already exist', item.auctionSite);
       siteId = checkIfSiteExist.get('id')
     } else {
-      console.log('item not exist');
       let data = {
         site_name: item.auctionSite,
         site_url: '',
@@ -375,10 +371,9 @@ export class AuctionItemController extends Controller {
       }
       let addSite = await this.auctionSiteService.create(data);
       let getSiteId = await this.auctionSiteService.getOneBy('site_name', item.auctionSite)
-      siteId = getSiteId.get('id')
-      console.log('this is the new site id:', siteId);
-      if (addSite) {
-        console.log('site is added', data);
+      siteId = getSiteId.get('id');
+      if (!addSite) {
+        console.log('site failed to add');
       }
     }
 
@@ -399,10 +394,9 @@ export class AuctionItemController extends Controller {
     let checkIfExistTitle = await this.auctionItemService.getOneBy('item_title', item.itemTitle);
 
     if (!checkIfExistTitle) {
-      console.log('going to save this!');
       let savethis = await this.auctionItemService.create(data);
       if (savethis) {
-        console.log('************saved!*********:', data);
+        console.log('saved');
       }
     
     } else {
