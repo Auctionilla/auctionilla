@@ -135,12 +135,19 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="{{'active' if browsing == 'auction'}}"><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance={{relevance}}">Browse objects</a></li>
-            <li class="{{'active' if browsing == 'realized'}}"><a href="/search?searchItem={{search}}&browsing-auction=realized&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=realized&relevance={{relevance}}">See realized prices</a></li>
+            <li class="{{'active' if browsing == 'auction'}}"><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance=">Browse objects</a></li>
+            <li class="{{'active' if browsing == 'realized'}}"><a href="/search?searchItem={{search}}&browsing-auction=realized&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=realized&relevance=">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
-            <li class="dropdown">
+            {% if user %}
+              <li><a href="/viewprofile">My Profile </a></li>
+              <li><a href="/logout">Log Out</a></li>
+            {% else %}
+              <li><a href="/registration">Register</a></li>
+              <li><a href="/login">Login</a></li>
+            {% endif %}
+
+            <!-- <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ '#FF7D00' if user else 'white' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 {% if user %}
@@ -151,7 +158,7 @@
                 <li><a href="/login">Login</a></li>
                 {% endif %}
               </ul>
-            </li>
+            </li> -->
             <li>
               <form action="/search" method="get">
                 <div class="search">
@@ -349,10 +356,10 @@
                         {% if data.length %} {% for item in data %} {% if (item.price_status == "Realized") or (item.price_status == "Hammer price") %}
                         <div class="object-item">
                           <div class="thumb-image image">
-                            <img src="{{ item.item_image }}" alt="image" onError="this.onerror=null;this.src='http://www.hindwarehomes.com/notfound.jpg';"/>
-                            <div class="image-hover">
+                            <a href="{{ item.auction_url }}" target="_blank"><img src="{{ item.item_image }}" alt="image" onError="this.onerror=null;this.src='http://www.hindwarehomes.com/notfound.jpg';"/></a>
+                            <!-- <div class="image-hover">
                               <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
-                            </div>
+                            </div> -->
                           </div>
                           <div class="descriptions">
                             <div class="clearfix tag-timestamp">
@@ -422,10 +429,10 @@
                         {% else %}
                         <div class="object-item">
                           <div class="thumb-image image">
-                            <img src="{{ item.item_image }}" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://www.hindwarehomes.com/notfound.jpg';"/>
-                            <div class="image-hover">
+                            <a href="{{ item.auction_url }}" target="_blank"><img src="{{ item.item_image }}" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://www.hindwarehomes.com/notfound.jpg';"/></a>
+                            <!-- <div class="image-hover">
                               <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
-                            </div>
+                            </div> -->
                           </div>
                           <div class="descriptions">
                             <div class="clearfix tag-timestamp">

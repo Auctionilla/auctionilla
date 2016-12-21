@@ -47,8 +47,15 @@
             <li><a href="/search?searchItem={{search}}&browsing-auction=realized&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=realized&relevance={{relevance}}">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
-            <li class="dropdown">
+            
+            {% if user %}
+              <li><a href="/viewprofile">My Profile </a></li>
+              <li><a href="/logout">Log Out</a></li>
+            {% else %}
+              <li><a href="/registration">Register</a></li>
+              <li><a href="/login">Login</a></li>
+            {% endif %}
+            <!-- <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ '#FF7D00' if user else 'white' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 {% if user %}
@@ -59,7 +66,7 @@
                 <li><a href="/login">Login</a></li>
                 {% endif %}
               </ul>
-            </li>
+            </li> -->
             <li>
               <div class="search">
                 <form method="get" action="/search">
@@ -81,8 +88,8 @@
       <div class="clearfix col-md-6 col-xs-11 search-bar">
         <div class="text-center">
           <h2>
-                All auctions in one place
-              </h2>
+            Window to the world of auctions
+          </h2>
         </div>
         <form class="navbar-form" role="search" method="get" action="/search">
           <div class="radio">
@@ -94,7 +101,7 @@
           <div class="radio">
             <input id="radio2" type="radio" value="realized" name="browsing-auction">
             <label for="radio2">
-              Realize Prices
+              Realized Prices
             </label>
           </div>
           <div class="input-group main-search">
@@ -105,7 +112,7 @@
           </div>
           <div class="text-center">
             <p>
-              Search and find everything in auctions, antiques and collectibles from all over the world.
+              Looking for any antiques or collectibles? Go on and type it in!
             </p>
           </div>
         </form>
@@ -125,15 +132,15 @@
               {% for items in popularCateg %}
               <div class="col-md-4 col-sm-6 item">
                 <div class="image">
-                  <img class="img-responsive popular-item-image" id="theid{{items.categoryName}}" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://placehold.it/350x350';"/>
-                  <div class="image-hover">
+                  <a href="/search?searchItem=&browsing-auction=auction&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance="><img class="img-responsive popular-item-image" id="theid{{items.categoryName}}" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://placehold.it/350x350';"/></a>
+                  <!-- <div class="image-hover">
                     <a href="/search?searchItem=&browsing-auction=auction&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn">VIEW RESULTS</a>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="details">
-                  <h4 class="title">
+                  <a style="text-decoration: none" href="/search?searchItem=&browsing-auction=auction&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance="><h4 class="title">
                     {{ items.categoryName }}
-                  </h4>
+                  </h4></a>
                   <br/>
                   <p>
                     {{ items.description }}
@@ -157,15 +164,15 @@
               {% for items in popularRealized %}
               <div class="col-md-4 col-sm-6 item">
                 <div class="image">
-                  <img class="img-responsive popular-item-image" id="theid{{items.categoryName}}" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://placehold.it/350x350';"/>
-                  <div class="image-hover">
+                  <a href="/search?searchItem=&browsing-auction=realized&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" ><img class="img-responsive popular-item-image" id="theid{{items.categoryName}}" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://placehold.it/350x350';"/></a>
+                  <!-- <div class="image-hover">
                     <a href="/search?searchItem=&browsing-auction=realized&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn">VIEW RESULTS</a>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="details">
-                  <h4 class="title">
+                  <a style="text-decoration: none" href="/search?searchItem=&browsing-auction=realized&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance="><h4 class="title">
                     {{ items.categoryName }}
-                  </h4>
+                  </h4></a>
                   <br/>
                   <p>
                     {{ items.description }}

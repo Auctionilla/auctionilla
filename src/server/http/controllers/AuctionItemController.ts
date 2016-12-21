@@ -367,7 +367,7 @@ export class AuctionItemController extends Controller {
       console.log('auctionsite already exist', item.auctionSite);
       siteId = checkIfSiteExist.get('id')
     } else {
-      console.log('item not exist')
+      console.log('item not exist');
       let data = {
         site_name: item.auctionSite,
         site_url: '',
