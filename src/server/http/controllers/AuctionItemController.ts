@@ -377,13 +377,19 @@ export class AuctionItemController extends Controller {
       }
     }
 
+    let getprice = item.price;
+    let theprice;
+    if (getprice) {
+      theprice = parseInt(_.replaceAll(String(item.price), ' ',''))
+    }
+
     let data = {
       item_title: item.itemTitle,
       item_description: item.description,
       auction_url: item.auctionUrl,
       item_image: item.itemImage,
       price_status: item.priceStatus,
-      price: item.price,
+      price: theprice,
       currency: item.currency,
       location: item.location,
       auction_date: item.auctionDate,
