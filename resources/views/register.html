@@ -142,7 +142,6 @@
 
  function log(){
      FB.api('/me?fields=email,name', function(response) {
-       console.log(response);
        facebookLogin(response)
     });
  }
@@ -235,9 +234,11 @@
       <div class="col-md-10 content-items">
         <div class="col-md-6 content-item">
           <div class="content">
+          <div class="alert alert-warning" id = "log-alert" style="display: none">
+            <strong>Warning!</strong> <span id = "alertlabel"> Indicates a warning that might need attention. </span>
+          </div>
           {% if alert and alert != 'email sent' and activation != 'activated' %}
           <div class="alert alert-danger" id = "log-alert">
-
             <strong>Warning!</strong> <span id = "alertlabel"> {{ alert }} </span>
           </div>
           {% endif %}

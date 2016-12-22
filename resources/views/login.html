@@ -125,7 +125,6 @@
 
  function log(){
      FB.api('/me?fields=email,name', function(response) {
-       console.log(response);
        facebookLogin(response)
     });
  }
