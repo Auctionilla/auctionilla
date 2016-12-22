@@ -28,7 +28,7 @@
         dataType: 'json',
         data: JSON.stringify(data)
       }).done(function (resp) {
-        let data = resp.data;
+        var data = resp.data;
         console.log(resp.data.alert);
         var status = resp.data.alert;
         if (status == 'Login success') {

@@ -24,9 +24,9 @@
         dataType: 'json',
         data: JSON.stringify(data)
       }).done(function(resp) {
-        let data = resp.data;
+        var data = resp.data;
 
-        let fav = resp.favId;
+        var fav = resp.favId;
         $('#heart' + id).attr('style', 'color:red');
         $('#favspan' + id).html("Favorite");
         $('#favId' + id).html(fav);
@@ -45,7 +45,7 @@
         dataType: 'json',
         data: JSON.stringify(data)
       }).done(function(resp) {
-        let data = resp.data;
+        var data = resp.data;
         $('#favspan' + id).html("Save Favorite");
         $('#heart' + id).attr('style', 'color:black');
         $('#favId' + id).html('');
@@ -96,7 +96,7 @@
   }
 
   function saveSearchAlert() {
-    let data = {
+    var data = {
       search_item: $('input#save-searchkey').val(),
       category: $('input#save-category').val(),
       auction_house: $('input#save-auctionhouse').val(),
