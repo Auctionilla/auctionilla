@@ -75,16 +75,16 @@
   (function(thisdocument, scriptelement, id) {
     var js, fjs = thisdocument.getElementsByTagName(scriptelement)[0];
     if (thisdocument.getElementById(id)) return;
-    
+
     js = thisdocument.createElement(scriptelement); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js"; //you can use 
+    js.src = "//connect.facebook.net/en_US/sdk.js"; //you can use
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
-    
+
   window.fbAsyncInit = function() {
   FB.init({
     appId      : '1168094543297366', //Your APP ID
-    cookie     : true,  // enable cookies to allow the server to access 
+    cookie     : true,  // enable cookies to allow the server to access
                         // the session
     xfbml      : true,  // parse social plugins on this page
     version    : 'v2.1' // use version 2.1
@@ -96,7 +96,7 @@
   });
 
   };
-    
+
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     if (response.status === 'connected') {
@@ -112,8 +112,8 @@
       document.getElementById('status').innerHTML = 'Please log ' +
         'into this app.';
     }
-  }  
-  
+  }
+
   function FBlogin() {
     FB.login(function(response) {
        // handle the response
@@ -122,7 +122,7 @@
        }
      }, {scope: 'public_profile,email'});
  }
- 
+
  function log(){
      FB.api('/me?fields=email,name', function(response) {
        console.log(response);
@@ -133,7 +133,7 @@
 
 
   </script>
-  
+
 
 
 </head>
@@ -214,7 +214,7 @@
   <div class="registration-content clearfix">
     <div class="container">
       <div class="col-md-10 content-items">
-        <div class="col-md-6 content-item">
+        <div class="col-md-offset-3 col-md-6 content-item">
           <div class="content">
           <div class="alert alert-warning" id = "log-alert" style="display:none">
             <strong>Warning!</strong> <span id = "alertlabel"> Indicates a warning that might need attention. </span>
@@ -233,16 +233,16 @@
                   <input type="password" class="form-control" id="login-pass" placeholder="Password" required>
                 </div>
                 <button type="submit" onclick="login()" class="btn btn-block btn-submit btn-default">Login</button>
-                <h5><small><span>social login</span></small></h5>
+                <h5 class="text-center"><small><span>or</span></small></h5>
                 <button style = "background-color:#3b5998;color:white" id="loginBtn" class="btn btn-block " onclick="FBlogin();">Login with Facebook</button>
-               
-                <div id="status">
-                </div>
+
+                {# <div id="status">
+                </div> #}
               <!-- </form> -->
             </div>
           </div>
         </div>
-        <div class="col-md-6 content-item">
+        {# <div class="col-md-6 content-item">
           <div class="content">
             <h4 id = "logalert">
                 On My pages you're able to
@@ -254,7 +254,7 @@
               <a href="/registration">Register</a>
             </div>
           </div>
-        </div>
+        </div> #}
       </div>
     </div>
   </div>
@@ -280,7 +280,7 @@
 </footer>
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
- 
+
 </script>
 
 
