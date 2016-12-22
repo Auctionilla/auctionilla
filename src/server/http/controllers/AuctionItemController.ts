@@ -149,7 +149,7 @@ export class AuctionItemController extends Controller {
         let limitedDescription = String(datas.item_description).substring(0, 100)
         let limitItemTitle = String(datas.item_title).substring(0, 50)
         console.log(limitedDescription)
-        
+
         datas['new_item_description'] = limitedDescription + '...'
         datas['new_item_title'] = limitItemTitle + '...'
         datas['timeremaining'] = timeremaining;
@@ -175,11 +175,11 @@ export class AuctionItemController extends Controller {
         let limitedDescription = String(datas.item_description).substring(0, 100)
         let limitItemTitle = String(datas.item_title).substring(0, 50)
         console.log(limitedDescription)
-        
+
         datas['new_item_description'] = limitedDescription + '...'
         datas['new_item_title'] = limitItemTitle + '...'
         datas['timeremaining'] = timeremaining;
-        
+
         // console.log(datas.id)
       });
     }
@@ -244,11 +244,11 @@ export class AuctionItemController extends Controller {
       let jsonItem = items.toJSON()
       allcountry.push(jsonItem)
     });
-    
+
     let getHits = await this.auctionItemService.getHits(search)
     console.log('this is the country hits:', getHits.get('totalHits'))
     let totalHits = getHits.get('totalHits')
-    
+
     console.log(data)
     // search return
     let catdesc;
@@ -320,8 +320,8 @@ export class AuctionItemController extends Controller {
           console.log('item updated to realized:', id)
         }
       }
-      
-      
+
+
       return 0;
     } else {
       return 0;
@@ -398,11 +398,12 @@ export class AuctionItemController extends Controller {
       if (savethis) {
         console.log('saved');
       }
-    
+
     } else {
       console.log('not going to save this item', data);
     }
-    
+
+    return response.json({ success: true });
   }
 
 
