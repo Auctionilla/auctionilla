@@ -50,16 +50,18 @@
       }
     }
 
-
-
     function validate(){
-      if(checkPassword() == true && checkpasslength() == true ){
+      if(checkPassword() == true && checkpasslength() == true ) {
+        $('#facebookcontainer').hide();
         $('#registrationformcontainer').hide();
+        
+        $('#loginBtn').hide();
         $('#emailnotifcontainer').show();
         alert('yes')
         return true;
       } else {
         $('#registrationformcontainer').show();
+        $('#facebookcontainer').show();
         $('#emailnotifcontainer').hide();
         alert('no')
         return false;
@@ -274,18 +276,22 @@
               {% endif %}
               </div>
               </form>
-              <h5 class="text-center"><small><span>or</span></small></h5>
+              {% if alert != 'email sent' %}
+              <div id="facebookcontainer">
+                <h5 class="text-center"><small><span>or</span></small></h5>
                 <button style = "background-color:#3b5998;color:white" id="loginBtn" class="btn btn-block " onclick="FBlogin();">Login with Facebook</button>
 
                 {# <div id="status">
                 </div> #}
+              </div>
+              {% endif %}
             </div>
           </div>
         </div>
         <div class="col-md-6 content-item">
           <div class="content">
             <h4>
-                On My pages you're able to
+                On your account you're able to
               </h4>
             <p>
               Save your search, and we'll notify you when new lots arrive
