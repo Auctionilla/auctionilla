@@ -344,6 +344,13 @@ export class AuctionItemController extends Controller {
 //     createdAt: '2016-12-21T08:45:41.723Z',
   public async saveItem(request: Request, response: Response) {
     let item = request.input.get('data')[0].content;
+
+    let chkIfNotNull = item.itemTitle;
+    if(!chkIfNotNull) {
+      return response.json({ success: false });
+    }
+
+
     let categoryId;
     let checkIfCategoryExist = await this.categoryService.getOneBy('category_name', _.replaceAll(item.category, '&', 'and'))
     if (checkIfCategoryExist) {
@@ -402,7 +409,7 @@ export class AuctionItemController extends Controller {
     if (!checkIfExistTitle) {
       let savethis = await this.auctionItemService.create(data);
       if (savethis) {
-        console.log('saved');
+        console.log('saved', data);
       }
 
     } else {
