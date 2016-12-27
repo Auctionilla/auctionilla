@@ -349,7 +349,10 @@ export class AuctionItemController extends Controller {
     if(!chkIfNotNull) {
       return response.json({ success: false });
     }
-
+    let chkIfNullAuctionSite = item.auctionSite;
+    if(!chkIfNullAuctionSite) {
+      return response.json({ success: false });
+    }
 
     let categoryId;
     let checkIfCategoryExist = await this.categoryService.getOneBy('category_name', _.replaceAll(item.category, '&', 'and'))
@@ -366,7 +369,8 @@ export class AuctionItemController extends Controller {
       }
     }
 
-    let siteId;
+    let siteId = 0;
+
     let checkIfSiteExist = await this.auctionSiteService.getOneBy('site_name', item.auctionSite)
     if (checkIfSiteExist) {
       siteId = checkIfSiteExist.get('id')
@@ -409,11 +413,11 @@ export class AuctionItemController extends Controller {
     if (!checkIfExistTitle) {
       let savethis = await this.auctionItemService.create(data);
       if (savethis) {
-        console.log('saved', data);
+        console.log('saved');
       }
 
     } else {
-      console.log('not going to save this item', data);
+      return response.json({ success: false });
     }
 
     return response.json({ success: true });
