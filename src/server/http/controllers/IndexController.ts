@@ -197,7 +197,6 @@ export class IndexController extends Controller {
     // console.log('item count: ', o.get('total'))
     console.log('this is the new data array:')
     console.log(popularRealized)
-    console.log('=======================realized ^^^ objects vvvvv  ====================================')
     console.log(popularCateg)
     return response.render('index', { user, popularCateg, popularRealized });
   }

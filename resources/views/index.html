@@ -11,7 +11,39 @@
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
   <script src="/assets/lib/jquery/dist/jquery.js"></script>
-
+  <script type="text/javascript">
+    function validateEmail($email) {
+      var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+      return emailReg.test( $email );
+    }
+    function subscribe() {
+      var email = $('#subscriber-email').val();
+      if(validateEmail(email)) {
+        var data = {
+          email: email
+        }
+        // alert(email);
+        $.ajax({
+          method: "POST",
+          url: '/add-subscriber',
+          // contentType: 'application/json',
+          // dataType: 'json',
+          data: data,
+        }).done(function(resp) {
+          // alert(resp.alert);
+          $('#subscriber-alert').html(resp.alert);
+          $('#subscriber-email').val('');
+          $('#subscriber-email').attr('class', 'form-control');
+        });
+      } else {
+        // alert('not a valid email');
+        $('#subscriber-alert').html('<b>Email error! </b>Please use a valid email.');
+        $('#subscriber-email').attr('class', 'form-control alert-danger');
+      }
+      
+      
+    }
+  </script>
 
   <style type="text/css">
     .popular-item-image {
@@ -84,7 +116,7 @@
     </nav>
   </header>
   <section class="home">
-    <div class="home-banner-search" style="min-height: 230px">
+    <div class="home-banner-search"> <!-- style="min-height: 230px" -->
       <div class="clearfix col-md-6 col-xs-11 search-bar" style="margin-top:10px">
         <div class="text-center">
           <h2>
@@ -92,6 +124,19 @@
           </h2>
         </div>
         <form class="navbar-form" role="search" method="get" action="/search">
+          <!-- <div class="text-center"> -->
+            <p>
+              Know what you are looking for?
+            </p>
+          <!-- </div> -->
+
+          <div class="input-group main-search">
+            <input type="text" class="form-control" placeholder="Search" name="searchItem" id="srch-term">
+            <div class="input-group-btn">
+              <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          <span class="radio">I'm looking for</span>
           <div class="radio">
             <input checked id="radio1" type="radio" value="auction" name="browsing-auction">
             <label for="radio1">
@@ -104,116 +149,154 @@
               Realized Prices
             </label>
           </div>
-          <div class="input-group main-search">
-            <input type="text" class="form-control" placeholder="Search" name="searchItem" id="srch-term">
-            <div class="input-group-btn">
-              <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-            </div>
-          </div>
-          <div class="text-center">
-            <p>
-              Looking for any antiques or collectibles? Go on and type it in!
-            </p>
-          </div>
         </form>
       </div>
     </div>
     <div class="object-list">
       <div class="container">
-        <div class="section-title">
-          <h2>POPULAR RIGHT NOW</h2>
+        <div class="section-title text-center">
+          <h2>Or just start browsing here</h2>
         </div>
-        <div class="objects">
-          <div class="object-header">
-            <h3>Objects</h3>
-          </div>
-          <div class="object-list-item clearfix">
-            <div class="row">
-              {% for items in popularCateg %}
-              <div class="col-md-4 col-sm-6 item">
-                <div class="image">
-                  <a href="/search?searchItem=&browsing-auction=auction&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance="><img class="img-responsive popular-item-image" id="theid{{items.categoryName}}" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://placehold.it/350x350';"/></a>
-                  <!-- <div class="image-hover">
-                    <a href="/search?searchItem=&browsing-auction=auction&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn">VIEW RESULTS</a>
-                  </div> -->
+    </div>
+
+    <div class="category">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="thumb">
+                <div class="title">
+                  <h1>Arts and Graphics</h1>
                 </div>
-                <div class="details">
-                  <a style="text-decoration: none" href="/search?searchItem=&browsing-auction=auction&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance="><h4 class="title">
-                    {{ items.categoryName }}
-                  </h4></a>
-                  <br/>
-                  <p>
-                    {{ items.description }}
-                  </p>
-                  <br/>
-                  <p>
-                    {{ items.itemcount}} objects 0 – {{ items.mostExpensive}} {{ items.currency }}
-                  </p>
+                <img src="/assets/images/pic1.png" class="img-responsive" alt="">
+                <div class="after">
+                    <h1>Arts and Graphics</h1>
+                    <a href="search?searchItem=&browsing-auction=realized&category=Arts%20And%20Graphics&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
+                    <a href="search?searchItem=&browsing-auction=objects&category=Arts%20And%20Graphics&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
                 </div>
               </div>
-              {% endfor %}
-            </div>
           </div>
-        </div>
-        <div class="objects">
-          <div class="object-header">
-            <h3>Realized prices</h3>
-          </div>
-          <div class="object-list-item clearfix">
+        </div> <!-- row1 -->
+        <div class="row">
+          <div class="col-md-8">
             <div class="row">
-              {% for items in popularRealized %}
-              <div class="col-md-4 col-sm-6 item">
-                <div class="image">
-                  <a href="/search?searchItem=&browsing-auction=realized&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" ><img class="img-responsive popular-item-image" id="theid{{items.categoryName}}" src="{{ items.mostPopularItemImage }}" alt="object item" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://placehold.it/350x350';"/></a>
-                  <!-- <div class="image-hover">
-                    <a href="/search?searchItem=&browsing-auction=realized&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn">VIEW RESULTS</a>
-                  </div> -->
-                </div>
-                <div class="details">
-                  <a style="text-decoration: none" href="/search?searchItem=&browsing-auction=realized&category={{items.categoryName}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance="><h4 class="title">
-                    {{ items.categoryName }}
-                  </h4></a>
-                  <br/>
-                  <p>
-                    {{ items.description }}
-                  </p>
-                  <br/>
-                  <p>
-                    {{ items.sold}} objects 0 – {{ items.mostExpensive}} {{ items.currency }}
-                  </p>
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="thumb">
+                  <div class="title">
+                    <h1>Watches and Clocks</h1>
+                  </div>
+                  <img src="/assets/images/pic2.png" class="img-responsive" alt="">
+                  <div class="after">
+                      <h1>Watches and Clocks</h1>
+                      <a href="search?searchItem=&browsing-auction=realized&category=Watches%20and%20Clocks&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
+                      <a href="search?searchItem=&browsing-auction=objects&category=Watches%20and%20Clocks&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
+                  </div>
                 </div>
               </div>
-              {% endfor %}
+
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="thumb">
+                  <div class="title t3">
+                    <h1>Jewelry and Gems</h1>
+                  </div>
+                  <img src="/assets/images/pic4.png" class="img-responsive" alt="">
+                  <div class="after">
+                      <h1 class="t3">Jewelry and Gems</h1>
+                      <a href="search?searchItem=&browsing-auction=realized&category=Jewelry%20and%20Gems&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
+                      <a href="search?searchItem=&browsing-auction=objects&category=Jewelry%20and%20Gems&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="thumb">
+                  <div class="title">
+                    <h1>Furnitures, Design and Mirrors</h1>
+                  </div>
+                  <img src="/assets/images/pic5.png" class="img-responsive" alt="">
+                  <div class="after t4">
+                      <h1>Furnitures, Design and Mirrors</h1>
+                      <a href="search?searchItem=&browsing-auction=realized&category=Furniture%2C+Design+and+Mirrors&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
+                      <a href="search?searchItem=&browsing-auction=objects&category=Furniture%2C+Design+and+Mirrors&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
+          <div class="col-md-4">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="thumb">
+                    <div class="title">
+                      <h1>Sculptures</h1>
+                    </div>
+                    <img src="/assets/images/pic3.png" class="img-responsive" alt="">
+                    <div class="after t5">
+                        <h1>Sculptures</h1>
+                        <a href="search?searchItem=&browsing-auction=realized&category=Sculptures&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
+                        <a href="search?searchItem=&browsing-auction=objects&category=Sculptures&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="row">
+          <h2 class="text-center"><a href="#">VIEW ALL CATEGORIES</a></h2>
         </div>
       </div>
-    </div>
+    </div> <!-- category -->
+
     <div class="sub-disclaimer">
       <div class="container">
+        <h3 id="subscriber-alert"> Want to stay ahead? Beat the crowd by receiving our updates </h3>
+        <form class="navbar-form" role="search" method="get" action="">
+          <div class="input-group newsletter">
+            <input type="text" class="form-control" id="subscriber-email" placeholder="Enter your email" name="subcriber-email" id="srch-term">
+            <div class="input-group-btn">
+              <button class="btn btn-default" onclick="subscribe()" type="button">Subscribe</button>
+            </div>
+          </div>
+        </form>
         <p>
-          On Auctionilla.com you will find everything you’re looking for in arts, antiques and collectibles. We gather auctions and art dealers from every corner of the world and make them accessible to everyone. It’s simple and it’s free. Set up an account to save interesting searches, monitor exciting auctions and keep up to date with the fascinating world of arts and auctions through our weekly newsletter. Inspired to sell something yourself? Why not use our appraisal service or check out the price bank for all finished auctions’ hammer prices. Click around, you’ll like it!
+          Auctionilla prowls the world to gather all Art, Collectibles, Antiques and many fascinating auction items so you don’t have to! Everyone is welcomed to use our search and stay up to date on your favorite items with our newsletters. Best of all, it’s FREE!
         </p>
       </div>
     </div>
   </section>
   <footer class="clearfix">
     <div class="container">
-      <div class="row">
-        <div class="text-left item col-sm-3 col-md-3">
+    <div class="row">
+      <div class="text-center col-sm-12 col-lg-6 col-lg-offset-3">
+        <a href="/"><img src="/assets/images/logo.png"/></a>
+      </div>
+      <div class="text-center col-sm-12 col-lg-6 col-lg-offset-3">
+          <span>
+            © Auctionilla.com 2016  | All Rights Reserve
+          </span>
+      </div>
+      <div class="text-center col-sm-12 col-lg-6 col-lg-offset-3">
+          <span>Follow us:</span>
+          <a href="https://www.facebook.com/Auctionilla" target="_blank"><i class="fa fa-facebook"></i></a>
+          <a href="https://twitter.com/auctionilla" target="_blank"><i class="fa fa-twitter"></i></a>
+          <a href="#" target="_blank"><i class="fa fa-linkedin" ></i></a>
+      </div>
+    </div>
+      <!-- <div class="row">
+        <div class="text-center item col-sm-3 col-md-3">
           <a href="/"><img src="/assets/images/logo.png" /></a>
         </div>
         <div class="item col-sm-6 col-md-6">
           <span>
-          © Auctionilla.com 2016  | ALL RIGHTS RESERVED
-        </span>
+            © Auctionilla.com 2016  | ALL RIGHTS RESERVED
+          </span>
         </div>
         <div class="item col-sm-3 col-md-3">
           <a href="https://www.facebook.com/Auctionilla" target="_blank"><i class="fa fa-facebook"></i></a>
           <a href="https://twitter.com/auctionilla" target="_blank"><i class="fa fa-twitter"></i></a>
           <a href="#" target="_blank"><i class="fa fa-linkedin" ></i></a>
         </div>
-      </div>
+      </div> -->
     </div>
   </footer>
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

@@ -9,3 +9,4 @@ export * from './CountryListService';
 export * from './PickOfTheDayService';
 export * from './ActivityService';
 export * from './PopularSearchService';
+export * from './SubscribersService';

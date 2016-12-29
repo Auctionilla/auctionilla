@@ -14,6 +14,7 @@ export default function (router: Router, config: Config) {
   router.route('GET', '/search', 'AuctionItemController@searchItem');
   router.route('GET', '/getcategories', 'CategoryController@getCategories');
   router.route('POST', '/save-item', 'AuctionItemController@saveItem');//get and save item from crawler
+  router.route('POST', '/add-subscriber', 'SubscribersController@create');
 
   router.group({middleware: ['AlreadyLogged']}, route => {
     router.route('GET', '/login', 'UserController@viewLogin');
