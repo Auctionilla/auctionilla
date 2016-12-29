@@ -8,7 +8,7 @@ export default function (router: Router, config: Config) {
   router.route('POST', '/register', 'UserController@register');
   router.route('GET', '/registration', 'UserController@registration');
   router.route('GET', '/verify-account/:verification_code/:id', 'UserController@verifyAccount');
-  // router.route('GET', '/viewprofile', 'UserController@viewSearchAlertAndFavorites');
+  router.route('GET', '/index2', 'IndexController@viewIndex2');
   // router.route('POST', '/viewprofile', 'UserController@updateUserPost');
 
   router.route('GET', '/search', 'AuctionItemController@searchItem');

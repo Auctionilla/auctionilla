@@ -43,7 +43,7 @@ export class IndexController extends Controller {
           console.log('set pick error')
         }
       }
-      
+
     }
 
     if (pic) {
@@ -65,7 +65,7 @@ export class IndexController extends Controller {
         if (viewcurrent.get('id')) {
           console.log('pick emtpty')
         }
-        
+
       }
       console.log('current favorite', viewcurrent.get('item_id_fk'))
       if (newpicid == viewcurrent.get('item_id_fk')) {
@@ -202,7 +202,9 @@ export class IndexController extends Controller {
     return response.render('index', { user, popularCateg, popularRealized });
   }
 
-
+public async viewIndex2(request: Request, response: Response) {
+  return response.render('index2');
+}
 
 
 }
