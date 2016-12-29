@@ -202,7 +202,7 @@ export class IndexController extends Controller {
   }
 
 public async viewIndex2(request: Request, response: Response) {
-  return response.render('index2');
+  return response.render('categories');
 }
 
 

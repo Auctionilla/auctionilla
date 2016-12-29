@@ -268,6 +268,12 @@ export class AuctionItemService extends SQLService<AuctionItem> {
     })
   }
 
+  getMostPopularItemByCategory(category_id) {
+    return this.query(query => {
+      query.where('category_id_fk', category_id);
+      query.orderBy('favorites_count', 'desc');
+    }).getOne();
+  }
 
 
 }
