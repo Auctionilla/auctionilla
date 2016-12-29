@@ -8,3 +8,4 @@ export * from './PickOfTheDay';
 export * from './Activity';
 export * from './PopularSearch';
 export * from './CountryList';
+export * from './Subscribers';

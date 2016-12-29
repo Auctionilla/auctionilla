@@ -22,9 +22,19 @@ export class CategoryService extends SQLService<Category> {
   }
 
 
-  getAllCategories(){
+  getAllCategories() {
     return this.query(query => {
-      query.select('*')
+      query.select('*');
+      query.offset(0);
+      query.limit(10);
+    }).get();
+  }
+
+  searchCategory(searchKey, offset, limit) {
+    return this.query(query => {
+      query.where('category_name', 'like', `%${searchKey}%`);
+      query.offset(offset);
+      query.limit(limit);
     }).get();
   }
 

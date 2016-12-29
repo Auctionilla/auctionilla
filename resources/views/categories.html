@@ -11,7 +11,11 @@
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
   <script src="/assets/lib/jquery/dist/jquery.js"></script>
-  <script type="text/javascript">
+ <script type="text/javascript">
+
+    var offset = 0;
+    var limit = 7;
+
     function validateEmail($email) {
       var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
       return emailReg.test( $email );
@@ -43,6 +47,101 @@
       
       
     }
+
+
+    function search() {
+      // search-categories
+      $('#category-container').empty();
+      offset = 0;
+      limit = 10;
+      var searchitem = $('#categ-search').val();
+      var data = {
+        search: searchitem,
+        offset: offset,
+        limit: limit
+      }
+      $.ajax({
+        method: "GET",
+        url: '/search-categories',
+        // contentType: 'application/json',
+        // dataType: 'json',
+        data: data,
+      }).done(function(resp) {
+        console.log(resp);
+        viewCateg(resp.data);
+      });
+    }
+
+    function viewCateg(categories) {
+      
+      for (var i = 0; i < categories.length; i++) {
+        console.log(categories[i]);
+        var theimge;
+        if(categories[i].popularImage) {
+          theimge = categories[i].popularImage;
+        } else {
+          theimge = 'http://www.hindwarehomes.com/notfound.jpg';
+        }
+        var thehtml = '<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">'+
+            '<div class="thumb">'+
+              '<div class="title t3">'+
+                '<h1>'+ categories[i].category_name +'</h1>'+
+              '</div>'+
+              '<img src="'+ theimge +'" style="height: 320px;width: 100%;background-color: #e3e3e3;" class="img-responsive" >'+
+              '<div class="after">'+
+                  '<h1 class="t3">'+ categories[i].category_name +'</h1>'+
+                  '<a href="search?searchItem=&browsing-auction=realized&category='+ categories[i].category_name +'&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>'+
+                  '<a href="search?searchItem=&browsing-auction=objects&category='+ categories[i].category_name +'&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>'+
+              '</div>'+
+            '</div>'+
+          '</div>';
+          $('#category-container').append(thehtml);
+      }
+    }
+
+
+
+
+
+
+    var scrollToggle = true;
+    $(window).scroll(function() {
+       if($(window).scrollTop() + $(window).height() > $(document).height()) {
+          console.log(" bottom!");
+          var searchitem = $('#categ-search').val();
+          var data = {
+            search: searchitem,
+            offset: offset,
+            limit: 10
+          }
+          $.ajax({
+            method: "GET",
+            url: '/search-categories',
+            // contentType: 'application/json',
+            // dataType: 'json',
+            data: data,
+          }).done(function(resp) {
+            // console.log(resp);
+            // viewCateg(resp.data);
+            offset = offset + 10
+            if(resp.data.length < 1) {
+              // $('.bootcamps').append('<h2>No bootcamps yet.</h2>');
+              $('#spinner-container').hide();
+            } else if(resp.data.length > 0) {
+              $('#spinner-container').show();
+              var delay=1000; 
+              setTimeout(function() {
+                $('#spinner-container').hide();
+                viewCateg(resp.data);
+              }, delay);
+            }
+          });
+       }
+    });
+
+
+
+
   </script>
 
   <style type="text/css">
@@ -155,99 +254,60 @@
     <div class="object-list">
       <div class="container">
         <div class="section-title text-center">
-          <h2>Or just start browsing here</h2>
+          <h2>All Categories</h2>
         </div>
+        <!-- <form class="navbar-form" role="search"  action=""> -->
+          <!-- <div class="text-center"> -->
+            <p>
+              Search category
+            </p>
+          <!-- </div> -->
+
+          <div class="input-group main-search">
+            <input type="text" style="height: 40px;max-width: 200px" class="form-control" id="categ-search" placeholder="Search" name="categ-search">
+            <div class="input-group-btn pull-left">
+              <button style="background-color: #dac14e" class="btn btn-default" onclick="search()" type="button"><i style="color:white" class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+        <!-- </form> -->
     </div>
 
     <div class="category">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <div class="thumb">
-                <div class="title">
-                  <h1>Arts and Graphics</h1>
-                </div>
-                <img src="/assets/images/pic1.png" class="img-responsive" alt="">
-                <div class="after">
-                    <h1>Arts and Graphics</h1>
-                    <a href="search?searchItem=&browsing-auction=realized&category=Arts%20And%20Graphics&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
-                    <a href="search?searchItem=&browsing-auction=objects&category=Arts%20And%20Graphics&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
-                </div>
-              </div>
-          </div>
-        </div> <!-- row1 -->
-        <div class="row">
-          <div class="col-md-8">
-            <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="thumb">
-                  <div class="title">
-                    <h1>Watches and Clocks</h1>
-                  </div>
-                  <img src="/assets/images/pic2.png" class="img-responsive" alt="">
-                  <div class="after">
-                      <h1>Watches and Clocks</h1>
-                      <a href="search?searchItem=&browsing-auction=realized&category=Watches%20and%20Clocks&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
-                      <a href="search?searchItem=&browsing-auction=objects&category=Watches%20and%20Clocks&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
-                  </div>
-                </div>
-              </div>
+      <div class="container" id="category-container">
+        <!-- <div class="row"> -->
 
-              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <div class="thumb">
-                  <div class="title t3">
-                    <h1>Jewelry and Gems</h1>
-                  </div>
-                  <img src="/assets/images/pic4.png" class="img-responsive" alt="">
-                  <div class="after">
-                      <h1 class="t3">Jewelry and Gems</h1>
-                      <a href="search?searchItem=&browsing-auction=realized&category=Jewelry%20and%20Gems&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
-                      <a href="search?searchItem=&browsing-auction=objects&category=Jewelry%20and%20Gems&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
-                  </div>
-                </div>
+        {% for category in data %}
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+            <div class="thumb">
+              <div class="title t3">
+                <h1>{{category.category_name}}</h1>
               </div>
-
-              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <div class="thumb">
-                  <div class="title">
-                    <h1>Furnitures, Design and Mirrors</h1>
-                  </div>
-                  <img src="/assets/images/pic5.png" class="img-responsive" alt="">
-                  <div class="after t4">
-                      <h1>Furnitures, Design and Mirrors</h1>
-                      <a href="search?searchItem=&browsing-auction=realized&category=Furniture%2C+Design+and+Mirrors&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
-                      <a href="search?searchItem=&browsing-auction=objects&category=Furniture%2C+Design+and+Mirrors&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
-                  </div>
-                </div>
+              <img src="{{category.popularImage}}" style="height: 320px;width: 100%;background-color: #e3e3e3;" class="img-responsive" alt="" onError="this.onerror=null;this.src='http://www.hindwarehomes.com/notfound.jpg';">
+              <div class="after">
+                  <h1 class="t3">{{ category.category_name}}</h1>
+                  <a href="search?searchItem=&browsing-auction=realized&category={{ category.category_name}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
+                  <a href="search?searchItem=&browsing-auction=objects&category={{ category.category_name}}&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
               </div>
-
             </div>
           </div>
-          <div class="col-md-4">
-              <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                  <div class="thumb">
-                    <div class="title">
-                      <h1>Sculptures</h1>
-                    </div>
-                    <img src="/assets/images/pic3.png" class="img-responsive" alt="">
-                    <div class="after t5">
-                        <h1>Sculptures</h1>
-                        <a href="search?searchItem=&browsing-auction=realized&category=Sculptures&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
-                        <a href="search?searchItem=&browsing-auction=objects&category=Sculptures&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        {% endfor %}
+          
+
+        <!-- </div> -->
+        <!-- <div class="row">
+          <h2 class="text-center"><a href="#">VIEW ALL CATEGORIES</a></h2>
+        </div> -->
+        <div class="col-lg-12" id="spinner-container" style="display: none">
+        <br>
+            <center>
+              <i class="fa fa-spinner fa-spin" style="font-size:50px;color:gray"></i>
+            </center>
+              <br>
           </div>
-        </div>
-        <div class="row">
-          <h2 class="text-center"><a href="/categories">VIEW ALL CATEGORIES</a></h2>
-        </div>
       </div>
     </div> <!-- category -->
 
-    <div class="sub-disclaimer">
+    <!-- <div class="sub-disclaimer">
       <div class="container">
         <h3 id="subscriber-alert"> Want to stay ahead? Beat the crowd by receiving our updates </h3>
         <form class="navbar-form" role="search" method="get" action="">
@@ -262,7 +322,7 @@
           Auctionilla prowls the world to gather all Art, Collectibles, Antiques and many fascinating auction items so you don’t have to! Everyone is welcomed to use our search and stay up to date on your favorite items with our newsletters. Best of all, it’s FREE!
         </p>
       </div>
-    </div>
+    </div> -->
   </section>
   <footer class="clearfix">
     <div class="container">
