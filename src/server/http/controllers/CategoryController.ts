@@ -25,6 +25,13 @@ export class CategoryController extends Controller {
   }
 
   public async showCategories(request: Request, response: Response) {
+    let user = "";
+    if (request.session.get('loggedUser')) {
+      let loggedUserId = request.session.get('loggedUser').id;
+      console.log('this is the logged user id');
+      console.log(loggedUserId);
+      user = loggedUserId;
+    }
     let categories = await this.categoryService.getAllCategories();
     let category = [];
     categories.forEach(async(items) => {
@@ -34,11 +41,10 @@ export class CategoryController extends Controller {
         jsonItem['popularImage'] = image.get('item_image');
       }
       
-      console.log(jsonItem);
       category.push(jsonItem);
     });
     await this.auctionItemService.getMostPopularItemByCategory(1);
-    return response.render('categories', { data: category });
+    return response.render('categories', { data: category, user });
   }
 
   public async searchCategories(request: Request, response: Response) {
@@ -54,7 +60,6 @@ export class CategoryController extends Controller {
         jsonItem['popularImage'] = image.get('item_image');
       }
       
-      console.log(jsonItem);
       category.push(jsonItem);
     });
     await this.auctionItemService.getMostPopularItemByCategory(1);

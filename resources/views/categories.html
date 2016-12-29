@@ -67,7 +67,6 @@
         // dataType: 'json',
         data: data,
       }).done(function(resp) {
-        console.log(resp);
         viewCateg(resp.data);
       });
     }
@@ -75,7 +74,6 @@
     function viewCateg(categories) {
       
       for (var i = 0; i < categories.length; i++) {
-        console.log(categories[i]);
         var theimge;
         if(categories[i].popularImage) {
           theimge = categories[i].popularImage;
@@ -107,7 +105,7 @@
     var scrollToggle = true;
     $(window).scroll(function() {
        if($(window).scrollTop() + $(window).height() > $(document).height()) {
-          console.log(" bottom!");
+          // console.log(" bottom!");
           var searchitem = $('#categ-search').val();
           var data = {
             search: searchitem,
