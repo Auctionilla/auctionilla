@@ -51,7 +51,7 @@
 
     function search() {
       // search-categories
-      $('#category-container').empty();
+      
       offset = 0;
       limit = 10;
       var searchitem = $('#categ-search').val();
@@ -67,7 +67,10 @@
         // dataType: 'json',
         data: data,
       }).done(function(resp) {
+        // console.log(resp.data);
+        $('#category-container').empty();
         viewCateg(resp.data);
+        offset = offset + 10;
       });
     }
 
@@ -262,9 +265,10 @@
           <!-- </div> -->
 
           <div class="input-group main-search">
-            <input type="text" style="height: 40px;max-width: 200px" class="form-control" id="categ-search" placeholder="Search" name="categ-search">
+            <input type="text" style="height: 40px;max-width: 200px" onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('btn-search-category').click()" class="form-control" id="categ-search" placeholder="Search" name="categ-search">
             <div class="input-group-btn pull-left">
-              <button style="background-color: #dac14e" class="btn btn-default" onclick="search()" type="button"><i style="color:white" class="glyphicon glyphicon-search"></i></button>
+              <button style="background-color: #dac14e" class="btn btn-default" id="btn-search-category" onclick="search()" type="button"><i style="color:white" class="glyphicon glyphicon-search"></i></button>
             </div>
           </div>
         <!-- </form> -->
