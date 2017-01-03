@@ -1,2 +1,11 @@
 @import "https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700,800";
 @import url('https://fonts.googleapis.com/css?family=Raleway');
+@font-face {
+  font-family: 'garamond';
+  src: url('../../fonts/garamond.eot'); /* IE9 Compat Modes */
+  src: url('../../fonts/garamond.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       // url('webfont.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../../fonts/garamond.woff') format('woff'), /* Pretty Modern Browsers */
+       url('../../fonts/garamond.ttf')  format('truetype'), /* Safari, Android, iOS */
+       // url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
