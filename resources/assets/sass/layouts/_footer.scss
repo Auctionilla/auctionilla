@@ -15,6 +15,18 @@ footer {
       .text-center {
         text-align: center !important;
         margin-bottom: 15px;
+        a {
+          .logo {
+            font-family: 'garamond' !important;
+            color: #fff !important;
+            font-size: 25px;
+            margin-top: 0px;
+          }
+          &:hover{
+            text-decoration: none;
+            opacity: 0.8;
+          }
+        }
         // width: 80%;
         &:nth-child(2){
             border-bottom: 1px solid #fff;
@@ -39,6 +51,8 @@ footer {
             }
           }
         }
+
+
       }
 
       .item {

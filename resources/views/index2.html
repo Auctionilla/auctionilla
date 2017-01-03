@@ -11,39 +11,7 @@
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
   <script src="/assets/lib/jquery/dist/jquery.js"></script>
-  <script type="text/javascript">
-    function validateEmail($email) {
-      var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-      return emailReg.test( $email );
-    }
-    function subscribe() {
-      var email = $('#subscriber-email').val();
-      if(validateEmail(email)) {
-        var data = {
-          email: email
-        }
-        // alert(email);
-        $.ajax({
-          method: "POST",
-          url: '/add-subscriber',
-          // contentType: 'application/json',
-          // dataType: 'json',
-          data: data,
-        }).done(function(resp) {
-          // alert(resp.alert);
-          $('#subscriber-alert').html(resp.alert);
-          $('#subscriber-email').val('');
-          $('#subscriber-email').attr('class', 'form-control');
-        });
-      } else {
-        // alert('not a valid email');
-        $('#subscriber-alert').html('<b>Email error! </b>Please use a valid email.');
-        $('#subscriber-email').attr('class', 'form-control alert-danger');
-      }
 
-
-    }
-  </script>
 
   <style type="text/css">
     .popular-item-image {
@@ -120,7 +88,7 @@
       <div class="clearfix col-md-6 col-xs-11 search-bar" style="margin-top:10px">
         <div class="text-center">
           <h2>
-            Window to the World of Auction
+            Window to the world of Auctions
           </h2>
         </div>
         <form class="navbar-form" role="search" method="get" action="/search">
@@ -170,8 +138,8 @@
                 <img src="/assets/images/pic1.png" class="img-responsive" alt="">
                 <div class="after">
                     <h1>Arts and Graphics</h1>
-                    <a href="search?searchItem=&browsing-auction=realized&category=Arts%20And%20Graphics&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
-                    <a href="search?searchItem=&browsing-auction=objects&category=Arts%20And%20Graphics&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
+                    <a href="" class="btn btn-cat">VIEW PAST RESULT</a><br>
+                    <a href="" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
                 </div>
               </div>
           </div>
@@ -187,8 +155,8 @@
                   <img src="/assets/images/pic2.png" class="img-responsive" alt="">
                   <div class="after">
                       <h1>Watches and Clocks</h1>
-                      <a href="search?searchItem=&browsing-auction=realized&category=Watches%20and%20Clocks&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
-                      <a href="search?searchItem=&browsing-auction=objects&category=Watches%20and%20Clocks&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
+                      <a href="" class="btn btn-cat">VIEW PAST RESULT</a><br>
+                      <a href="" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
                   </div>
                 </div>
               </div>
@@ -201,8 +169,8 @@
                   <img src="/assets/images/pic4.png" class="img-responsive" alt="">
                   <div class="after">
                       <h1 class="t3">Jewelry and Gems</h1>
-                      <a href="search?searchItem=&browsing-auction=realized&category=Jewelry%20and%20Gems&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
-                      <a href="search?searchItem=&browsing-auction=objects&category=Jewelry%20and%20Gems&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
+                      <a href="" class="btn btn-cat">VIEW PAST RESULT</a><br>
+                      <a href="" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
                   </div>
                 </div>
               </div>
@@ -215,8 +183,8 @@
                   <img src="/assets/images/pic5.png" class="img-responsive" alt="">
                   <div class="after t4">
                       <h1>Furnitures, Design and Mirrors</h1>
-                      <a href="search?searchItem=&browsing-auction=realized&category=Furniture%2C+Design+and+Mirrors&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
-                      <a href="search?searchItem=&browsing-auction=objects&category=Furniture%2C+Design+and+Mirrors&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
+                      <a href="" class="btn btn-cat">VIEW PAST RESULT</a><br>
+                      <a href="" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
                   </div>
                 </div>
               </div>
@@ -233,8 +201,8 @@
                     <img src="/assets/images/pic3.png" class="img-responsive" alt="">
                     <div class="after t5">
                         <h1>Sculptures</h1>
-                        <a href="search?searchItem=&browsing-auction=realized&category=Sculptures&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW PAST RESULT</a> <br>
-                        <a href="search?searchItem=&browsing-auction=objects&category=Sculptures&countries=&auction-house=&offset=&page=&radiobuttonsearch=objects&relevance=" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
+                        <a href="" class="btn btn-cat">VIEW PAST RESULT</a><br>
+                        <a href="" class="btn btn-cat">VIEW FUTURE AUCTIONS</a>
                     </div>
                   </div>
                 </div>
@@ -242,19 +210,19 @@
           </div>
         </div>
         <div class="row">
-          <h2 class="text-center"><a href="/categories">VIEW ALL CATEGORIES</a></h2>
+          <h2 class="text-center"><a href="#">VIEW ALL CATEGORIES</a></h2>
         </div>
       </div>
     </div> <!-- category -->
 
     <div class="sub-disclaimer">
       <div class="container">
-        <h3 id="subscriber-alert"> Want to stay ahead? Beat the crowd by receiving our updates </h3>
+        <h3> Want to stay ahead? Beat the crowd by receiving our updates </h3>
         <form class="navbar-form" role="search" method="get" action="">
           <div class="input-group newsletter">
-            <input type="text" class="form-control" id="subscriber-email" placeholder="Enter your email" name="subcriber-email" id="srch-term">
+            <input type="text" class="form-control" placeholder="Enter your email" name="searchItem" id="srch-term">
             <div class="input-group-btn">
-              <button class="btn btn-default" onclick="subscribe()" type="button">Subscribe</button>
+              <button class="btn btn-default" type="submit">Subscribe</button>
             </div>
           </div>
         </form>
