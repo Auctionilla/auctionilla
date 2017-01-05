@@ -57,6 +57,10 @@ export class AuctionItemService extends SQLService<AuctionItem> {
         }
       }
 
+      if(!searchItem) {
+        query.orderBy('auction_items.id', 'desc');
+      }
+
       if (item_filter) {
         if (item_filter == 'objects') {
           query.whereIn('price_status', ['Low estimate', 'Fixed price']);
