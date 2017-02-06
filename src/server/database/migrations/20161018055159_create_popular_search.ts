@@ -5,12 +5,11 @@ import { knex } from 'chen/sql';
  * @param {knex} db
  */
 export async function up(db: knex) {
-  return db.schema.createTable('categories', table => {
+  return db.schema.createTable('popular_search',table => {
     table.increments('id');
-    table.string('category_name').notNullable();
-    table.text('description').nullable();
+    table.string('search_key').notNullable();
     table.timestamps();
-  });
+  })
 }
 
 /**
@@ -18,5 +17,5 @@ export async function up(db: knex) {
  * @param {knex} db
  */
 export async function down(db: knex) {
-  return db.schema.dropTable('categories');
+  return db.schema.dropTable('popular_search');
 }

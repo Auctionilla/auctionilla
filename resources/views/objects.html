@@ -8,85 +8,126 @@
   <title>Auctionilla </title>
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <!-- Place favicon.ico in the root directory -->
-
   <link rel="stylesheet" href="/assets/css/main.css">
   <script src="/assets/js/vendor/modernizr.js"></script>
 
-
   <script type="text/javascript">
-
-    function addFavorite(id) {
-      var res = $("#favspan"+ id).html();
-      if (res == 'Save Favorite') {
-        data = {
-          item_id: id
-        }
-        $.ajax({
-          method: 'POST',
-          url: '/addfavorite',
-          contentType: 'application/json',
-          dataType: 'json',
-          data: JSON.stringify(data)
-        }).done(function (resp) {
-          let data = resp.data;
-
-          let fav = resp.favId;
-          $('#heart'+id).attr('style', 'color:red');
-          $('#favspan'+id).html("Favorite");
-          $('#favId'+id).html(fav);
-
-
-            // window.location.reload();
-        });
-      } else if (res == 'Favorite') {
-        data = {
-          favid: $('#favId'+id).html()
-        }
-        $.ajax({
-          method: 'POST',
-          url: '/removefavorite',
-          contentType: 'application/json',
-          dataType: 'json',
-          data: JSON.stringify(data)
-        }).done(function (resp) {
-          let data = resp.data;
-          $('#favspan'+id).html("Save Favorite");
-          $('#heart'+id).attr('style', 'color:black');
-          $('#favId'+id).html('');
-        });
-
+  function addFavorite(id) {
+    var res = $("#favspan" + id).html();
+    if (res == 'Save Favorite') {
+      data = {
+        item_id: id
       }
-    }
-
-
-    function gotologin() {
-      window.location.href = '/login';
-    }
-
-    function saveSearchAlert() {
-
-      var data = {
-        search_item: $('input#save-searchkey').val(),
-        category: $('input#save-category').val(),
-        auction_house: $('input#save-auctionhouse').val(),
-        location: $('input#save-location').val()
-      }
-      alert(data);
       $.ajax({
         method: 'POST',
-        url: '/create-searchalert',
+        url: '/addfavorite',
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify(data)
-      }).done(function (resp) {
-        let data = resp.data;
+      }).done(function(resp) {
+        var data = resp.data;
 
+        var fav = resp.favId;
+        $('#heart' + id).attr('style', 'color:red');
+        $('#favspan' + id).html("Favorite");
+        $('#favId' + id).html(fav);
+
+
+        // window.location.reload();
       });
+    } else if (res == 'Favorite') {
+      data = {
+        favid: $('#favId' + id).html()
+      }
+      $.ajax({
+        method: 'POST',
+        url: '/removefavorite',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(data)
+      }).done(function(resp) {
+        var data = resp.data;
+        $('#favspan' + id).html("Save Favorite");
+        $('#heart' + id).attr('style', 'color:black');
+        $('#favId' + id).html('');
+      });
+
+    }
+  }
+
+  function changeRelevance() {
+    var val = document.getElementById('relevance').value;
+    if (val == "relevance") {
+      window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=relevance";
+    } else if (val == "latest") {
+      window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=latest";
+    } else if (val == "highest") {
+      window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=highest-price";
+    } else if (val == "lowest") {
+      window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=lowest-price";
+    } else if (val == "shortest-remaining") {
+      window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=shortest-remaining";
+    }
+  }
+
+  function changeLot() {
+    var val = document.getElementById('lots').value;
+
+    if (val == "10") {
+      window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{10}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}";
+    } else if (val == "20") {
+      window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{20}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}";
+    } else if (val == "30") {
+      window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{30}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}";
+    } else if (val == "40") {
+      window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{40}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}";
+    } else if (val == "50") {
+      window.location.href = "/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{1}}&page={{50}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}";
+    }
+  }
+
+
+  function gotologin() {
+    window.location.href = '/login';
+  }
+
+  function gotoSite(site) {
+
+    window.location.href = site;
+  }
+
+  function saveSearchAlert() {
+    var data = {
+      search_item: $('input#save-searchkey').val(),
+      category: $('input#save-category').val(),
+      auction_house: $('input#save-auctionhouse').val(),
+      location: $('input#save-location').val()
     }
 
-
+    $.ajax({
+      method: 'POST',
+      url: '/create-searchalert',
+      contentType: 'application/json',
+      dataType: 'json',
+      data: JSON.stringify(data)
+    }).done(function(resp) {
+      $('#saveSearchContainer').hide();
+      $('#saveSearchContainerDone').show();
+    });
+  }
   </script>
 
+<!-- Hotjar Tracking Code for auctionilla.com -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:380528,hjsv:5};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
 </head>
 
 <body>
@@ -103,36 +144,46 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/"><img src="/assets/images/logo.png" alt="logo" /></a>
+          <a class="navbar-brand" href="/"><h3 class="logo">Auctionilla.com</h3></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Browse objects</a></li>
-            <li><a href="#about">See realized prices</a></li>
+            <li class="{{'active' if browsing == 'auction'}}"><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance=">Browse objects</a></li>
+            <li class="{{'active' if browsing == 'realized'}}"><a href="/search?searchItem={{search}}&browsing-auction=realized&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=realized&relevance=">See realized prices</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <!-- <li><a href="../navbar/"><i class="fa fa-user"></i> <span class="">My Pages</span></a></li> -->
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ 'red' if user else 'white' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
-            <ul class="dropdown-menu" style="background-color: gray ">
-              {% if user %}
+            {% if user %}
+              <li><a href="/viewprofile">My Profile </a></li>
+              <li><a href="/logout">Log Out</a></li>
+            {% else %}
+              <li><a href="/registration">Register</a></li>
+              <li><a href="/login">Login</a></li>
+            {% endif %}
+
+            <!-- <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ '#FF7D00' if user else 'white' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                {% if user %}
                 <li><a href="/viewprofile">My Profile </a></li>
                 <li><a href="/logout">Log Out</a></li>
-              {% else %}
+                {% else %}
                 <li><a href="/registration">Register</a></li>
                 <li><a href="/login">Login</a></li>
-              {% endif %}
-            </ul>
-          </li>
+                {% endif %}
+              </ul>
+            </li> -->
             <li>
-                <form action="/search" method="get">
+              <form action="/search" method="get">
                 <div class="search">
                   <div class="form-group ">
                     <input type="text" name='searchItem' class="form-control" id="inputValidation" placeholder="Quick Search">
+                    <!-- <input type="hidden" name="browsing-auction" value="auction">
+                    <input type="hidden" name="radiobuttonsearch" value="objects">
+                    <input type="hidden" name="countries" value="All Countries"> -->
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                   </div>
                 </div>
-                </form>
+              </form>
             </li>
           </ul>
         </div>
@@ -140,400 +191,487 @@
       </div>
     </nav>
   </header>
-
-<section class="objects-sections">
-  <div class="objects-banner-search">
-    <div class="col-md-9 col-sm-12 col-xs-12 search-bar">
-      <form class="navbar-form" role="search">
-        <div class="col-md-6 col-sm-6 search-section">
-          <input name="searchItem" type="text" class="input form-control " value="{{ search }}" placeholder="Search word, phrase or name of lot" />
-
+  <section class="objects-sections">
+    <div class="objects-banner-search">
+      <div class="col-md-9 col-sm-12 col-xs-12 search-bar">
+        <form class="navbar-form" role="search">
           <div class="col-md-6 col-sm-6 search-section">
-            <select id="country" name="countries" data-placeholder="Select country" class="form-control sub-select select2me input">
-              <option></option>
-              <option value="">all countries</option>
-
-              {% for i in range(0, countries.length) %}
+            <input name="searchItem" type="text" class="input form-control " value="{{ search }}" placeholder="Search word, phrase or name of lot " />
+            <input type="hidden" name="browsing-auction" value="{{ browsing }}">
+            <div class="col-md-6 col-sm-6 search-section">
+              <select id="country" name="countries" data-placeholder="Select country" class="form-control sub-select select2me input">
+                {% if country %}
+                <option selected value="{{ country }}">{{country}}</option>
+                {% endif %} {% if country != 'All Countries' %}
+                <option>All Countries</option>
+                {% endif %}
+                <!-- {% for i in range(0, countries.length) %}
                 <option value="{{ countries[i] }}">{{ countries[i] }}</option>
-              {% endfor %}
-
-            </select>
+              {% endfor %} -->
+                {% for newcountry in countries %}
+                <option value="{{ newcountry.country_name }}">{{ newcountry.country_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6 col-sm-6 search-section">
+              <select id="auction-house" name="auction-house" data-placeholder="Select auction house" class="form-control sub-select  select2me input">
+                {% if auction_house %}
+                <option selected value="{{ auction_house }}"> {{ auction_house }} </option>
+                {% endif %} {% if auction_house != 'all auction houses' %}
+                <option> all auction houses </option>
+                {% endif %} {% for site in sites %}
+                <option value="{{ site.site_name }}">{{ site.site_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
           </div>
-
           <div class="col-md-6 col-sm-6 search-section">
-            <select id="auction-house" name="auction-house"  data-placeholder="Select auction house" class="form-control sub-select  select2me input">
-              <option></option>
-              <option value=""> all auction houses</option>
-              {% for site in sites %}
-                <option>{{ site.site_name }}</option>
+            <select id="categories" name="category" data-placeholder="All categories" class="form-control  main-select select2me input">
+              {% if category %}
+              <option selected value="{{category}}"> {{category}}</option>
+              {% endif %}
+              <option>all categories </option>
+              {% for category in categories %}
+              <option value="{{ category.category_name }}">{{ category.category_name }}</option>
               {% endfor %}
             </select>
-          </div>
-        </div>
-        <div class="col-md-6 col-sm-6 search-section">
-          <select id="categories" name="category" data-placeholder="All categories" class="form-control  main-select select2me input">
-            <option></option>
-            <option value="">all categories</option>
-            {% for category in categories %}
-              <option>{{ category.category_name }}</option>
-            {% endfor %}
-          </select>
-          <button class="submit-search"><i class="fa fa-search"></i></button>
-          <div class="radio-buttons">
-            <div class="radio">
-              <input type="radio" value="objects"{{ "" if itemFilter else "checked" }} {{ "checked" if itemFilter == 'objects' }} name="radiobuttonsearch">
-              <label for="radio1">
-                Objects
-              </label>
-            </div>
-            <div class="radio">
-              <input type="radio" value="auctions" {{ "checked" if itemFilter == 'auctions' }} name="radiobuttonsearch">
-              <label for="radio2">
-                Auctions
-              </label>
-            </div>
-            <div class="radio">
-              <input type="radio" value="fix-price" {{ "checked" if itemFilter == 'fix-price' }} name="radiobuttonsearch">
-              <label for="radio2">
-                Fixed price objects
-              </label>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="notification">
-    <div class="container">
-      <input type="hidden" value="{{ search }}" id="save-searchkey" name="save-searchkey">
-      <input type="hidden" value="{{ category }}" id="save-category" name="save-category">
-      <input type="hidden" value="{{ auction_house }}" id="save-auctionhouse" name="save-auctionhouse">
-      <input type="hidden" value="{{ country }}" id="save-location" name="save-location">
-      <span>
-        <i class="fa fa-bell"></i>
-        <label style="text-decoration: underline;" onclick="saveSearchAlert()">
-        Create search alert
-        {% if search %}
-          for {{ search }}
-        {% endif %}
-        </label>. We'll email you when we got what you're looking for.
-      </span>
-    </div>
-  </div>
-  <div class="page-nav">
-    <div class="container">
-      <div class="row">
-        <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-home"></i></a>
-          </li>
-          <li><a href="#">Arts and Graphics</a>
-          </li>
-        </ol>
-        <div class="search-results clearfix">
-          <div class="col-md-5 col-sm-12">
-
-            <h4>
-            Your search {{ search }} returned {{ total * 10 if total > 0 else 0}} results
-            </h4>
-            <ul class="hits">
-              <li>
-                <i class="fa fa-globe"></i> <span>{{ total * page }} hits in all countries</span>
-              </li>
-              <li>
-                <i class="fa fa-copy"></i> <span>{{ total * page }} hits in all categories</span>
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-4 col-sm-12 clearfix ">
-            <div class="col-md-6 col-sm-6 item">
-              <!-- <label>Sort By</label>
-              <select data-placeholder="Relevance" class="form-control sub-select  select2me input">
-                <option></option>
-                <option>Lorem Ipsum</option>
-                <option>Lorem Ipsum</option>
-              </select> -->
-              {% if total > 0 %}
-              <label>Sort By</label>
-              <div class="dropdown">
-                <button style="width:150px;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  Relevance
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                  <li {% if relevance == 'relevance' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=relevance">relevance</a></li>
-                  <li{% if relevance == "latest" %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=latest">latest</a></li>
-                  <li {% if relevance == 'lowest-price' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=lowest-price">lowest price</a></li>
-                  <li{% if relevance == 'highest-price' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=highest-price">highest price</a></li>
-                  <li {% if relevance == 'shortest-remaining' %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance=shortest-remaining">shortest remaining</a></li>
-
-                </ul>
+            <button class="submit-search"><i class="fa fa-search"></i></button>
+            {% if browsing != 'realized' %}
+            <div class="radio-buttons">
+              <div class="radio">
+                <input type="radio" id="radio1" value="objects" {{ "checked" if itemFilter=='objects' }} name="radiobuttonsearch">
+                <label for="radio1">
+                  Objects
+                </label>
               </div>
-              {% endif %}
-            </div>
-            <div class="col-md-6 col-sm-6 item">
-
-             <!--  <select data-placeholder="Lots" class="form-control sub-select select2me input">
-                <option></option>
-                <option><a href="/">go home</a></option>
-                <option>Lorem Ipsum</option>
-              </select> -->
-              {% if total > 0%}
-              <label>Lots</label>
-              <div class="dropdown">
-                <button style="width:150px" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  Lots
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                  <li{% if page == 10 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{10}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">10</a></li>
-                  <li {% if page == 20 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{20}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">20</a></li>
-                  <li{% if page == 30 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{30}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">30</a></li>
-                  <li {% if page == 40 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{40}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">40</a></li>
-                  <li {% if page == 50 %} class = "active" {% endif %}><a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset}}&page={{50}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">50</a></li>
-                </ul>
+              <div class="radio">
+                <input type="radio" id="radio2" value="auctions" {{ "checked" if itemFilter=='auctions' }} name="radiobuttonsearch">
+                <label for="radio2">
+                  Auctions
+                </label>
               </div>
-              {% endif %}
+              <div class="radio">
+                <input type="radio" id="radio3" value="fix-price" {{ "checked" if itemFilter=='fix-price' }} name="radiobuttonsearch">
+                <label for="radio3">
+                  Fixed price objects
+                </label>
+              </div>
             </div>
+            {% endif %}
           </div>
+        </form>
+      </div>
+    </div>
+    <div class="notification">
+      <div class="container">
+        <input type="hidden" value="{{ search }}" id="save-searchkey" name="save-searchkey">
+        <input type="hidden" value="{{ category }}" id="save-category" name="save-category">
+        <input type="hidden" value="{{ auction_house }}" id="save-auctionhouse" name="save-auctionhouse">
+        <input type="hidden" value="{{ country }}" id="save-location" name="save-location">
+        
+        <div id="saveSearchContainer">
+          <span>
+            <i class="fa fa-bell"></i>
+            {% if user %}
+              <label style="text-decoration: underline;cursor: pointer;" onclick="saveSearchAlert()">
+              Create search alert
+              {% if search %}
+                for <b>' {{ search }} '</b>
+              {% endif %}
+              </label>. We'll email you when we got what you're looking for.
+            {% else %}
+            <label style="text-decoration: underline;" onclick="gotologin()">
+            Create search alert
+            {% if search %}
+                for <b> '{{ search if search != '' else ' all new item' }} ' </b>
+            {% endif %}
+            </label>. We'll email you when we got what you're looking for.
+            {% endif %}
+          </span>
+        </div>
+
+        <div id="saveSearchContainerDone" style="display:none">
+          <span class="glyphicon glyphicon-ok"></span> You've now saved the search word '{{ search if search != '' else ' all new item'}}'
+          <h5><small style="color:white">
+          {% if category %}
+            <strong>category: </strong> {{category}}
+          {% endif %}
+
+          {% if auction_house %}
+            <strong>auction house: </strong> {{ auction_house }}
+          {% endif %}
+
+          {% if country %}
+            <strong>country: </strong> {{ country }}
+          {% endif %}
+          </small></h5>
         </div>
       </div>
     </div>
-  </div>
-  <div class="object-item-list clearfix">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-9 col-sm-12 main-object-list">
-        {% if data.length %}
-          {% for item in data %}
-            {% if item.price_status != 'Realized' %}
-              <div class="object-item">
-                <div class="thumb-image image">
-                  <img src="{{ item.item_image }}" />
-                    <div class="image-hover">
-                      <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
-                    </div>
-                </div>
-                  <div class="descriptions">
-                    <div class="clearfix tag-timestamp">
-                      <ul>
-                        <li>
-                          <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
-                        </li>
-                        <li>
-                          <i class="fa fa-clock-o" aria-hidden="true"></i> {{ (item.converted_date / 24) | round(0, 'floor') }}d {{ item.converted_date % 24 }}h
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="content">
+    <div class="page-nav">
+      <div class="container">
+                <div class="row">
+                  <ol class="breadcrumb">
+                    <li><a href="/"><i class="fa fa-home"></i></a>
+                    </li>
+                    <li><a href="#">{{ category if category else "All Categories" }}</a>
+                    </li>
+                  </ol>
+                  <div class="search-results clearfix">
+                    <div class="col-md-5 col-sm-12">
                       <h4>
-                        {{ item.item_title}}
-                      </h4>
-                      <p>
-                        {{ item.item_description }}
-                      </p>
-                      <p class="estimate">
-                        {{ item.price_status }}: {{ item.price}} {{item.currency}}
-                        {% if item.price_status == "Fix price" %}
-
-                        {% elif item.price_status == "Hammer price" %}
-                          <a href="{{ item.auction_url }}">Show Bid</a>
-                        {% elif item.price_status == "Low estimate" %}
-                          <a href="{{ item.auction_url }}">Show Bid</a>
-                        {% endif %}
-
-                      </p>
+                            Your search
+                            <b>{{ search }}</b> returned {{ total if total > 0 else 0}} results 
+                        </h4>
+                     <!--  <ul class="hits">
+                        <li>
+                          <i class="fa fa-globe"></i> <span>{{ totalHits }} hits in all countries</span>
+                        </li>
+                        <li>
+                          <i class="fa fa-copy"></i> <span>{{ totalHits }} hits in all categories</span>
+                        </li>
+                      </ul> -->
                     </div>
-                    <div class="actions clearfix">
-                      <ul>
-                        <li class="auction-emblem">
-                          <a href="{{ item.site_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
-                        </li>
-                        <li>
-                          {% if user %}
-                          <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
-                          <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
-                          </button>
-                          {% else %}
-                            <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id = "favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
-                          <span style="display:none" id = "favId{{ item.id }}">{{ item.isFavorite }}</span>
-                          </button>
-                          {% endif %}
-                        </li>
-                        <li>
-                          <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
-                          <span>
-                          {% if item.price_status == "Fix price" %}
-                            Buy it now
-                          {% elif item.price_status == "Hammer price" %}
-                            Show Bid
-                          {% elif item.price_status == "Low estimate" %}
-                            Show Bid
-
-                          {% endif %}
-                          </span>
-                          </button>
-                        </li>
-                      </ul>
+                    <div class="col-md-4 col-sm-12 clearfix ">
+                      <div class="col-md-7 col-sm-6 item">
+                        {% if total > 0 %}
+                        <label>Sort By</label>
+                        <select data-placeholder="{{ relevance if relevance else 'Relevance' }}" id="relevance" onchange="changeRelevance()" class="form-control sub-select   select2me input">
+                          <option></option>
+                          <option value="relevance">relevance</option>
+                          <option value="latest">latest</option>
+                          <option value="lowest">lowest price</option>
+                          <option value="highest">highest price</option>
+                          <option value="shortest-remaining">shortest remaining</option>
+                        </select>
+                        {% endif %}
+                      </div>
+                      <div class="col-md-5 col-sm-5 item">
+                        {% if total > 0%}
+                        <label>Lots </label>
+                        <select data-placeholder=" {{ page if page else 'Lots' }}" id="lots" onchange="changeLot()" class="select2me form-control sub-select  input">
+                          <option></option>
+                          <option value="10">10</option>
+                          <option value="20">20</option>
+                          <option value="30">30</option>
+                          <option value="40">40</option>
+                          <option value="50">50</option>
+                        </select>
+                        {% endif %}
+                      </div>
                     </div>
                   </div>
-              </div>
-            {% endif %}
-          {% endfor %}
-        {% endif %}
+                </div>
+                <div class="object-item-list clearfix">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-9 col-sm-12 main-object-list">
+                        {% if data.length %} {% for item in data %} {% if (item.price_status == "Realized") or (item.price_status == "Hammer price") %}
+                        <div class="object-item">
+                          <div class="thumb-image image">
+                            <a href="{{ item.auction_url }}" target="_blank"><img src="{{ item.item_image }}" alt="image" onError="this.onerror=null;this.src='http://www.hindwarehomes.com/notfound.jpg';"/></a>
+                            <!-- <div class="image-hover">
+                              <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
+                            </div> -->
+                          </div>
+                          <div class="descriptions">
+                            <div class="clearfix tag-timestamp">
+                              <ul>
+                                <li>
+                                  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
+                                </li>
+                                <li>
+                                  {% if item.dealer_bid != 'dealer' %}
+                                  <i class="fa fa-clock-o" aria-hidden="true"></i> {% if item.days_remaining > 0 %} {{ item.days_remaining }}d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% else %} 0d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% endif %} {% else %}
+                                  <i class="fa fa-flag" aria-hidden="true"></i> dealer {% endif %}
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="content">
+                              <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                                <h4 title="{{item.item_title}}">
+                                {{ item.new_item_title }}
+                              </h4>
+                              </a>
+                              <p title="{{item.item_description}}">
+                                {{ item.new_item_description }}
+                              </p>
+                              <p class="estimate">
+                                {{ item.price_status }} : {{ item.price}} {{item.currency}} {% if item.price_status == "Fixed price" %} - {% elif item.price_status == "Hammer price" %}
+                                <a href="{{ item.auction_url }}">Show Bid</a> {% elif item.price_status == "Low estimate" %}
+                                <a href="{{ item.auction_url }}">Show Bid</a> {% endif %}
+                              </p>
+                            </div>
+                            <div class="actions clearfix">
+                              <ul>
+                                <li class="auction-emblem">
+                                  <a href="{{ item.auction_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                                </li>
+                                <li>
+                                  {% if item.price_status != "Realized" %} {% if item.price_status != "Hammer price" %} {% if user %}
+                                  <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                                    <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
+                                  </button>
+                                  {% else %}
+                                  <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                                    <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
+                                  </button>
+                                  {% endif %} {% endif %} {% endif %}
+                                </li>
+                                <li>
+                                  <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                                    <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+                                      <span>
+                                  {% if item.price_status == "Fixed price" %}
+                                    Buy it now
+                                  {% elif item.price_status == "Hammer price" %}
+                                    To the auction house
+                                  {% elif item.price_status == "Low estimate" %}
+                                    Show Bid
+                                  {% elif item.price_status == "Realized" %}
+                                    To the auction house
+                                  {% endif %}
+                                  </span>
+                                    </button>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        {% else %}
+                        <div class="object-item">
+                          <div class="thumb-image image">
+                            <a href="{{ item.auction_url }}" target="_blank"><img src="{{ item.item_image }}" style="background-color: #e3e3e3" onError="this.onerror=null;this.src='http://www.hindwarehomes.com/notfound.jpg';"/></a>
+                            <!-- <div class="image-hover">
+                              <a href="{{ item.auction_url }}" class="btn" target="_blank">VIEW RESULTS</a>
+                            </div> -->
+                          </div>
+                          <div class="descriptions">
+                            <div class="clearfix tag-timestamp">
+                              <ul>
+                                <li>
+                                  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
+                                </li>
+                                <li>
+                                  {% if item.dealer_bid != 'dealer' %}
+                                  <i class="fa fa-clock-o" aria-hidden="true"></i> {% if item.days_remaining > 0 %} {{ item.days_remaining }}d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% else %} 0d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h {% endif %} {% else %}
+                                  <i class="fa fa-flag" aria-hidden="true"></i> dealer {% endif %}
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="content">
+                              <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                                <h4 title="{{item.item_title}}">
+                                {{ item.new_item_title }}
+                              </h4>
+                              </a>
+                              <p title="{{item.item_description}}">
+                                {{ item.new_item_description }}
+                              </p>
+                              <p class="estimate">
+                                {{ item.price_status }} : {{ item.price}} {{item.currency}} {% if item.price_status == "Fixed price" %} - {% elif item.price_status == "Hammer price" %}
+                                <a href="{{ item.auction_url }}" target="_blank">Show Bid</a> {% elif item.price_status == "Low estimate" %}
+                                <a href="{{ item.auction_url }}" target="_blank">Show Bid</a> {% endif %}
+                              </p>
+                            </div>
+                            <div class="actions clearfix">
+                              <ul>
+                                <li class="auction-emblem">
+                                  <a href="{{ item.auction_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                                </li>
+                                <li>
+                                  {% if item.price_status != "Realized" %} {% if item.price_status != "Hammer price" %} {% if user %}
+                                  <button onclick="addFavorite({{item.id}})" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                                    <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
+                                  </button>
+                                  {% else %}
+                                  <button onclick="gotologin();" class="btn btn"><i style='{{"color:red" if item.isFavorite }}' id='heart{{item.id}}' class="fa fa-heart-o"></i> <span id="favspan{{item.id}}">{{ "Favorite" if item.isFavorite else "Save Favorite" }}</span>
+                                    <span style="display:none" id="favId{{ item.id }}">{{ item.isFavorite }}</span>
+                                  </button>
+                                  {% endif %} {% endif %} {% endif %}
+                                </li>
+                                <li>
+                                  <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                                    <button class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i>
+                                      <span>
+                                  {% if item.price_status == "Fixed price" %}
+                                    Buy it now
+                                  {% elif item.price_status == "Hammer price" %}
+                                    To the auction house
+                                  {% elif item.price_status == "Low estimate" %}
+                                    Show Bid
+                                  {% elif item.price_status == "Realized" %}
+                                    To the auction house
+                                  {% endif %}
+                                  </span>
+                                    </button>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        {% endif %} {% endfor %} {% endif %}
+                      </div>
+                      <div class="col-md-3  daily-tips">
+                        <div class="widgets ">
+                          <div class="widget-title">
+                            <h4>Pick of the day</h4>
+                          </div>
+                          <div class="image">
+                            <img src="{{ thePick.item_image }}" alt="pick photo" />
+                          </div>
+                          <div class="content">
+                            <a href="{{ thePick.auction_url }}">
+
+                          {{thePick.item_title}}
+                        </a>
+                            <p>
+                              {{ thePick.price_status }} : {{ thePick.price }} {{thePick.currency}}
+                            </p>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
         </div>
-        <div class="col-md-3  daily-tips">
-          <div class="widgets ">
-            <div class="widget-title">
-              <h4>Pick of the day</h4>
+        <div class="notification">
+          <div class="container">
+            <input type="hidden" value="{{ search }}" id="save-searchkey" name="save-searchkey">
+            <input type="hidden" value="{{ category }}" id="save-category" name="save-category">
+            <input type="hidden" value="{{ auction_house }}" id="save-auctionhouse" name="save-auctionhouse">
+            <input type="hidden" value="{{ country }}" id="save-location" name="save-location">
+            <div id="saveSearchContainer2">
+              <span>
+              <i class="fa fa-bell"></i>
+              {% if user %}
+              <label style="text-decoration: underline;" onclick="saveSearchAlert()">
+              Create search alert
+              {% if search %}
+                for <b>' {{ search }} '</b>
+              {% endif %}
+              </label>. We'll email you when we got what you're looking for.
+              {% else %}
+              <label style="text-decoration: underline;" onclick="gotologin()">
+              Create search alert
+              {% if search %}
+                for <b> '{{ search }}' </b>
+              {% endif %}
+              </label>. We'll email you when we got what you're looking for.
+              {% endif %}
+            </span>
             </div>
-            <div class="image">
-              <img src="/assets/images/objects/pick-1.png" alt="pick photo" />
-            </div>
-            <div class="content">
-              <a href="#">
-                  Peter Doig, Cloud Illusions/Recall
-                </a>
-              <p>
-                Fixed price: —
-              </p>
+            <div id="saveSearchContainerDone2" style="display:none">
+              <span class="glyphicon glyphicon-ok"></span> You've now saved the search word '{{ search }}''
+              <h5><small style="color:white">
+            {% if category %}
+              <strong>category: </strong> {{category}}
+            {% endif %}
+
+            {% if auction_house %}
+              <strong>auction house: </strong> {{ auction_house }}
+            {% endif %}
+
+            {% if country %}
+              <strong>country: </strong> {{ country }}
+            {% endif %}
+            </small></h5>
             </div>
           </div>
-          <!-- <div class="widgets ">
-            <div class="widget-title">
-              <h4>Latest news</h4>
+        </div>
+        <div class="object-pagination">
+          <div class="container">
+            <ul class="nav navbar-nav">
+              <li class="{{ 'disabled' if offset <= 1 }}">
+                <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=1&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a>
+              </li>
+              <li class="{{ 'disabled' if offset <= 1 }}">
+                <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset - 1 if offset > 1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-left" aria-hidden="true"></i> </a>
+              </li>
+              {% if total == 0%}
+              <li><a href="#" >0 </a></li>
+              {% endif %} {% if offset
+              < 15 %} {% if ( total / page ) < 15 %} {% for i in range(1, (total / page) + 1) %} <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i}}</a>
+                </li>
+                {% endfor %} {% if (total % page) > page and ((total / page) > 1) %}
+                <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ ((total / page) + 1) | round }}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{ ((total / page) + 1) | round }}</a>
+                </li>
+                {% endif %} {% else %} {% for i in range(1, 16) %}
+                <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i}}</a>
+                </li>
+                {% endfor %} {% endif %} {% elif offset >= 15 and offset
+                < (total / page) - 15 %} {% for i in range(offset - 7, offset + 7) %} <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i  | round }}</a>
+                </li>
+                {% endfor %} {% elif (offset > (total / page) - 15) and (offset
+                <=( total / page)) %} {% for i in range((total / page) - 15, (total / page) + 1 ) %} <li class="page-item {% if offset == i  | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{i  | round }}</a>
+                </li>
+                {% endfor %} {% if (total % page) > page and ((total / page) > 1) %}
+                <li class="page-item {% if offset == i | round  %} active {% endif %} "><a class="page-link" href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ (total / page) | round + 1 }}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}">{{ ((total / page) + 1) | round }}</a>
+                </li>
+                {% endif %} {% elif (offset > (total / page)) %}
+                <li><a href="#" >last item </a></li>
+                {% endif %}
+                <li class=" {{'disabled' if (offset >= (total / page))}}">
+                  <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset + 1 if (offset < (total / page)) else offset}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
+                </li>
+                <li class=" {{'disabled' if (offset >= (total / page))}}">
+                  <a href="/search?searchItem={{search}}&browsing-auction={{browsing}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{ total / page }}&page={{page}}&relevance={{ relevance }}&radiobuttonsearch={{itemFilter}}"> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+                </li>
+            </ul>
+          </div>
+        </div>
+        <div class="search-terms">
+          <div class="container">
+            <div class="item-content">
+              <h4>
+                {{category}}
+              </h4>
+              <p>
+                {{ catdesc }}
+              </p>
             </div>
-            <div class="per-item">
-              <div class="image">
-                <img src="/assets/images/objects/pick-1.png" alt="pick photo" />
-              </div>
-              <div class="content">
-                <a href="#">
-                  Peter Doig, Cloud Illusions/Recall
-                </a>
-              </div>
+            <hr>
+            <div class="item-content">
+              <h4>
+                Popular searches
+              </h4>
+              <ul>
+                {% for searches in popularSearches %}
+                <li>
+                  <a href="/search?searchItem={{ searches.search }}">{{ searches.search }}</a>
+                </li>
+                {% endfor %}
+              </ul>
             </div>
-            <div class="per-item">
-              <div class="image">
-                <img src="/assets/images/objects/pick-1.png" alt="pick photo" />
-              </div>
-              <div class="content">
-                <a href="#">
-                  Peter Doig, Cloud Illusions/Recall
-                </a>
-              </div>
-            </div>
-          </div> -->
+          </div>
+        </div>
+  </section>
+  <footer class="clearfix">
+    <div class="container">
+      <div class="row">
+        <div class="text-left item col-sm-3 col-md-3">
+          <a href="/"><img src="/assets/images/logo.png" /></a>
+        </div>
+        <div class="item col-sm-6 col-md-6">
+          <span>
+          © Auctionilla.com 2016  | ALL RIGHTS RESERVED
+        </span>
+        </div>
+        <div class="item col-sm-3 col-md-3">
+          <a href="https://www.facebook.com/Auctionilla" target="_blank"><i class="fa fa-facebook"></i></a>
+          <a href="https://twitter.com/auctionilla" target="_blank"><i class="fa fa-twitter"></i></a>
+          <a href="#" target="_blank"><i class="fa fa-linkedin" ></i></a>
         </div>
       </div>
     </div>
-  </div>
-  <div class="notification">
-    <div class="container">
-      <span>
-        <i class="fa fa-bell"></i> <a href="#">Create search alert</a>. We'll email you when we got what you're looking for.
-      </span>
-    </div>
-  </div>
-
-  <div class="object-pagination">
-    <div class="container">
-      <ul class="nav nav-justified">
-        <li>
-          <a href="#"> <i class="fa fa-angle-double-left" aria-hidden="true"></i> </a>
-        </li>
-        <li>
-          <a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset - 1 if offset > 1}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-left" aria-hidden="true"></i> </a>
-        </li>
-        {% for i in range(1, total + 1) %}
-        <li {% if offset == i %}class="active" {% endif %}>
-          <a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{i}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}">{{ i }}</a>
-        </li>
-        {% endfor %}
-        <li>
-          <a href="/search?searchItem={{search}}&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset={{offset + 1 if (offset < total) else offset}}&page={{page}}&radiobuttonsearch={{itemFilter}}&relevance={{ relevance }}"> <i class="fa fa-angle-right" aria-hidden="true"></i> </a>
-        </li>
-        <li>
-          <a href="#"> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="search-terms">
-    <div class="container">
-      <div class="item-content">
-        <h4>
-          Art, Painting and Graphics
-        </h4>
-        <p>
-          Art auctions, featuring paintings from ancient times to today, are gathered under this category. It includes everything from Old Master drawings and paintings to the cutting edge of contemporary graphic art.
-        </p>
-      </div>
-      <hr>
-      <div class="item-content">
-        <h4>
-          Popular searches
-        </h4>
-        <ul>
-          <li>
-            <a href="#">keywords</a>
-          </li>
-          <li>
-            <a href="#">keywords</a>
-          </li>
-          <li>
-            <a href="#">keywords</a>
-          </li>
-          <li>
-            <a href="#">keywords</a>
-          </li>
-          <li>
-            <a href="#">keywords</a>
-          </li>
-          <li>
-            <a href="#">keywords</a>
-          </li>
-          <li>
-            <a href="#">keywords</a>
-          </li>
-          <li>
-            <a href="#">keywords</a>
-          </li>
-          <li>
-            <a href="#">keywords</a>
-          </li>
-          <li>
-            <a href="#">keywords</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-<footer class="clearfix">
-  <div class="container">
-    <div class="row">
-      <div class="text-left item col-sm-3 col-md-3">
-        <a href="#"><img src="/assets/images/logo.png" /></a>
-      </div>
-      <div class="item col-sm-6 col-md-6">
-        <span>
-          © Antique.com 2016  | ALL RIGHTS RESERVED
-        </span>
-      </div>
-      <div class="item col-sm-3 col-md-3">
-        <a href="#"><i class="fa fa-facebook"></i></a>
-        <a href="#"><i class="fa fa-twitter"></i></a>
-        <a href="#"><i class="fa fa-linkedin"></i></a>
-      </div>
-    </div>
-  </div>
-</footer>
-<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-<script>
-</script>
-<script src="/assets/js/vendor.js"></script>
-<script src="/assets/js/plugins.js"></script>
-<script src="/assets/js/main.js"></script>
+  </footer>
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+  </script>
+  <script src="/assets/js/vendor.js"></script>
+  <script src="/assets/js/plugins.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
-

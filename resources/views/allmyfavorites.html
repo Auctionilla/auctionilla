@@ -1,0 +1,280 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auctionilla</title>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/vendor/modernizr.js"></script>
+
+  <script type="text/javascript">
+    function gotoSite(site) {
+      alert(site)
+      window.location.href = site;
+    }
+  </script>
+  <!-- Hotjar Tracking Code for auctionilla.com -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:380528,hjsv:5};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+</head>
+
+<body>
+  <!--[if lt IE 10]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+      <![endif]-->
+  <header>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><h3 class="logo">Auctionilla.com</h3></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/search?searchItem={{search}}&browsing-auction=auction&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=objects&relevance={{relevance}}">Browse objects</a></li>
+            <li><a href="/search?searchItem={{search}}&browsing-auction=realized&category={{category}}&countries={{country}}&auction-house={{auction_house}}&offset=&page=&radiobuttonsearch=realized&relevance={{relevance}}">See realized prices</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% if user %}
+              <li class="active"><a href="/viewprofile">My Profile </a></li>
+              <li><a href="/logout">Log Out</a></li>
+            {% else %}
+              <li><a href="/registration">Register</a></li>
+              <li><a href="/login">Login</a></li>
+            {% endif %}
+            <!-- <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:{{ '#FF7D00' if user else 'white' }}" class="fa fa-user"></i> <span class="">My Pages</span> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                {% if user %}
+                  <li><a href="/viewprofile">My Profile </a></li>
+                  <li><a href="/logout">Log Out</a></li>
+                {% else %}
+                  <li><a href="/registration">Register</a></li>
+                  <li><a href="/login">Login</a></li>
+                {% endif %}
+              </ul>
+            </li> -->
+            <li>
+                <div class="search">
+                 <form method="get" action="/search">
+                    <div class="form-group ">
+                      <input type="text" class="form-control" id="inputValidation" name = "searchItem" placeholder="Quick Search">
+                      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                  </form>
+                </div>
+            </li>
+          </ul>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+    </nav>
+  </header>
+
+<section class="objects-sections">
+  <div class="objects-banner-search login-banner">
+    <div class="big-logo">
+      <img class="img-responsive" src="/assets/images/logo-big.png" alt="logo" />
+    </div>
+  </div>
+  <div class="page-nav">
+    <div class="container">
+      <div class="row">
+        <ol class="breadcrumb">
+          <li><a href="/"><i class="fa fa-home"></i></a>
+          </li>
+          <li><a href="#">My Page</a>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="profile-container clearfix">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-11 profile-items">
+          <div class="profile-item">
+            <div class="content">
+              <h4>
+                Welcome!
+              </h4>
+              <p>
+                On My pages you're able to save searches and have your stuff appraised
+              </p>
+            </div>
+          </div>
+
+          <div class="profile-item">
+            <div class="content">
+              <h4>
+               <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-thumb-tack fa-stack-1x fa-inverse"></i>
+                </span>
+                Monitor auctions
+             </h4>
+              <p>
+                Remind me when the auction is about to end
+              </p>
+              <div class="favourite-auctions">
+                <h5>
+                  My favorites ({{ total }})
+                </h5>
+                {% for item in myfavorite %}
+                  <div class="main-object-list">
+                    <div class="object-item">
+                      <div class="thumb-image image">
+                        <img class="img-responsive" src="{{ item.item_image }}" />
+                      </div>
+                      <div class="descriptions">
+                        <div class="clearfix tag-timestamp">
+                          <ul>
+                            <li>
+                              <i class="fa fa-map-marker" aria-hidden="true"></i> {{ item.location }}
+                            </li>
+                            <li>
+                              <i class="fa fa-clock-o" aria-hidden="true"></i>
+                              {% if item.days_remaining > 0 %}
+                                {{ item.days_remaining }}d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h
+                              {% else %}
+                                0d {{item.timeremaining if (item.timeremaining > 0) else '0' }}h
+                              {% endif %}
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="content">
+                          <a style="text-decoration: none" target="_blank" href="{{ item.auction_url }}">
+                          <h4 title="{{ item.item_title }}">
+                            {{ item.new_item_title }}
+                          </h4>
+                          </a>
+                          <p title="{{ item.new_item_description }}">
+                            {{ item.new_item_description }}
+                          </p>
+                          <p class="estimate">
+                            {{ item.price_status }}: {{item.price}} {{item.currency}}
+                          </p>
+                        </div>
+                        <div class="actions text-right clearfix">
+                          <ul>
+                            <li class="auction-emblem">
+                              <a href="{{ item.auction_url }}" target="_blank"><img style="height:50px;width: 150px" src="{{ item.site_emblem }}" /></a>
+                            </li>
+                            <li>
+                            <form action="/removeFavAll" method="post">
+                              <input type="hidden" name="removeFav" value="{{ item.favId }}">
+                              <button type="submit" class="btn btn"><i class="glyphicon glyphicon-remove"></i> <span>Remove</span></button>
+                            </form>
+                            </li>
+                            <li>
+                              <a href="{{item.auction_url}}" target="_blank"> <button type="submit" class="btn red btn"><i class="visible-xs fa fa-cart-plus"></i> <span>Buy it now</span></button></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="object-pagination" style="position:static">
+              <div class="fav-pagination" style="position:static">
+                <div class="">
+                  <ul class="nav navbar-nav">
+                    <li class="page-item {{ 'disabled' if offset <= 1 }}">
+                      <a class="page-link" href="/viewmyfavorites?offset={{1}}&limit={{limit}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+                    <li class="page-item {{ 'disabled' if offset <= 1 }}">
+                      <a class="page-link" href="/viewmyfavorites?offset={{ offset - 1 if offset > 1 else offset }}&limit={{limit}}" aria-label="Next">
+                        <span aria-hidden="true">&lang;</span>
+                        <span class="sr-only">first</span>
+                      </a>
+                    </li>
+                    {% if (total / limit) < 16 %}
+                      {% for i in range(1, (total / limit ) + 1 | round)  %}
+                        <li class="page-item {{'active' if offset == i}}"><a class="page-link" href="/viewmyfavorites?offset={{i}}&limit={{limit}}">{{i}}</a></li>
+                      {% endfor %}
+                    {% else %}
+                      {% if offset >= ((total / limit) - 15) %}
+                        {% for i in range((total / limit) - 15, total / limit)  %}
+                          <li class="page-item {{'active' if offset == i}}"><a class="page-link" href="/viewmyfavorites?offset={{i}}&limit={{limit}}">{{i | round}}</a></li>
+                        {% endfor %}
+                      {% elif (offset >= 15 and offset < (total / limit) - 15 ) %}
+                        {% for i in range(offset - 7, offset + 7)  %}
+                          <li class="page-item {{'active' if offset == i}}"><a class="page-link" href="/viewmyfavorites?offset={{i}}&limit={{limit}}">{{i | round}}</a></li>
+                        {% endfor %}
+                      {% endif %}
+                    {% endif %}
+                    <li class="page-item {{'disabled' if (offset >= (total / limit))}}">
+                      <a class="page-link" href="/viewmyfavorites?offset={{ offset + 1 if offset < (total / limit) - 1 else offset }}&limit={{limit}}" aria-label="Next">
+                        <span aria-hidden="true">&rang;</span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </li>
+                    <li class = "page-item {{'disabled' if (offset >= (total / limit))}}">
+                      <a class="page-link" href="viewmyfavorites?offset={{(total / limit)}}&limit={{limit}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">last</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="clearfix">
+  <div class="container">
+    <div class="row">
+      <div class="text-left item col-sm-3 col-md-3">
+        <a href="/"><img src="/assets/images/logo.png" /></a>
+      </div>
+      <div class="item col-sm-6 col-md-6">
+        <span>
+          © Auctionilla.com 2016  | ALL RIGHTS RESERVED 
+        </span>
+      </div>
+      <div class="item col-sm-3 col-md-3">
+        <a href="https://www.facebook.com/Auctionilla" target="_blank"><i class="fa fa-facebook"></i></a>
+        <a href="https://twitter.com/auctionilla" target="_blank"><i class="fa fa-twitter"></i></a>
+        <a href="#" target="_blank"><i class="fa fa-linkedin" ></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+</script>
+<script src="/assets/js/vendor.js"></script>
+<script src="/assets/js/plugins.js"></script>
+<script src="/assets/js/main.js"></script>
+</body>
+

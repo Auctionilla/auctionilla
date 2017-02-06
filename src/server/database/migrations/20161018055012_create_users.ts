@@ -15,6 +15,7 @@ export async function up(db: knex) {
     table.string('country').nullable();
     table.string('phone').nullable();
     table.text('validation_code').notNullable();
+    table.boolean('is_active').notNullable().defaultTo('true');
     table.boolean('email_confirmed').notNullable().defaultTo('false');
     table.timestamps();
 

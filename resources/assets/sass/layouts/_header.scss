@@ -6,6 +6,13 @@
     z-index: 10;
   }
 
+  .logo {
+    font-family: 'garamond' !important;
+    color: #fff;
+    font-size: 25px;
+    margin-top: 0px;
+  }
+
   .navbar-toggle {
     border: none;
 
@@ -21,6 +28,20 @@
     .icon-bar {
       background-color: $site-red;
       height: 3px;
+    }
+  }
+
+  .dropdown-menu {
+    background-color: #262626;
+
+    li {
+      a {
+        color: $title-font-color;
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
     }
   }
 

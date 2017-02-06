@@ -4,3 +4,8 @@ export * from './Category';
 export * from './AuctionSite';
 export * from './SearchAlerts';
 export * from './AuctionItem';
+export * from './PickOfTheDay';
+export * from './Activity';
+export * from './PopularSearch';
+export * from './CountryList';
+export * from './Subscribers';

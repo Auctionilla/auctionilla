@@ -1,12 +1,12 @@
 .objects-banner-search {
-  min-height: 200px;
+  min-height: 150px;
 
   @media (max-width: 767px) {
     min-height: 450px;
   }
 
   width: 100%;
-  background-image: url("/assets/images/heroshot.jpg");
+  background-image: url('/assets/images/heroshot.jpg');
   position: relative;
   background-color: rgba(56, 54, 43, 0.9);
   background-blend-mode: multiply;
@@ -46,8 +46,13 @@
 }
 
 .notification {
-  padding: 9px 0;
+  min-height:40px;
   background-color: $site-red;
+
+  span {
+    line-height: 40px;
+    color: #fff;
+  }
 
   a {
     color: #fff;
@@ -68,7 +73,11 @@
   }
 
   .item {
-    padding: 2px;
+    padding: 0;
+
+    &:not(:last-child) {
+      select {}
+    }
   }
 }
 
@@ -86,7 +95,7 @@
   }
 
   .thumb-image {
-    background-color: #333;
+    background-color: #e3e3e3;
     height: 100%;
     width: 250px;
     float: left;
@@ -196,9 +205,45 @@
 
   ul {
     margin: 0;
+    display: inline-block;
+    float: none;
 
     li {
+      margin: 0 5px;
+
       @media (max-width: 767px) {
+        display: inline-block;
+      }
+
+      a {
+        color: #fff;
+        padding: 8px;
+
+        &:hover {
+          color: $title-font-color;
+        }
+      }
+
+      &.active {
+        a {
+          background-color: $site-red;
+        }
+      }
+    }
+  }
+}
+
+.fav-pagination {
+  
+  ul {
+    margin: 0;
+    display: inline-block;
+    float: none;
+
+    li {
+      margin: 0 5px;
+
+      @media (max-width: 767) {
         display: inline-block;
       }
 
